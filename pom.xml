@@ -13,7 +13,7 @@
 	<artifactId>jaxrs-doc</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<description>java jaxrs-doc: better, simpler, cleaner than swagger</description>
+	<description>better, faster, stronger swagger like</description>
 
 	<parent>
 		<groupId>net.awired.parent</groupId>

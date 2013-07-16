@@ -11,9 +11,11 @@ public class OperationDefinition {
 
     private String httpMethod;
     private String description;
-    private String methodName; // method name
+    private String methodName;
     private Boolean deprecated;
     private String path;
+
+    private Class<?> sourceClass;
     private Class<?> responseClass;
     private Class<?> responseMapKeyClass;
     private Boolean responseAsList;
@@ -24,5 +26,12 @@ public class OperationDefinition {
     private String types;
     private String tags;
     private List<ParameterDefinition> parameters;
+
+    public OperationDefinition() {
+    }
+
+    public OperationDefinition(String path) {
+        this.path = path;
+    }
 
 }

@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import net.awired.jaxrs.doc.DocConfig;
 import net.awired.jaxrs.doc.annotations.Description;
 import net.awired.jaxrs.doc.annotations.Summary;
+import net.awired.jaxrs.doc.domain.ApiDefinition;
 import net.awired.jaxrs.doc.domain.OperationDefinition;
 import net.awired.jaxrs.doc.domain.ParameterDefinition;
 import net.awired.jaxrs.doc.domain.ProjectDefinition;
@@ -23,7 +24,7 @@ public class OperationParser {
         this.config = config;
     }
 
-    public OperationDefinition parse(ProjectDefinition project, Method method) {
+    public OperationDefinition parse(ProjectDefinition project, ApiDefinition api, Method method) {
         OperationDefinition operation = new OperationDefinition();
         HttpMethod httpMethod = getHttpMethod(method);
         if (httpMethod == null) {
@@ -31,6 +32,7 @@ public class OperationParser {
         }
         operation.setHttpMethod(httpMethod.value());
         operation.setMethodName(method.getName());
+        operation.setSourceClass(api.getResourceClass());
 
         Deprecated deprecated = AnnotationUtil.findAnnotation(method, Deprecated.class);
         operation.setDeprecated(deprecated != null ? true : null);
@@ -39,7 +41,8 @@ public class OperationParser {
         operation.setSummary(summary != null ? summary.value() : null);
 
         Path path = AnnotationUtil.findAnnotation(method, Path.class);
-        operation.setPath(path != null ? path.value() : null);
+        String methodPath = path != null ? path.value() : null;
+        operation.setPath(buildFullPath(api.getPath(), methodPath));
 
         Description description = AnnotationUtil.findAnnotation(method, Description.class);
         operation.setDescription(description != null ? description.value() : null);
@@ -65,11 +68,29 @@ public class OperationParser {
 
     //////////////////////////////////////////////////////////////////
 
-    private HttpMethod getHttpMethod(Method method) {
+    protected String buildFullPath(String apiPath, String operationPath) {
+        if (apiPath.equals("/") && (operationPath == null || operationPath.equals("/"))) {
+            return "/";
+        }
+        StringBuilder builder = new StringBuilder();
+        if (!apiPath.startsWith("/")) {
+            builder.append('/');
+        }
+        builder.append(apiPath.endsWith("/") ? apiPath.substring(0, apiPath.length() - 1) : apiPath);
+        if (operationPath != null) {
+            if (!operationPath.startsWith("/")) {
+                builder.append('/');
+            }
+            builder.append(operationPath.endsWith("/") ? operationPath.substring(0, operationPath.length() - 1) : operationPath);
+        }
+        return builder.toString();
+    }
+
+    protected HttpMethod getHttpMethod(Method method) {
         return AnnotationUtil.findAnnotation(method, HttpMethod.class);
     }
 
-    private void fillReturnPart(OperationDefinition operation, Method method) {
+    protected void fillReturnPart(OperationDefinition operation, Method method) {
         if (Map.class.isAssignableFrom(method.getReturnType())) {
             operation.setResponseMapKeyClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 0));
             operation.setResponseClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 1));

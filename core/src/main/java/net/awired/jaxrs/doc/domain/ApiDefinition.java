@@ -11,7 +11,6 @@ public class ApiDefinition {
 
     private String path;
     private String description;
-    private String summary;
     private Class<?> resourceClass;
     private List<OperationDefinition> operations = new ArrayList<>();
 

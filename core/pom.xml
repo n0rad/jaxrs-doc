@@ -10,6 +10,16 @@
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
+	
+	<dependencyManagement>
+	   <dependencies>
+	       <dependency>
+	           <groupId>net.awired.jaxrs.doc</groupId>
+	           <artifactId>jaxrs-doc-core</artifactId>
+	           <version>${project.version}</version>
+	       </dependency>
+	   </dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>

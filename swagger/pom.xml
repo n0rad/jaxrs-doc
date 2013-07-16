@@ -13,6 +13,11 @@
 
 
 	<dependencies>
+	   <dependency>
+	       <groupId>net.awired.jaxrs.doc</groupId>
+	       <artifactId>jaxrs-doc-core</artifactId>
+	   </dependency>
+	
 		<dependency>
 			<groupId>com.wordnik</groupId>
 			<artifactId>swagger-annotations_2.9.1</artifactId>

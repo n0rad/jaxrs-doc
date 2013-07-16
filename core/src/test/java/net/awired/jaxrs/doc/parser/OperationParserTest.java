@@ -13,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import net.awired.jaxrs.doc.DocConfig;
 import net.awired.jaxrs.doc.annotations.Description;
 import net.awired.jaxrs.doc.annotations.Summary;
+import net.awired.jaxrs.doc.domain.ApiDefinition;
 import net.awired.jaxrs.doc.domain.OperationDefinition;
 import net.awired.jaxrs.doc.domain.ProjectDefinition;
 import org.junit.Test;
@@ -25,6 +26,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class OperationParserTest {
 
     private ProjectDefinition p = new ProjectDefinition();
+    private ApiDefinition api = new ApiDefinition() {
+        {
+            setPath("/");
+        }
+    };
 
     @Mock
     private ModelParser modelParser;
@@ -79,7 +85,7 @@ public class OperationParserTest {
     @Test
     public void should_fill_info() throws Exception {
         Method method = apiExtended.class.getMethod("getSomething");
-        OperationDefinition operation = parser.parse(p, method);
+        OperationDefinition operation = parser.parse(p, api, method);
 
         assertThat(operation.getHttpMethod()).isEqualTo("GET");
         assertThat(operation.getDescription()).isEqualTo("something");
@@ -92,7 +98,7 @@ public class OperationParserTest {
 
     @Test
     public void should_parse_return_type() throws Exception {
-        parser.parse(p, apiExtended.class.getMethod("getSomething"));
+        parser.parse(p, api, apiExtended.class.getMethod("getSomething"));
 
         verify(modelParser).parse(p, String.class);
     }
@@ -100,7 +106,7 @@ public class OperationParserTest {
     @Test
     public void should_parse_parameters() throws Exception {
         Method method = apiExtended.class.getMethod("withParam", UUID.class);
-        parser.parse(p, method);
+        parser.parse(p, api, method);
 
         verify(paramParser).parse(p, method, 0);
     }
@@ -115,7 +121,7 @@ public class OperationParserTest {
         }
 
         Method method = Test.class.getMethod("getSomething");
-        OperationDefinition operation = parser.parse(p, method);
+        OperationDefinition operation = parser.parse(p, api, method);
 
         assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
         assertThat(operation.getResponseAsList()).isTrue();
@@ -131,7 +137,7 @@ public class OperationParserTest {
         }
 
         Method method = Test.class.getMethod("getSomething");
-        OperationDefinition operation = parser.parse(p, method);
+        OperationDefinition operation = parser.parse(p, api, method);
 
         assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
         assertThat(operation.getResponseAsList()).isTrue();
@@ -147,10 +153,24 @@ public class OperationParserTest {
         }
 
         Method method = Test.class.getMethod("getSomething");
-        OperationDefinition operation = parser.parse(p, method);
+        OperationDefinition operation = parser.parse(p, api, method);
 
         assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
         assertThat(operation.getResponseAsList()).isNull();
     }
 
+    @Test
+    public void should_build_full_path() throws Exception {
+        assertThat(parser.buildFullPath("/", "/")).isEqualTo("/");
+        assertThat(parser.buildFullPath("/", null)).isEqualTo("/");
+        assertThat(parser.buildFullPath("/", "/settings")).isEqualTo("/settings");
+        assertThat(parser.buildFullPath("/users/", "/{id}")).isEqualTo("/users/{id}");
+        assertThat(parser.buildFullPath("/users/", "{id}")).isEqualTo("/users/{id}");
+        assertThat(parser.buildFullPath("users/", "{id}")).isEqualTo("/users/{id}");
+        assertThat(parser.buildFullPath("users", "{id}")).isEqualTo("/users/{id}");
+        assertThat(parser.buildFullPath("/users", "{id}")).isEqualTo("/users/{id}");
+        assertThat(parser.buildFullPath("/users/", "{id}/")).isEqualTo("/users/{id}");
+        assertThat(parser.buildFullPath("/users", null)).isEqualTo("/users");
+        assertThat(parser.buildFullPath("/users/", null)).isEqualTo("/users");
+    }
 }
