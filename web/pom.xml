@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>jaxrs-doc-web</artifactId>
+	<packaging>war</packaging>
+
+	<parent>
+		<groupId>net.awired.jaxrs.doc</groupId>
+		<artifactId>jaxrs-doc</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<properties>
+		<sonar.language>js</sonar.language>
+	</properties>
+
+	<dependencies>
+		<!-- <dependency> -->
+		<!-- <groupId>net.awired.ajsl</groupId> -->
+		<!-- <artifactId>ajsl-web</artifactId> -->
+		<!-- <version>0.5-SNAPSHOT</version> -->
+		<!-- </dependency> -->
+	</dependencies>
+
+
+	<build>
+		<finalName>jaxrs-doc-web</finalName>
+		<sourceDirectory>src/main/webapp</sourceDirectory>
+		<testSourceDirectory>src/test/webapp</testSourceDirectory>
+
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>yo/dist</directory>
+						</fileset>
+						<fileset>
+							<directory>yo/.tmp</directory>
+						</fileset>
+						<fileset>
+							<directory>yo/app/components</directory>
+						</fileset>
+						<fileset>
+							<directory>yo/node_modules</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>com.github.trecloux</groupId>
+				<artifactId>yeoman-maven-plugin</artifactId>
+				<version>0.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>yo/dist</directory>
+						</resource>
+					</webResources>
+					<archive>
+						<manifest>
+							<mainClass>Bootstrap</mainClass>
+						</manifest>
+						<manifestEntries>
+							<HousecreamVersion>${project.version}</HousecreamVersion>
+							<HousecreamWebServiceUrl>${housecream.webservice.url}</HousecreamWebServiceUrl>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+

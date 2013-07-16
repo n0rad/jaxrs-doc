@@ -25,6 +25,7 @@
 		<module>annotations</module>
 		<module>core</module>
 		<module>swagger</module>
+		<module>web</module>
 	</modules>
 
 	<scm>
