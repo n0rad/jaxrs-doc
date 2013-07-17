@@ -26,11 +26,10 @@
 
 	<build>
 		<finalName>jaxrs-doc-web</finalName>
-		<sourceDirectory>src/main/webapp</sourceDirectory>
-		<testSourceDirectory>src/test/webapp</testSourceDirectory>
+		<sourceDirectory>yo/app</sourceDirectory>
+		<testSourceDirectory>yo/test</testSourceDirectory>
 
 		<plugins>
-
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.5</version>
