@@ -36,16 +36,13 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>yo/dist</directory>
+							<directory>.tmp</directory>
 						</fileset>
 						<fileset>
-							<directory>yo/.tmp</directory>
+							<directory>src/main/webapp/bower_components</directory>
 						</fileset>
 						<fileset>
-							<directory>yo/app/components</directory>
-						</fileset>
-						<fileset>
-							<directory>yo/node_modules</directory>
+							<directory>node_modules</directory>
 						</fileset>
 					</filesets>
 				</configuration>
