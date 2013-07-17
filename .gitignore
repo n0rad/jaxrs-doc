@@ -3,3 +3,8 @@
 .settings/
 target/
 
+
+node_modules/
+.tmp/
+.sass-cache/
+bower_components/

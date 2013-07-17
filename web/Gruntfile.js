@@ -18,8 +18,9 @@ module.exports = function (grunt) {
 
   // configurable paths
   var yeomanConfig = {
-    app: 'app',
-    dist: 'dist'
+    app: 'src/main/webapp',
+    dist: 'target/yo-dist',
+    test: 'src/test/webapp'
   };
 
   try {
@@ -34,7 +35,7 @@ module.exports = function (grunt) {
         tasks: ['coffee:dist']
       },
       coffeeTest: {
-        files: ['test/spec/{,*/}*.coffee'],
+        files: ['<%= yeoman.test %>/spec/{,*/}*.coffee'],
         tasks: ['coffee:test']
       },
       compass: {
@@ -75,7 +76,7 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               mountFolder(connect, '.tmp'),
-              mountFolder(connect, 'test')
+              mountFolder(connect, '<%= yeoman.test %>')
             ];
           }
         }
@@ -130,7 +131,7 @@ module.exports = function (grunt) {
       test: {
         files: [{
           expand: true,
-          cwd: 'test/spec',
+          cwd: '<%= yeoman.test %>/spec',
           src: '{,*/}*.coffee',
           dest: '.tmp/spec',
           ext: '.js'
