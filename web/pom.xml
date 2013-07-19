@@ -5,7 +5,7 @@
 	<packaging>war</packaging>
 
 	<parent>
-		<groupId>net.awired.jaxrs.doc</groupId>
+		<groupId>fr.norad.jaxrs.doc</groupId>
 		<artifactId>jaxrs-doc</artifactId>
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../</relativePath>
@@ -17,7 +17,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.awired.servlet.sample.html.template</groupId>
+			<groupId>fr.norad.servlet.sample.html.template</groupId>
 			<artifactId>servlet-sample-html-template</artifactId>
 			<version>0.5-SNAPSHOT</version>
 		</dependency>
@@ -73,15 +73,6 @@
 							<directory>target/yo-dist</directory>
 						</resource>
 					</webResources>
-					<archive>
-						<manifest>
-							<mainClass>Bootstrap</mainClass>
-						</manifest>
-						<manifestEntries>
-							<HousecreamVersion>${project.version}</HousecreamVersion>
-							<HousecreamWebServiceUrl>${housecream.webservice.url}</HousecreamWebServiceUrl>
-						</manifestEntries>
-					</archive>
 				</configuration>
 			</plugin>
 		</plugins>

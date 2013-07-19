@@ -5,7 +5,7 @@
 	<artifactId>jaxrs-doc-core</artifactId>
 
 	<parent>
-		<groupId>net.awired.jaxrs.doc</groupId>
+		<groupId>fr.norad.jaxrs.doc</groupId>
 		<artifactId>jaxrs-doc</artifactId>
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../</relativePath>
@@ -14,7 +14,7 @@
 	<dependencyManagement>
 	   <dependencies>
 	       <dependency>
-	           <groupId>net.awired.jaxrs.doc</groupId>
+	           <groupId>fr.norad.jaxrs.doc</groupId>
 	           <artifactId>jaxrs-doc-core</artifactId>
 	           <version>${project.version}</version>
 	       </dependency>
@@ -23,7 +23,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.awired.jaxrs.doc</groupId>
+			<groupId>fr.norad.jaxrs.doc</groupId>
 			<artifactId>jaxrs-doc-annotations</artifactId>
 		</dependency>
 

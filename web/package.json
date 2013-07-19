@@ -1,5 +1,5 @@
 {
-  "name": "angularjs-grunt-example",
+  "name": "jaxrs-doc-web",
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
@@ -22,6 +22,7 @@
     "grunt-open": "~0.2.0",
     "grunt-concurrent": "~0.3.0",
     "grunt-connect-proxy": "~0.1.5",
+    "grunt-lib-phantomjs":"~0.3.0",
     "matchdep": "~0.1.2",
     "connect-livereload": "~0.2.0",
     "grunt-google-cdn": "~0.2.0",

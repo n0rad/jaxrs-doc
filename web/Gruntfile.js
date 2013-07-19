@@ -62,18 +62,16 @@ module.exports = function (grunt) {
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost'
       },
-      proxies: [
-        {
-            context: '/ws',
-            host: 'localhost',
-            port: 8080,
-            https: false,
-            changeOrigin: true,
-            rewrite: {
-                '^/ws': '/housecream/ws'
-              }
+      proxies: [{
+        context: '/ws',
+        host: 'localhost',
+        port: 8080,
+        https: false,
+        changeOrigin: true,
+        rewrite: {
+          '^/ws': '/housecream/ws'
         }
-      ],
+      }],
       livereload: {
         options: {
           middleware: function (connect) {
