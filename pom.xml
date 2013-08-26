@@ -18,7 +18,8 @@
 		<module>annotations</module>
 		<module>core</module>
 		<module>swagger</module>
-		<module>web-github</module>
+<!--         <module>web-github</module> -->
+        <module>web-bootstrap</module>
 	</modules>
 
 	<scm>

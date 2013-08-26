@@ -1,6 +1,6 @@
-// Generated on 2013-07-15 using generator-angular 0.3.0
 'use strict';
 var LIVERELOAD_PORT = 35729;
+var modRewrite = require('connect-modrewrite');
 var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
 var mountFolder = function (connect, dir) {
   return connect.static(require('path').resolve(dir));
@@ -44,16 +44,33 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass:server']
       },
+      stringreplace: {
+        files: ['<%= yeoman.app %>/index.html'],
+        tasks: ['string-replace:server'],
+      },
       livereload: {
         options: {
           livereload: LIVERELOAD_PORT
         },
         files: [
-          '<%= yeoman.app %>/{,*/}*.html',
+          '{.tmp,<%= yeoman.app %>}/{,*/}?.html',
           '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
           '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
+      }
+    },
+    'string-replace': {
+      server: {
+        files: {
+          '.tmp/index.html': '<%= yeoman.app %>/index.html'
+        },
+        options: {
+          replacements: [{
+            pattern: /\$\{contextPath\}/,
+            replacement: ''
+          }]
+        }
       }
     },
     connect: {
@@ -69,13 +86,16 @@ module.exports = function (grunt) {
         https: false,
         changeOrigin: true,
         rewrite: {
-          '^/ws': '/housecream/ws'
+          '^/ws': '/housecream-ws/ws'
         }
       }],
       livereload: {
         options: {
           middleware: function (connect) {
             return [
+              modRewrite([
+                '!\\.\\w+$ /index.html'
+              ]),
               proxySnippet,
               lrSnippet,
               mountFolder(connect, '.tmp'),
@@ -275,7 +295,8 @@ module.exports = function (grunt) {
     concurrent: {
       server: [
         'coffee:dist',
-        'compass:server'
+        'compass:server',
+        'string-replace:server'
       ],
       test: [
         'coffee',
@@ -322,7 +343,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('server', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+      return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
 
     grunt.task.run([
@@ -330,7 +351,6 @@ module.exports = function (grunt) {
       'concurrent:server',
       'configureProxies',
       'connect:livereload',
-      'open',
       'watch'
     ]);
   });
