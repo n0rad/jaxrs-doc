@@ -1,7 +1,5 @@
 'use strict';
 
-
-
 angular.module('jaxrs-doc')
   .controller('MainCtrl', function ($scope) {
     $scope.awesomeThings = [
