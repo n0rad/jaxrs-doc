@@ -15,19 +15,7 @@
 		<sonar.language>js</sonar.language>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>fr.norad.servlet.sample.html.template</groupId>
-			<artifactId>servlet-sample-html-template</artifactId>
-			<version>0.5-SNAPSHOT</version>
-		</dependency>
-	</dependencies>
-
 	<build>
-		<finalName>jaxrs-doc-web</finalName>
-		<sourceDirectory>src/main/webapp</sourceDirectory>
-		<testSourceDirectory>src/test/webapp</testSourceDirectory>
-
 		<plugins>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -38,10 +26,7 @@
 							<directory>.tmp</directory>
 						</fileset>
 						<fileset>
-							<directory>src/main/webapp/bower_components</directory>
-						</fileset>
-						<fileset>
-							<directory>node_modules</directory>
+							<directory>src/main/web/bower_components</directory>
 						</fileset>
 					</filesets>
 				</configuration>
@@ -59,7 +44,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<yeomanProjectDirectory>src/main/webapp</yeomanProjectDirectory>
+					<yeomanProjectDirectory>.</yeomanProjectDirectory>
 				</configuration>
 			</plugin>
 

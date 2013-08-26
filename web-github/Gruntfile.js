@@ -20,9 +20,9 @@ module.exports = function (grunt) {
 
   // configurable paths
   var yeomanConfig = {
-    app: 'src/main/webapp',
+    app: 'src/main/web',
     dist: 'target/yo-dist',
-    test: 'src/test/webapp'
+    test: 'src/test/web'
   };
 
   try {

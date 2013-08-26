@@ -109,7 +109,7 @@ public class OperationParserTest {
         assertThat(operation.getDeprecated()).isTrue();
         assertThat(operation.getSummary()).isEqualTo("summary");
         assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
-        assertThat(operation.getPath()).isEqualTo("subpath");
+        assertThat(operation.getPath()).isEqualTo("/subpath");
     }
 
     @Test

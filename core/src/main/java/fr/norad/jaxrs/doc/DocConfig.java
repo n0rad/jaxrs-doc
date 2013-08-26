@@ -16,10 +16,10 @@
  */
 package fr.norad.jaxrs.doc;
 
-import static fr.norad.jaxrs.doc.DocTemplate.GITHUB;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import lombok.Data;
 import fr.norad.jaxrs.doc.parser.ApiParser;
 import fr.norad.jaxrs.doc.parser.ModelJacksonParser;
 import fr.norad.jaxrs.doc.parser.ModelParser;
@@ -27,7 +27,6 @@ import fr.norad.jaxrs.doc.parser.OperationParser;
 import fr.norad.jaxrs.doc.parser.ParameterParser;
 import fr.norad.jaxrs.doc.parser.ProjectParser;
 import fr.norad.jaxrs.doc.parser.PropertyParser;
-import lombok.Data;
 
 @Data
 public class DocConfig {
@@ -41,8 +40,7 @@ public class DocConfig {
     private ParameterParser parameterParser = new ParameterParser(this);
     private ModelParser modelParser = new ModelJacksonParser(this);
     private PropertyParser propertyParser = new PropertyParser(this);
-    // template
-    private DocTemplate template = GITHUB;
+
     // project
     private List<String> projectPackagesToScan;
 

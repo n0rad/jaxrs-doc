@@ -16,13 +16,9 @@
  */
 package fr.norad.jaxrs.doc.resource;
 
-import java.io.InputStream;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import fr.norad.jaxrs.doc.DocConfig;
-import fr.norad.jaxrs.doc.DocTemplate;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 
 @Path("/doc")
@@ -39,21 +35,6 @@ public abstract class GenericDocService {
             projectDefinition = getDocConfig().getProjectParser().parse();
         }
         return projectDefinition;
-    }
-
-    @GET
-    public InputStream getTemplate() {
-        return getFile(getDocConfig().getTemplate().getHomePageName());
-    }
-
-    @GET
-    @Path("/{file}")
-    public InputStream getFile(@PathParam("file") String file) {
-        DocTemplate template = getDocConfig().getTemplate();
-        if (!template.getFiles().contains(file)) {
-            throw new NotFoundException();
-        }
-        return getClass().getResourceAsStream(template.getFileResourcePath() + '/' + file);
     }
 
 }
