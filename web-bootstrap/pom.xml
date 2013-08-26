@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>jaxrs-doc-web-bootstrap</artifactId>
+	<packaging>war</packaging>
+
+	<parent>
+		<groupId>fr.norad.jaxrs.doc</groupId>
+		<artifactId>jaxrs-doc</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<properties>
+		<sonar.language>js</sonar.language>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>.tmp</directory>
+						</fileset>
+						<fileset>
+							<directory>src/main/web/bower_components</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>com.github.trecloux</groupId>
+				<artifactId>yeoman-maven-plugin</artifactId>
+				<version>0.2-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<yeomanProjectDirectory>.</yeomanProjectDirectory>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>target/yo-dist</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+
