@@ -9,32 +9,185 @@
     <title>Jaxrs-doc</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <!-- build:css({.tmp,app}) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- endbuild -->
+    <base href="${contextPath}/" />
+
+
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/jaxrs-doc.css">
+    <!-- endbuild -->
 </head>
-  <body ng-app="jaxrs-doc">
+  <body ng-app="jaxrs-doc" ng-controller="navigation">
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
     <![endif]-->
-
     <!--[if lt IE 9]>
       <script src="bower_components/es5-shim/es5-shim.js"></script>
       <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+    {{salut}}
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
-      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-      g.src='//www.google-analytics.com/ga.js';
-      s.parentNode.insertBefore(g,s)}(document,'script'));
-    </script>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Project name</a>
+          <div class="nav-collapse collapse">
+            <p class="navbar-text pull-right">
+<!--               Logged in as <a href="#" class="navbar-link">Username</a> -->
+            </p>
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+<!--     <li class="dropdown" ng-controller="DropdownCtrl"> -->
+<!--   <a class="dropdown-toggle"> -->
+<!--     Click me for a dropdown, yo! -->
+<!--   </a> -->
+<!--   <ul class="dropdown-menu"> -->
+<!--     <li ng-repeat="choice in items"> -->
+<!--       <a>{{choice}}</a> -->
+<!--     </li> -->
+<!--   </ul> -->
+<!-- </li> -->
+
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span9">
+          <h2 title="">{{currentGroupName}}</h2>
+
+
+
+          <div ng-repeat="operation in currentGroup.operations">
+            <pre title="{{operation.sourceClass}}.{{operation.methodName}}"><span class="label label-method-{{operation.httpMethod}}">{{operation.httpMethod}}</span> <span>{{operation.path}}</span></pre>
+
+            <div class="row-fluid">
+                <div class="span6">
+                  <h6>Request</h6>
+                  <table>
+                      <tr>
+                          <th>Param Type</th>
+                          <th>Name</th>
+<!--                           <th>Description</th> -->
+                          <th>Type</th>
+<!--                           <th>Required</th> -->
+<!--                           <th>Validation</th> -->
+                      </tr>
+                      <tr ng-repeat="parameter in operation.parameters">
+                          <td>{{parameter.paramType}}</td>
+                          <td class="name">{{parameter.paramName}}</td>
+<!--                           <td></td> -->
+                          <td title="{{parameter.paramClass}}">{{parameter.paramClass | classShortName}}</td>
+<!--                           <td></td> -->
+<!--                           <td></td> -->
+                      </tr>
+                  </table>
+                </div>            
+
+                <div class="span6">
+                 <h6>Response</h6>
+                 
+                  <div ng-controller="Ctrl2">
+      Date format: <input ng-model="format"> <hr/>
+      Current time is: <span my-current-time="format"></span>
+    </div>
+                 
+                 <table>
+                    <tr>
+                        <th>Code</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>200</td>
+                        <td>Success</td>
+                    </tr>
+                    <tr>
+                        <td>404</td>
+                        <td>Not found</td>
+                    </tr>
+                 </table>
+                 
+                  {{operation.responseAsList}}
+                  <br>
+                  {{operation.responseClass}}
+                  
+                  <pre>class net.awired.housecream.server.api.domain.inpoint.InPoint: {
+  modelClass: "net.awired.housecream.server.api.domain.inpoint.InPoint",
+  properties: {
+    id: {
+      propertyClass: "java.util.UUID"
+    },
+    description: {
+      propertyClass: "java.lang.String"
+    },
+    stringUri: {
+      propertyClass: "java.lang.String"
+    },
+    name: {
+      propertyClass: "java.lang.String"
+    },
+    value: {
+      propertyClass: "java.lang.Float"
+    },
+    type: {
+      propertyClass: "net.awired.housecream.server.api.domain.inpoint.InPointType"
+    },
+    uri: {
+      propertyClass: "java.net.URI"
+    },
+    zoneId: {
+      propertyClass: "java.util.UUID"
+    }
+  }
+}</pre>
+                </div>            
+            </div>
+
+
+          </div>
+
+        </div><!--/span-->
+
+        <div class="span3" ng-controller="AccordionDemoCtrl">
+          <accordion>
+            <accordion-group heading="{{root}}" ng-repeat="(root, group) in apiGroups">
+              <ul class="js-guides" >
+                <li ng-repeat="(path, operationGroup) in group">
+                  <div class="card-methods" ng-repeat="method in operationGroup.methods" ng-hide="operationGroup.methods.length == 1 
+                  && operationGroup.methods.indexOf('GET') >= 0">
+                      <span class="card-method {{method}}" title="{{method}}"></span>
+                  </div>
+                  <a href="{{root}}#{{path}}">{{path}}</a>
+                </li>
+              </ul>
+            </accordion-group>
+          </accordion>
+        </div><!--/span-->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; <a href="http://github.com/n0rad/jaxrs-doc">Jaxrs doc</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+  
 
     <script src="bower_components/angular/angular.js"></script>
 
@@ -61,6 +214,12 @@
         <!-- endbuild -->
 
         <!-- build:js scripts/modules.js -->
+        
+        
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+        
+        
+        <script src="bower_components/angular-route/angular-route.js"></script>
         <script src="bower_components/angular-resource/angular-resource.js"></script>
         <script src="bower_components/angular-cookies/angular-cookies.js"></script>
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
