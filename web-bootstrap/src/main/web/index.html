@@ -101,59 +101,34 @@
                 <div class="span6">
                  <h6>Response</h6>
                  
-                  <div ng-controller="Ctrl2">
-      Date format: <input ng-model="format"> <hr/>
-      Current time is: <span my-current-time="format"></span>
-    </div>
+<!--                   <div ng-controller="Ctrl2"> -->
+<!--                     Date format: <input ng-model="format"> <hr/> -->
+<!--                     Current time is: <span my-current-time="format"></span> -->
+<!--                   </div> -->
                  
-                 <table>
-                    <tr>
-                        <th>Code</th>
-                        <th>Description</th>
-                    </tr>
-                    <tr>
-                        <td>200</td>
-                        <td>Success</td>
-                    </tr>
-                    <tr>
-                        <td>404</td>
-                        <td>Not found</td>
-                    </tr>
-                 </table>
+<!--                  <table> -->
+<!--                     <tr> -->
+<!--                         <th>Code</th> -->
+<!--                         <th>Description</th> -->
+<!--                     </tr> -->
+<!--                     <tr> -->
+<!--                         <td>200</td> -->
+<!--                         <td>Success</td> -->
+<!--                     </tr> -->
+<!--                     <tr> -->
+<!--                         <td>404</td> -->
+<!--                         <td>Not found</td> -->
+<!--                     </tr> -->
+<!--                  </table> -->
                  
                   {{operation.responseAsList}}
+                  {{operation.responseMapKeyClass}}
                   <br>
                   {{operation.responseClass}}
                   
-                  <pre>class net.awired.housecream.server.api.domain.inpoint.InPoint: {
-  modelClass: "net.awired.housecream.server.api.domain.inpoint.InPoint",
-  properties: {
-    id: {
-      propertyClass: "java.util.UUID"
-    },
-    description: {
-      propertyClass: "java.lang.String"
-    },
-    stringUri: {
-      propertyClass: "java.lang.String"
-    },
-    name: {
-      propertyClass: "java.lang.String"
-    },
-    value: {
-      propertyClass: "java.lang.Float"
-    },
-    type: {
-      propertyClass: "net.awired.housecream.server.api.domain.inpoint.InPointType"
-    },
-    uri: {
-      propertyClass: "java.net.URI"
-    },
-    zoneId: {
-      propertyClass: "java.util.UUID"
-    }
-  }
-}</pre>
+<div>{<div  ng-repeat="(propName, prop) in models[operation.responseClass].properties">
+<span style="font-weight:bold">{{propName}}</span>: <span title="prop.propertyClass">{{prop.propertyClass | classShortName}}</span>,
+</div>}</div>
                 </div>            
             </div>
 

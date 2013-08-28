@@ -61,6 +61,7 @@ function navigation($scope, $location, $http) {
   
   $http.get('definition.json').success(function(project) {
     $scope.apiGroups = buildApiGroups(project.apis);
+    $scope.models = project.models;
     $scope.$watch(function() { return $location.path() + $location.hash(); }, function(newLoc, oldLoc){
       $scope.currentGroup = $scope.apiGroups[$location.path()][$location.hash()];
       $scope.currentGroupName = $location.hash();
