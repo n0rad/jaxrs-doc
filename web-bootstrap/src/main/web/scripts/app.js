@@ -1,7 +1,11 @@
 'use strict';
 
-angular.module('jaxrs-doc', ['ngRoute', 'ui.bootstrap'])
-  .config(function ($routeProvider, $locationProvider) {
+var jaxrsDoc = angular.module('jaxrs-doc', ['ngRoute', 'ui.bootstrap']);
+
+jaxrsDoc.constant('docServiceUrl', docServiceUrl);
+
+
+  jaxrsDoc.config(function ($routeProvider, $locationProvider) {
     
     $locationProvider.html5Mode(true);
 
@@ -48,36 +52,31 @@ angular.module('jaxrs-doc', ['ngRoute', 'ui.bootstrap'])
       });
 
       updateLater(); // kick off the UI update process.
-    }
+    };
   });
 
-function Ctrl2($scope) {
-  $scope.format = 'M/d/yy h:mm:ss a';
-}
 
 
-function navigation($scope, $location, $http) {
-    
-  
-  $http.get('definition.json').success(function(project) {
+
+jaxrsDoc.controller('Ctrl2', ['$scope', function($scope) {
+  $scope.format = 'M/d/yy h:mm:ss a';  
+}]);
+
+
+jaxrsDoc.controller('navigation', ['$scope', '$location', '$http', 'docServiceUrl', function($scope, $location, $http, docServiceUrl) {
+  $http.get(docServiceUrl + '/definition.json').success(function(project) {
     $scope.apiGroups = buildApiGroups(project.apis);
     $scope.models = project.models;
     $scope.$watch(function() { return $location.path() + $location.hash(); }, function(newLoc, oldLoc){
       $scope.currentGroup = $scope.apiGroups[$location.path()][$location.hash()];
       $scope.currentGroupName = $location.hash();
    });
-  });
-
+  });  
+}]);
+    
+jaxrsDoc.controller('AccordionDemoCtrl', ['$scope', function($scope) {
   
-}
-
-
-
-
-function AccordionDemoCtrl($scope) {
-}
-
-
+}]);
 
 function buildApiGroups(apis) {
   var result = {};
