@@ -13,7 +13,7 @@
     <base href="${contextPath}/" />
 
 
-    <!-- build:css({.tmp,app}) styles/main.css -->
+    <!-- build:css({.tmp,<%= yeoman.app %>}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/jaxrs-doc.css">
     <!-- endbuild -->
@@ -166,7 +166,7 @@
 
     <script src="bower_components/angular/angular.js"></script>
 
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <!-- build:js({.tmp,<%= yeoman.app %>}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <!-- endbuild -->
