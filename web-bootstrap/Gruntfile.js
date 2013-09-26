@@ -70,21 +70,15 @@ module.exports = function (grunt) {
             pattern: /\$\{contextPath\}/,
             replacement: ''
           }, {
-            pattern: /\$\{hcWsUrl\}/,
-            replacement: 'ws/'
-          }, {
-            pattern: /\$\{version\}/,
-            replacement: '0.0.0-DEV'
-          }, {
-            pattern: /\$\{fullWebPath\}/,
-            replacement: 'http://localhost:<%= connect.options.port %>'
+            pattern: /\$\{docServiceUrl\}/,
+            replacement: ''
           }]
         }
       }
     },
     connect: {
       options: {
-        port: 9000,
+        port: 4500,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost'
       },
