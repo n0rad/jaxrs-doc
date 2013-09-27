@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component-set>
+
+    <components>
+
+        <!-- defines the documentation generator plugin packaging and artifact handling -->
+        <component>
+            <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+            <role-hint>documentation-generator-plugin</role-hint>
+            <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+            <configuration>
+                <type>documentation-generator-plugin</type>
+                <extension>jar</extension>
+                <language>java</language>
+                <addedToClasspath>true</addedToClasspath>
+            </configuration>
+        </component>
+
+        <component>
+            <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+            <role-hint>groovy-jar</role-hint>
+            <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+            <configuration>
+                <lifecycles>
+                    <lifecycle>
+                        <id>default</id>
+                        <phases>
+                            <package>
+                                fr.norad.jaxrs.doc:jaxrs-doc-plugin:generate-doc
+                            </package>
+                        </phases>
+                    </lifecycle>
+                </lifecycles>
+            </configuration>
+        </component>
+
+    </components>
+
+</component-set>

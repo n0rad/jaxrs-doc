@@ -14,12 +14,17 @@
 		<version>1.18</version>
 	</parent>
 
+	<properties>
+		<maven.version>3.1.0</maven.version>
+	</properties>
+
 	<modules>
 		<module>annotations</module>
 		<module>core</module>
 		<module>swagger</module>
-<!--         <module>web-github</module> -->
-        <module>web-bootstrap</module>
+		<module>maven-plugin</module>
+		<!-- <module>web-github</module> -->
+		<module>web-bootstrap</module>
 	</modules>
 
 	<scm>
@@ -36,16 +41,64 @@
 				<artifactId>jaxrs-doc-annotations</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-            <dependency>
-                <groupId>fr.norad.jaxrs.doc</groupId>
-                <artifactId>jaxrs-doc-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+			<dependency>
+				<groupId>fr.norad.jaxrs.doc</groupId>
+				<artifactId>jaxrs-doc-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- MAVEN -->
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-plugin-api</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-artifact</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugin-tools</groupId>
+				<artifactId>maven-plugin-annotations</artifactId>
+				<version>3.2</version>
+			</dependency>
+
+
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>2.2.2</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.ws.rs</groupId>
+				<artifactId>javax.ws.rs-api</artifactId>
+				<version>2.0-m10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.reflections</groupId>
+				<artifactId>reflections</artifactId>
+				<version>0.9.9-RC1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.wordnik</groupId>
+				<artifactId>swagger-annotations_2.9.1</artifactId>
+				<version>1.2.5</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
-
 	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>0.11.8</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- TESTS -->
 		<dependency>
 			<groupId>junit</groupId>
