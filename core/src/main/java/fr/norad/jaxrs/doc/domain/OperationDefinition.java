@@ -18,8 +18,8 @@ package fr.norad.jaxrs.doc.domain;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
-import fr.norad.jaxrs.doc.domain.sub.VersionDefinition;
 import lombok.Data;
+import fr.norad.jaxrs.doc.domain.sub.VersionDefinition;
 
 @Data
 @XmlRootElement
@@ -42,6 +42,7 @@ public class OperationDefinition {
     private String types;
     private String tags;
     private List<ParameterDefinition> parameters;
+    private List<ErrorDefinition> errors;
 
     public OperationDefinition() {
     }

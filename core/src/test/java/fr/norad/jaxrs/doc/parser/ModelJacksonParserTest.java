@@ -61,7 +61,7 @@ public class ModelJacksonParserTest {
         ModelJacksonParser modelJacksonParser = new ModelJacksonParser(config);
         modelJacksonParser.parse(p, SimpleBean.class);
 
-        ModelDefinition modelDefinition = p.getModels().get(SimpleBean.class);
+        ModelDefinition modelDefinition = p.getModels().get(SimpleBean.class.getName());
 
         assertThat(modelDefinition.getProperties()).hasSize(3);
         assertThat(modelDefinition.getProperties().get("simple-string").getDescription()).isEqualTo("desc!");

@@ -84,7 +84,6 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
             try {
                 final URL url = new File(element).toURI().toURL();
                 urls.add(url);
-                System.out.println("Added to project class loader: " + url);
             } catch (MalformedURLException e) {
                 throw new ComponentConfigurationException("Unable to access project dependency: " + element, e);
             }

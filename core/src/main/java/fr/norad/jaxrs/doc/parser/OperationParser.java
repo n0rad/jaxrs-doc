@@ -19,6 +19,7 @@ package fr.norad.jaxrs.doc.parser;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.Path;
@@ -26,6 +27,7 @@ import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.annotations.Summary;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.domain.ErrorDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
@@ -65,6 +67,14 @@ public class OperationParser {
 
         fillReturnPart(operation, method);
         config.getModelParser().parse(project, operation.getResponseClass());
+
+        List<Class<?>> exceptions = ReflectionUtil.getExceptions(method);
+        for (Class<?> exception : exceptions) {
+            if (operation.getErrors() == null) {
+                operation.setErrors(new ArrayList<ErrorDefinition>());
+            }
+            operation.getErrors().add(new ErrorDefinition(exception));
+        }
 
         Class<?>[] parameterTypes = method.getParameterTypes();
         for (int i = 0; i < parameterTypes.length; i++) {

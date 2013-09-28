@@ -21,12 +21,14 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.cfg.BaseSettings;
 import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
+import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.BasicBeanDescription;
 import com.fasterxml.jackson.databind.introspect.BasicClassIntrospector;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
@@ -34,9 +36,9 @@ import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver;
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
-import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
@@ -45,6 +47,8 @@ import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 
 public class ModelJacksonParser extends ModelParser {
+
+    private final Logger log = Logger.getLogger(ModelJacksonParser.class.getName());
 
     private FakeSerializer fakeSerializer = new FakeSerializer();
 
@@ -59,7 +63,7 @@ public class ModelJacksonParser extends ModelParser {
         }
         ModelDefinition model = new ModelDefinition();
         model.setModelClass(modelClass);
-        project.getModels().put(model.getModelClass(), model);
+        project.getModels().put(model.getModelClass().getName(), model);
 
         Description description = AnnotationUtil.findAnnotation(modelClass, Description.class);
         model.setDescription(description != null ? description.value() : null);
@@ -70,11 +74,23 @@ public class ModelJacksonParser extends ModelParser {
         for (BeanPropertyDefinition beanPropertyDefinition : findProperties) {
             AnnotatedMethod getterJackson = beanPropertyDefinition.getGetter();
             AnnotatedMethod setterJackson = beanPropertyDefinition.getSetter();
-            AnnotatedField fieldJackson = beanPropertyDefinition.getField();
+            AnnotatedField fieldJackson = null;
+            try {
+                fieldJackson = beanPropertyDefinition.getField();
+            } catch (Exception e) {
+                log.warning("Name conflict on fields in bean : " + beanPropertyDefinition + " during doc generation"
+                        + e.getMessage());
+            }
 
             Method getter = getterJackson == null ? null : getterJackson.getAnnotated();
             Method setter = setterJackson == null ? null : setterJackson.getAnnotated();
             Field field = fieldJackson == null ? null : fieldJackson.getAnnotated();
+
+            if (getter == null && setter == null && field == null) {
+                log.warning("Cannot process property " + beanPropertyDefinition
+                        + " because we can't find a valid element in bean");
+                continue;
+            }
 
             PropertyDefinition property = config.getPropertyParser().parse(project, field, getter, setter);
             model.getProperties().put(beanPropertyDefinition.getName(), property);
@@ -114,13 +130,16 @@ public class ModelJacksonParser extends ModelParser {
             JavaType origType = SimpleType.construct(model);
 
             BasicClassIntrospector basicClassIntrospector = new BasicClassIntrospector();
-            JacksonAnnotationIntrospector annotationIntrospector = new JacksonAnnotationIntrospector();
+
+            AnnotationIntrospectorPair annotationIntrospector = new AnnotationIntrospectorPair(
+                    new JacksonAnnotationIntrospector(),
+                    new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
 
             BaseSettings baseSettings = new BaseSettings(basicClassIntrospector, annotationIntrospector,
                     VisibilityChecker.Std.defaultInstance(), null, TypeFactory.defaultInstance(), null, null, null,
                     null, null, null);
             SerializationConfig config = new SerializationConfig(baseSettings, new StdSubtypeResolver(), null);
-            DefaultSerializerProvider.Impl prov = new DefaultSerializerProvider.Impl().createInstance(config, this);
+            //            DefaultSerializerProvider.Impl prov = new DefaultSerializerProvider.Impl().createInstance(config, this);
             BeanDescription beanDesc = config.introspect(origType);
 
             return (BasicBeanDescription) beanDesc;

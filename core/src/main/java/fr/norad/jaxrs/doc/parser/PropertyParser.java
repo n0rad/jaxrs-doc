@@ -41,6 +41,9 @@ public class PropertyParser {
         if (getter != null) {
             property.setPropertyClass(getter.getReturnType());
         }
+        if (setter != null) {
+            property.setPropertyClass(setter.getParameterTypes()[0]);
+        }
 
         property.setAsList(property.getPropertyClass().isArray() ? true : null);
 

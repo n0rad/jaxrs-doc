@@ -15,7 +15,7 @@ jaxrsDoc.controller('Ctrl2', ['$scope', function($scope) {
 }]);
 
 jaxrsDoc.controller('navigation', ['$scope', '$location', '$http', 'docServiceUrl', function($scope, $location, $http, docServiceUrl) {
-  $http.get(docServiceUrl + '/definition.json').success(function(project) {
+  $http.get(docServiceUrl + '/jaxrs-doc-2.23.0-SNAPSHOT.json').success(function(project) {
     $scope.apiGroups = buildApiGroups(project.apis);
     $scope.models = project.models;
     $scope.$watch(function() { return $location.path() + $location.hash(); }, function(newLoc, oldLoc){
@@ -67,8 +67,8 @@ function rootPath(path) {
 
 function DropdownCtrl($scope) {
     $scope.items = [
-      "The first choice!",
-      "And another choice for you.",
-      "but wait! A third!"
+      "Auth 1.1-SNAPSHOT",
+      "Auth 1.0-SNAPSHOT",
+      "Api 2.22-SNAPSHOT"
     ];
   }

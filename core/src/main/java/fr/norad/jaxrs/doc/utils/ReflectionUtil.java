@@ -19,6 +19,8 @@ package fr.norad.jaxrs.doc.utils;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReflectionUtil {
 
@@ -84,5 +86,33 @@ public class ReflectionUtil {
             }
         }
         return null;
+    }
+
+    public static List<Class<?>> getExceptions(Method method) {
+        List<Class<?>> exceptions = new ArrayList<>();
+        Class<?> declaringClass = method.getDeclaringClass();
+        do {
+            for (Class<?> interfaceClass : declaringClass.getInterfaces()) {
+                try {
+                    Method interfaceMethod = interfaceClass.getMethod(method.getName(), method.getParameterTypes());
+                    for (Class<?> exceptionClass : interfaceMethod.getExceptionTypes()) {
+                        if (!exceptions.contains(exceptionClass)) {
+                            exceptions.add(exceptionClass);
+                        }
+                    }
+                } catch (NoSuchMethodException | SecurityException e) {
+                }
+            }
+            try {
+                Method interfaceMethod = declaringClass.getMethod(method.getName(), method.getParameterTypes());
+                for (Class<?> exceptionClass : interfaceMethod.getExceptionTypes()) {
+                    if (!exceptions.contains(exceptionClass)) {
+                        exceptions.add(exceptionClass);
+                    }
+                }
+            } catch (NoSuchMethodException | SecurityException e) {
+            }
+        } while ((declaringClass = declaringClass.getSuperclass()) != null);
+        return exceptions;
     }
 }

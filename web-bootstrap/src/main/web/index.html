@@ -27,9 +27,6 @@
       <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    {{salut}}
-
-
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -44,25 +41,21 @@
 <!--               Logged in as <a href="#" class="navbar-link">Username</a> -->
             </p>
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li class="active dropdown" ng-controller="DropdownCtrl"><a class="dropdown-toggle">Version</a>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="choice in items">
+                    <a href="/{{choice}}">{{choice}}</a>
+                  </li>
+                </ul>
+              
+              </li>
+<!--               <li><a href="#about">About</a></li> -->
+<!--               <li><a href="#contact">Contact</a></li> -->
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
-
-<!--     <li class="dropdown" ng-controller="DropdownCtrl"> -->
-<!--   <a class="dropdown-toggle"> -->
-<!--     Click me for a dropdown, yo! -->
-<!--   </a> -->
-<!--   <ul class="dropdown-menu"> -->
-<!--     <li ng-repeat="choice in items"> -->
-<!--       <a>{{choice}}</a> -->
-<!--     </li> -->
-<!--   </ul> -->
-<!-- </li> -->
 
 
     <div class="container-fluid">
@@ -73,7 +66,7 @@
 
 
           <div ng-repeat="operation in currentGroup.operations">
-            <pre title="{{operation.sourceClass}}.{{operation.methodName}}"><span class="label label-method-{{operation.httpMethod}}">{{operation.httpMethod}}</span> <span>{{operation.path}}</span></pre>
+            <pre title="{{operation.sourceClass}}.{{operation.methodName}}"> <span class="label label-method-{{operation.httpMethod}}">{{operation.httpMethod}}</span> <span ng-class="{deprecated: operation.deprecated}" >{{operation.path}}</span></pre>
 
             <div class="row-fluid">
                 <div class="span6">
@@ -126,9 +119,9 @@
                   <br>
                   {{operation.responseClass}}
                   
-<div>{<div  ng-repeat="(propName, prop) in models[operation.responseClass].properties">
-<span style="font-weight:bold">{{propName}}</span>: <span title="prop.propertyClass">{{prop.propertyClass | classShortName}}</span>,
-</div>}</div>
+                  <div>
+                   <pre>{<div  ng-repeat="(propName, prop) in models[operation.responseClass].properties">  <span style="font-weight:bold">{{propName}}</span>: <span title="prop.propertyClass">{{prop.propertyClass | classShortName}}</span>,</div>}</pre>
+                  </div>
                 </div>            
             </div>
 

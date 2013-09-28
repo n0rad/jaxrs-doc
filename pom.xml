@@ -16,7 +16,7 @@
 
 	<properties>
 		<maven.version>3.1.0</maven.version>
-		<jackson.version>2.2.2</jackson.version>
+		<jackson.version>2.2.3</jackson.version>
 	</properties>
 
 	<modules>

@@ -17,12 +17,62 @@
 package fr.norad.jaxrs.doc.utils;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.utils.ReflectionUtil;
 
 public class ReflectionUtilTest {
+
+    interface ITest {
+        public void getSomething() throws ParseException;
+
+    }
+
+    @Test
+    public void should_find_exception() throws Exception {
+        class Test {
+            public void getSomething() throws IllegalArgumentException {
+            }
+        }
+        List<Class<?>> type = ReflectionUtil.getExceptions(Test.class.getMethod("getSomething"));
+
+        assertThat(type).hasSize(1);
+        assertThat(type.toArray()[0]).isEqualTo(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void should_find_exception_from_interface() throws Exception {
+        class Test implements ITest {
+            @Override
+            public void getSomething() throws IllegalArgumentException {
+            }
+        }
+        List<Class<?>> type = ReflectionUtil.getExceptions(Test.class.getMethod("getSomething"));
+
+        assertThat(type).hasSize(2);
+        assertThat(type).containsExactly(ParseException.class, IllegalArgumentException.class);
+    }
+
+    @Test
+    public void should_find_exception_from_abstract() throws Exception {
+        class TestAbstract implements ITest {
+            @Override
+            public void getSomething() throws IllegalStateException {
+            }
+
+        }
+        class Test extends TestAbstract {
+            @Override
+            public void getSomething() throws IllegalArgumentException {
+            }
+        }
+        List<Class<?>> type = ReflectionUtil.getExceptions(Test.class.getMethod("getSomething"));
+
+        assertThat(type).hasSize(3);
+        assertThat(type).containsExactly(IllegalArgumentException.class, ParseException.class,
+                IllegalStateException.class);
+    }
 
     @Test
     public void should_find_generic_return_type() throws Exception {

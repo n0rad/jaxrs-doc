@@ -19,6 +19,7 @@ package fr.norad.jaxrs.doc.parser;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -173,6 +174,23 @@ public class OperationParserTest {
 
         assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
         assertThat(operation.getResponseAsList()).isNull();
+    }
+
+    @Test
+    public void should_support_exception() throws Exception {
+        class Test {
+            @GET
+            public String getSomething() throws IllegalArgumentException, ParseException {
+                return null;
+            }
+        }
+
+        Method method = Test.class.getMethod("getSomething");
+        OperationDefinition operation = parser.parse(p, api, method);
+
+        assertThat(operation.getErrors()).hasSize(2);
+        assertThat((Object) operation.getErrors().get(0).getErrorClass()).isSameAs(IllegalArgumentException.class);
+        assertThat((Object) operation.getErrors().get(1).getErrorClass()).isSameAs(ParseException.class);
     }
 
     @Test
