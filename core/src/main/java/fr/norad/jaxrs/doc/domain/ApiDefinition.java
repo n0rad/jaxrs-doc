@@ -30,4 +30,11 @@ public class ApiDefinition {
     private Class<?> resourceClass;
     private List<OperationDefinition> operations = new ArrayList<>();
 
+    private Boolean deprecated;
+    private String deprecatedSince;
+    private String deprecatedCause;
+
+    private List<String> consumes;
+    private List<String> produces;
+
 }

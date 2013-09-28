@@ -19,7 +19,6 @@ package fr.norad.jaxrs.doc.domain;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
-import fr.norad.jaxrs.doc.domain.sub.VersionDefinition;
 
 @Data
 @XmlRootElement
@@ -28,8 +27,11 @@ public class OperationDefinition {
     private String httpMethod;
     private String description;
     private String methodName;
-    private Boolean deprecated;
     private String path;
+
+    private Boolean deprecated;
+    private String deprecatedSince;
+    private String deprecatedCause;
 
     private Class<?> sourceClass;
     private Class<?> responseClass;
@@ -37,12 +39,11 @@ public class OperationDefinition {
     private Boolean responseAsList;
     private String summary;
 
-    private String notes;
-    private VersionDefinition version;
-    private String types;
-    private String tags;
     private List<ParameterDefinition> parameters;
     private List<ErrorDefinition> errors;
+
+    private List<String> consumes;
+    private List<String> produces;
 
     public OperationDefinition() {
     }

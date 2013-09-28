@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import java.util.HashSet;
 import java.util.List;

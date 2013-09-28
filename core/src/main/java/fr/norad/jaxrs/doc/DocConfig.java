@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import lombok.Data;
-import fr.norad.jaxrs.doc.parser.ApiParser;
 import fr.norad.jaxrs.doc.parser.ModelJacksonParser;
-import fr.norad.jaxrs.doc.parser.ModelParser;
-import fr.norad.jaxrs.doc.parser.OperationParser;
-import fr.norad.jaxrs.doc.parser.ParameterParser;
-import fr.norad.jaxrs.doc.parser.ProjectParser;
-import fr.norad.jaxrs.doc.parser.PropertyParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.JaxrsApiParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.ModelParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.OperationParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.ParameterParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.ProjectParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.PropertyParser;
 
 @Data
 public class DocConfig {
@@ -35,7 +35,7 @@ public class DocConfig {
 
     // parsers
     private ProjectParser projectParser = new ProjectParser(this);
-    private ApiParser apiParser = new ApiParser(this);
+    private JaxrsApiParser apiParser = new JaxrsApiParser(this);
     private OperationParser operationParser = new OperationParser(this);
     private ParameterParser parameterParser = new ParameterParser(this);
     private ModelParser modelParser = new ModelJacksonParser(this);

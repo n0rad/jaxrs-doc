@@ -14,11 +14,9 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.domain.sub;
+package fr.norad.jaxrs.doc.domain;
 
 public enum ParameterType {
-    //    path, body, query, matrix, header, form, cookie, ;
-
     PATH, //
     QUERY, //
     MATRIX, //

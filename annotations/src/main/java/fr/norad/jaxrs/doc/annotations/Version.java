@@ -14,15 +14,8 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.domain.sub;
+package fr.norad.jaxrs.doc.annotations;
 
-import lombok.Data;
-
-@Data
-public class VersionDefinition {
-
-    private String since = "2.17.0";
-    private String deprecatedSince = null;
-    private String replacedBy = null;
-
+public @interface Version {
+    String since();
 }

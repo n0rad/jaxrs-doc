@@ -21,7 +21,7 @@ import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.parser.OperationParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.OperationParser;
 
 public class SwaggerOperationParser extends OperationParser {
 

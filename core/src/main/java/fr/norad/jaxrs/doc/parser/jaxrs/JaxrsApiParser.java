@@ -14,23 +14,27 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Set;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import org.reflections.ReflectionUtils;
 import fr.norad.jaxrs.doc.DocConfig;
+import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 
-public class ApiParser {
+public class JaxrsApiParser {
 
     private final DocConfig config;
 
-    public ApiParser(DocConfig docConfig) {
+    public JaxrsApiParser(DocConfig docConfig) {
         this.config = docConfig;
     }
 
@@ -41,6 +45,16 @@ public class ApiParser {
         Path annotation = AnnotationUtil.findAnnotation(apiClass, Path.class);
         api.setPath(annotation.value());
 
+        Deprecated deprecated = AnnotationUtil.findAnnotation(apiClass, Deprecated.class);
+        api.setDeprecated(deprecated != null ? true : null);
+
+        Outdated outdated = AnnotationUtil.findAnnotation(apiClass, Outdated.class);
+        if (outdated != null) {
+            api.setDeprecated(true);
+            api.setDeprecatedCause(outdated.cause());
+            api.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
+        }
+
         @SuppressWarnings("unchecked")
         Set<Method> methods = ReflectionUtils.getAllMethods(apiClass);
         for (Method method : methods) {
@@ -49,6 +63,27 @@ public class ApiParser {
                 api.getOperations().add(operation);
             }
         }
+
+        Consumes consumes = AnnotationUtil.findAnnotation(apiClass, Consumes.class);
+        if (consumes != null) {
+            for (String consume : consumes.value()) {
+                if (api.getConsumes() == null) {
+                    api.setConsumes(new ArrayList<String>());
+                }
+                api.getConsumes().add(consume);
+            }
+        }
+
+        Produces produces = AnnotationUtil.findAnnotation(apiClass, Produces.class);
+        if (produces != null) {
+            for (String produce : produces.value()) {
+                if (api.getProduces() == null) {
+                    api.setProduces(new ArrayList<String>());
+                }
+                api.getProduces().add(produce);
+            }
+        }
+
         return api;
     }
 

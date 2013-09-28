@@ -14,12 +14,13 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.annotations.Description;
+import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.utils.AnnotationUtil;
@@ -55,6 +56,16 @@ public class PropertyParser {
             if (property.getDescription() == null) {
                 property.setDescription(desc == null ? null : desc.value());
             }
+
+            Deprecated deprecated = field.getAnnotation(Deprecated.class);
+            property.setDeprecated(deprecated != null ? true : null);
+
+            Outdated outdated = field.getAnnotation(Outdated.class);
+            if (outdated != null) {
+                property.setDeprecated(true);
+                property.setDeprecatedCause(outdated.cause());
+                property.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
+            }
         }
 
         //        property.setAsList(asList)
@@ -78,6 +89,16 @@ public class PropertyParser {
         Description desc = AnnotationUtil.findAnnotation(method, Description.class);
         if (property.getDescription() == null) {
             property.setDescription(desc == null ? null : desc.value());
+        }
+
+        Deprecated deprecated = AnnotationUtil.findAnnotation(method, Deprecated.class);
+        property.setDeprecated(deprecated != null ? true : null);
+
+        Outdated outdated = AnnotationUtil.findAnnotation(method, Outdated.class);
+        if (outdated != null) {
+            property.setDeprecated(true);
+            property.setDeprecatedCause(outdated.cause());
+            property.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
         }
 
     }

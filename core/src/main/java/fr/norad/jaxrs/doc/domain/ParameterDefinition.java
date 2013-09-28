@@ -17,7 +17,6 @@
 package fr.norad.jaxrs.doc.domain;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import fr.norad.jaxrs.doc.domain.sub.ParameterType;
 import lombok.Data;
 
 @Data
@@ -32,6 +31,10 @@ public class ParameterDefinition {
     private Class<?> paramMapKeyClass;
     private String defaultValue;
     private String description;
+
+    private Boolean deprecated;
+    private String deprecatedSince;
+    private String deprecatedCause;
 
     //    private String name;
     //    private String description;

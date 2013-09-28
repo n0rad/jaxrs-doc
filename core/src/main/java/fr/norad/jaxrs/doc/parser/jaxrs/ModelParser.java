@@ -14,11 +14,14 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import java.util.regex.Pattern;
 import fr.norad.jaxrs.doc.DocConfig;
+import fr.norad.jaxrs.doc.annotations.Outdated;
+import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 
 public class ModelParser {
 
@@ -29,6 +32,19 @@ public class ModelParser {
     }
 
     public void parse(ProjectDefinition project, Class<?> modelClass) {
+        ModelDefinition model = new ModelDefinition();
+        model.setModelClass(modelClass);
+
+        Deprecated deprecated = AnnotationUtil.findAnnotation(modelClass, Deprecated.class);
+        model.setDeprecated(deprecated != null ? true : null);
+
+        Outdated outdated = AnnotationUtil.findAnnotation(modelClass, Outdated.class);
+        if (outdated != null) {
+            model.setDeprecated(true);
+            model.setDeprecatedCause(outdated.cause());
+            model.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
+        }
+        project.getModels().put(model.getModelClass().getName(), model);
     }
 
     protected boolean isIgnoreModel(Class<?> modelClass) {

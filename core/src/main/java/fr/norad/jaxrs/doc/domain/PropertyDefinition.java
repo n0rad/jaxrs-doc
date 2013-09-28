@@ -27,4 +27,8 @@ public class PropertyDefinition {
     private Class<?> propertyClass;
     private String description;
 
+    private Boolean deprecated;
+    private String deprecatedSince;
+    private String deprecatedCause;
+
 }

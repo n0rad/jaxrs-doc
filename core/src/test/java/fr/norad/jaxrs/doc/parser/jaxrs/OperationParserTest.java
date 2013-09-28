@@ -14,8 +14,10 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_ATOM_XML;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import java.lang.reflect.Method;
@@ -23,9 +25,11 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +38,16 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.annotations.Description;
+import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.annotations.Summary;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.parser.ModelParser;
+import fr.norad.jaxrs.doc.parser.ParameterParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.ModelParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.OperationParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.ParameterParser;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OperationParserTest {
@@ -137,8 +147,7 @@ public class OperationParserTest {
             }
         }
 
-        Method method = Test.class.getMethod("getSomething");
-        OperationDefinition operation = parser.parse(p, api, method);
+        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
 
         assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
         assertThat(operation.getResponseAsList()).isTrue();
@@ -153,8 +162,7 @@ public class OperationParserTest {
             }
         }
 
-        Method method = Test.class.getMethod("getSomething");
-        OperationDefinition operation = parser.parse(p, api, method);
+        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
 
         assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
         assertThat(operation.getResponseAsList()).isTrue();
@@ -169,8 +177,7 @@ public class OperationParserTest {
             }
         }
 
-        Method method = Test.class.getMethod("getSomething");
-        OperationDefinition operation = parser.parse(p, api, method);
+        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
 
         assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
         assertThat(operation.getResponseAsList()).isNull();
@@ -185,12 +192,88 @@ public class OperationParserTest {
             }
         }
 
-        Method method = Test.class.getMethod("getSomething");
-        OperationDefinition operation = parser.parse(p, api, method);
+        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
 
         assertThat(operation.getErrors()).hasSize(2);
         assertThat((Object) operation.getErrors().get(0).getErrorClass()).isSameAs(IllegalArgumentException.class);
         assertThat((Object) operation.getErrors().get(1).getErrorClass()).isSameAs(ParseException.class);
+    }
+
+    @Test
+    public void should_support_consume_media_type() throws Exception {
+        class Test {
+            @GET
+            @Consumes({ APPLICATION_ATOM_XML, APPLICATION_JSON })
+            public String getSomething() {
+                return null;
+            }
+        }
+
+        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getConsumes()).hasSize(2);
+        assertThat(operation.getConsumes()).containsExactly(APPLICATION_ATOM_XML, APPLICATION_JSON);
+    }
+
+    @Test
+    public void should_support_produce_media_type() throws Exception {
+        class Test {
+            @GET
+            @Produces({ APPLICATION_ATOM_XML, APPLICATION_JSON })
+            public String getSomething() {
+                return null;
+            }
+        }
+
+        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getProduces()).hasSize(2);
+        assertThat(operation.getProduces()).containsExactly(APPLICATION_ATOM_XML, APPLICATION_JSON);
+    }
+
+    @Test
+    public void not_fill_void_response() throws Exception {
+        class Test {
+            @GET
+            public void getSomething() {
+            }
+        }
+
+        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getResponseClass()).isNull();
+    }
+
+    @Test
+    public void should_find_deprecated_with_outdated() throws Exception {
+        class Test {
+            @GET
+            @Outdated(since = "since", cause = "cause")
+            public void getSomething() {
+            }
+        }
+
+        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getDeprecated()).isTrue();
+        assertThat(operation.getDeprecatedCause()).isEqualTo("cause");
+        assertThat(operation.getDeprecatedSince()).isEqualTo("since");
+    }
+
+    @Test
+    public void should_find_deprecated_with_outdated2() throws Exception {
+        class Test {
+            @GET
+            @Outdated(cause = "cause")
+            public void getSomething() {
+            }
+        }
+
+        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getDeprecated()).isTrue();
+        assertThat(operation.getDeprecatedCause()).isEqualTo("cause");
+        assertThat(operation.getDeprecatedSince()).isNull();
     }
 
     @Test

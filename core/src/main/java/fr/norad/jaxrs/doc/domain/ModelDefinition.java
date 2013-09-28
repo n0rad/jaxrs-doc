@@ -29,6 +29,10 @@ public class ModelDefinition {
     private Class<?> modelClass;
     private Map<String, PropertyDefinition> properties = new HashMap<>();
 
+    private Boolean deprecated;
+    private String deprecatedSince;
+    private String deprecatedCause;
+
     //    private Boolean required = false;
     //    private String name = null;
     //    private String id = "ManagementInfo";

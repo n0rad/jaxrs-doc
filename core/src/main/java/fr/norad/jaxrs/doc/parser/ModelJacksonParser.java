@@ -44,6 +44,7 @@ import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.parser.jaxrs.ModelParser;
 import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 
 public class ModelJacksonParser extends ModelParser {

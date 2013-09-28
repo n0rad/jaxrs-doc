@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -32,9 +32,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.annotations.Description;
+import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.domain.ParameterType;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.domain.sub.ParameterType;
+import fr.norad.jaxrs.doc.parser.ModelParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.ModelParser;
+import fr.norad.jaxrs.doc.parser.jaxrs.ParameterParser;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ParameterParserTest {
@@ -128,5 +132,35 @@ public class ParameterParserTest {
 
         assertThat((Object) param.getParamClass()).isEqualTo(String.class);
         assertThat(param.getParamAsList()).isNull();
+    }
+
+    @Test
+    public void should_find_deprecated() throws Exception {
+        class Test {
+            @GET
+            public void getSomething(@Deprecated String param) {
+            }
+        }
+
+        Method method = Test.class.getMethod("getSomething", String.class);
+        ParameterDefinition param = parser.parse(p, method, 0);
+
+        assertThat(param.getDeprecated()).isTrue();
+    }
+
+    @Test
+    public void should_find_deprecated_with_outdate() throws Exception {
+        class Test {
+            @GET
+            public void getSomething(@Outdated(cause = "cause", since = "since") String param) {
+            }
+        }
+
+        Method method = Test.class.getMethod("getSomething", String.class);
+        ParameterDefinition param = parser.parse(p, method, 0);
+
+        assertThat(param.getDeprecated()).isTrue();
+        assertThat(param.getDeprecatedSince()).isEqualTo("since");
+        assertThat(param.getDeprecatedCause()).isEqualTo("cause");
     }
 }

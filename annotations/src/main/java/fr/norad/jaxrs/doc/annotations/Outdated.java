@@ -27,10 +27,10 @@ import java.lang.annotation.Target;
         java.lang.annotation.ElementType.LOCAL_VARIABLE, java.lang.annotation.ElementType.METHOD,
         java.lang.annotation.ElementType.PACKAGE, java.lang.annotation.ElementType.PARAMETER,
         java.lang.annotation.ElementType.TYPE })
-public @interface Deprecated {
+public @interface Outdated {
 
-    //TODO message
-    // TODO version deprected
-    //TODO  replaced by
+    String since() default "";
+
+    String cause();
 
 }

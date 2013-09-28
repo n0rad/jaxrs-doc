@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import java.util.Arrays;
@@ -22,8 +22,10 @@ import java.util.UUID;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.annotations.Description;
+import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.parser.jaxrs.PropertyParser;
 
 public class PropertyParserTest {
 
@@ -87,4 +89,62 @@ public class PropertyParserTest {
         assertThat(property.getDescription()).isEqualTo("desc");
     }
 
+    @Test
+    public void should_support_deprecated_on_field() throws Exception {
+        class TheClass {
+            @Deprecated
+            private String genre;
+
+        }
+
+        PropertyDefinition property = parser.parse(project, TheClass.class.getDeclaredField("genre"), null, null);
+
+        assertThat(property.getDeprecated()).isTrue();
+    }
+
+    @Test
+    public void should_support_outdated_on_setter() throws Exception {
+        class TheClass {
+            @Outdated(cause = "cause", since = "since")
+            public void setField(UUID field) {
+            }
+        }
+
+        PropertyDefinition property = parser.parse(project, null, null,
+                TheClass.class.getMethod("setField", UUID.class));
+
+        assertThat(property.getDeprecated()).isTrue();
+        assertThat(property.getDeprecatedCause()).isEqualTo("cause");
+        assertThat(property.getDeprecatedSince()).isEqualTo("since");
+    }
+
+    @Test
+    public void should_support_outdated_on_getter() throws Exception {
+        class TheClass {
+            @Outdated(cause = "cause", since = "since")
+            public UUID getField() {
+                return null;
+            }
+        }
+
+        PropertyDefinition property = parser.parse(project, null, TheClass.class.getMethod("getField"), null);
+
+        assertThat(property.getDeprecated()).isTrue();
+        assertThat(property.getDeprecatedCause()).isEqualTo("cause");
+        assertThat(property.getDeprecatedSince()).isEqualTo("since");
+    }
+
+    @Test
+    public void should_support_outdated_on_field() throws Exception {
+        class TheClass {
+            @Outdated(cause = "cause", since = "since")
+            private String genre;
+        }
+
+        PropertyDefinition property = parser.parse(project, TheClass.class.getDeclaredField("genre"), null, null);
+
+        assertThat(property.getDeprecated()).isTrue();
+        assertThat(property.getDeprecatedCause()).isEqualTo("cause");
+        assertThat(property.getDeprecatedSince()).isEqualTo("since");
+    }
 }

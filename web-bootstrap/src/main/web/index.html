@@ -120,7 +120,7 @@
                   {{operation.responseClass}}
                   
                   <div>
-                   <pre>{<div  ng-repeat="(propName, prop) in models[operation.responseClass].properties">  <span style="font-weight:bold">{{propName}}</span>: <span title="prop.propertyClass">{{prop.propertyClass | classShortName}}</span>,</div>}</pre>
+                   <pre>{<div  ng-repeat="(propName, prop) in models[operation.responseClass].properties">  <span style="font-weight:bold">{{propName}}</span>: <span title="{{prop.propertyClass}}">{{prop.propertyClass | classShortName}}</span>,</div>}</pre>
                   </div>
                 </div>            
             </div>

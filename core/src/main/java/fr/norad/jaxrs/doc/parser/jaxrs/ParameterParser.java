@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -30,9 +30,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.annotations.Description;
+import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.domain.ParameterType;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.domain.sub.ParameterType;
 import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 import fr.norad.jaxrs.doc.utils.ReflectionUtil;
 
@@ -57,6 +58,16 @@ public class ParameterParser {
 
         DefaultValue defValue = AnnotationUtil.findParameterAnnotation(method, position, DefaultValue.class);
         param.setDefaultValue(defValue == null ? null : defValue.value());
+
+        Deprecated deprecated = AnnotationUtil.findParameterAnnotation(method, position, Deprecated.class);
+        param.setDeprecated(deprecated != null ? true : null);
+
+        Outdated outdated = AnnotationUtil.findParameterAnnotation(method, position, Outdated.class);
+        if (outdated != null) {
+            param.setDeprecated(true);
+            param.setDeprecatedCause(outdated.cause());
+            param.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
+        }
 
         fillParamClassPart(param, method, position);
         docConfig.getModelParser().parse(project, param.getParamClass());

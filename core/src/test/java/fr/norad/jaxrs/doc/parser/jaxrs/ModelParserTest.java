@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import java.io.InputStream;
@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.UUID;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.DocConfig;
+import fr.norad.jaxrs.doc.parser.jaxrs.ModelParser;
 
 public class ModelParserTest {
 

@@ -14,8 +14,10 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_ATOM_XML;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
@@ -23,8 +25,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -32,11 +36,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import fr.norad.jaxrs.doc.DocConfig;
+import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.parser.jaxrs.JaxrsApiParser;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ApiParserTest {
+public class JaxrsApiParserTest {
 
     private ProjectDefinition p = new ProjectDefinition();
 
@@ -46,7 +52,7 @@ public class ApiParserTest {
     @InjectMocks
     private DocConfig config = new DocConfig(Arrays.asList("fr.norad"));
 
-    private ApiParser parser = new ApiParser(config);
+    private JaxrsApiParser parser = new JaxrsApiParser(config);
 
     @Path("there")
     class TestResource {
@@ -67,7 +73,6 @@ public class ApiParserTest {
     }
 
     class TestOperation extends TestResource {
-
         @GET
         public void operation() {
 
@@ -76,10 +81,80 @@ public class ApiParserTest {
         public void notOperation() {
 
         }
-
     }
 
     ArgumentCaptor<ApiDefinition> captor = ArgumentCaptor.forClass(ApiDefinition.class);
+
+    @Test
+    public void should_support_consume_media_type() throws Exception {
+        @Path("/")
+        @Consumes({ APPLICATION_ATOM_XML, APPLICATION_JSON })
+        class Test {
+            @GET
+            public String getSomething() {
+                return null;
+            }
+        }
+
+        ApiDefinition api = parser.parse(p, Test.class);
+
+        assertThat(api.getConsumes()).hasSize(2);
+        assertThat(api.getConsumes()).containsExactly(APPLICATION_ATOM_XML, APPLICATION_JSON);
+    }
+
+    @Test
+    public void should_support_produce_media_type() throws Exception {
+        @Path("/")
+        @Produces({ APPLICATION_ATOM_XML, APPLICATION_JSON })
+        class Test {
+            @GET
+            public String getSomething() {
+                return null;
+            }
+        }
+
+        ApiDefinition api = parser.parse(p, Test.class);
+
+        assertThat(api.getProduces()).hasSize(2);
+        assertThat(api.getProduces()).containsExactly(APPLICATION_ATOM_XML, APPLICATION_JSON);
+    }
+
+    @Test
+    public void should_support_deprecated() throws Exception {
+        @Path("/")
+        @Deprecated
+        class Test {
+            @GET
+            public String getSomething() {
+                return null;
+            }
+        }
+
+        ApiDefinition api = parser.parse(p, Test.class);
+
+        assertThat(api.getDeprecated()).isTrue();
+        assertThat(api.getDeprecatedCause()).isNull();
+        assertThat(api.getDeprecatedSince()).isNull();
+    }
+
+    @Test
+    public void should_support_outdated() throws Exception {
+        @Path("/")
+        @Deprecated
+        @Outdated(cause = "sux", since = "since")
+        class Test {
+            @GET
+            public String getSomething() {
+                return null;
+            }
+        }
+
+        ApiDefinition api = parser.parse(p, Test.class);
+
+        assertThat(api.getDeprecated()).isTrue();
+        assertThat(api.getDeprecatedCause()).isEqualTo("sux");
+        assertThat(api.getDeprecatedSince()).isEqualTo("since");
+    }
 
     @Test
     public void should_call_operation_parser() throws Exception {

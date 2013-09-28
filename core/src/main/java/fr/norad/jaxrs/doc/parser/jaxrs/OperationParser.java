@@ -14,17 +14,20 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.annotations.Description;
+import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.annotations.Summary;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ErrorDefinition;
@@ -55,15 +58,22 @@ public class OperationParser {
         Deprecated deprecated = AnnotationUtil.findAnnotation(method, Deprecated.class);
         operation.setDeprecated(deprecated != null ? true : null);
 
+        Outdated outdated = AnnotationUtil.findAnnotation(method, Outdated.class);
+        if (outdated != null) {
+            operation.setDeprecated(true);
+            operation.setDeprecatedCause(outdated.cause());
+            operation.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
+        }
+
         Summary summary = AnnotationUtil.findAnnotation(method, Summary.class);
-        operation.setSummary(summary != null ? summary.value() : null);
+        operation.setSummary(summary != null ? summary.value().trim() : null);
 
         Path path = AnnotationUtil.findAnnotation(method, Path.class);
         String methodPath = path != null ? path.value() : null;
         operation.setPath(buildFullPath(api.getPath(), methodPath));
 
         Description description = AnnotationUtil.findAnnotation(method, Description.class);
-        operation.setDescription(description != null ? description.value() : null);
+        operation.setDescription(description != null ? description.value().trim() : null);
 
         fillReturnPart(operation, method);
         config.getModelParser().parse(project, operation.getResponseClass());
@@ -74,6 +84,26 @@ public class OperationParser {
                 operation.setErrors(new ArrayList<ErrorDefinition>());
             }
             operation.getErrors().add(new ErrorDefinition(exception));
+        }
+
+        Consumes consumes = AnnotationUtil.findAnnotation(method, Consumes.class);
+        if (consumes != null) {
+            for (String consume : consumes.value()) {
+                if (operation.getConsumes() == null) {
+                    operation.setConsumes(new ArrayList<String>());
+                }
+                operation.getConsumes().add(consume);
+            }
+        }
+
+        Produces produces = AnnotationUtil.findAnnotation(method, Produces.class);
+        if (produces != null) {
+            for (String produce : produces.value()) {
+                if (operation.getProduces() == null) {
+                    operation.setProduces(new ArrayList<String>());
+                }
+                operation.getProduces().add(produce);
+            }
         }
 
         Class<?>[] parameterTypes = method.getParameterTypes();
@@ -134,7 +164,9 @@ public class OperationParser {
             return;
         }
 
-        operation.setResponseClass(method.getReturnType());
+        if (!method.getReturnType().equals(Void.TYPE)) {
+            operation.setResponseClass(method.getReturnType());
+        }
     }
 
 }

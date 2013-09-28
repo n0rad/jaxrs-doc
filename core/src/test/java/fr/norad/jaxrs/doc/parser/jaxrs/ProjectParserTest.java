@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.parser.jaxrs;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -28,12 +28,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import fr.norad.jaxrs.doc.DocConfig;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.parser.jaxrs.ProjectParser;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectParserTest {
 
     @Mock
-    private ApiParser apiParser;
+    private JaxrsApiParser apiParser;
 
     @InjectMocks
     private DocConfig config = new DocConfig(Arrays.asList("fr.norad"));
