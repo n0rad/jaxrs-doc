@@ -14,54 +14,28 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser.jaxrs;
+package fr.norad.jaxrs.doc.parser;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import org.reflections.ReflectionUtils;
-import fr.norad.jaxrs.doc.DocConfig;
-import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.parserapi.ApiParser;
 import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 
-public class JaxrsApiParser {
+public class ApiJaxrsParser implements ApiParser {
 
-    private final DocConfig config;
-
-    public JaxrsApiParser(DocConfig docConfig) {
-        this.config = docConfig;
-    }
-
-    public ApiDefinition parse(ProjectDefinition project, Class<?> apiClass) {
-        ApiDefinition api = new ApiDefinition();
-        api.setResourceClass(apiClass);
-
-        Path annotation = AnnotationUtil.findAnnotation(apiClass, Path.class);
-        api.setPath(annotation.value());
-
-        Deprecated deprecated = AnnotationUtil.findAnnotation(apiClass, Deprecated.class);
-        api.setDeprecated(deprecated != null ? true : null);
-
-        Outdated outdated = AnnotationUtil.findAnnotation(apiClass, Outdated.class);
-        if (outdated != null) {
-            api.setDeprecated(true);
-            api.setDeprecatedCause(outdated.cause());
-            api.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
-        }
-
-        @SuppressWarnings("unchecked")
-        Set<Method> methods = ReflectionUtils.getAllMethods(apiClass);
-        for (Method method : methods) {
-            if (config.getOperationParser().isOperation(method)) {
-                OperationDefinition operation = config.getOperationParser().parse(project, api, method);
-                api.getOperations().add(operation);
-            }
+    @Override
+    public void parse(ApiDefinition api, Class<?> apiClass) {
+        Path path = AnnotationUtil.findAnnotation(apiClass, Path.class);
+        if (path != null) {
+            api.setPath(path.value());
         }
 
         Consumes consumes = AnnotationUtil.findAnnotation(apiClass, Consumes.class);
@@ -83,8 +57,23 @@ public class JaxrsApiParser {
                 api.getProduces().add(produce);
             }
         }
+    }
 
-        return api;
+    @Override
+    public Set<Method> findOperations(Class<?> apiClass) {
+        Set<Method> operations = new HashSet<>();
+        @SuppressWarnings("unchecked")
+        Set<Method> methods = ReflectionUtils.getAllMethods(apiClass);
+        for (Method method : methods) {
+            if (getHttpMethod(method) != null) {
+                operations.add(method);
+            }
+        }
+        return operations;
+    }
+
+    private HttpMethod getHttpMethod(Method method) {
+        return AnnotationUtil.findAnnotation(method, HttpMethod.class);
     }
 
 }

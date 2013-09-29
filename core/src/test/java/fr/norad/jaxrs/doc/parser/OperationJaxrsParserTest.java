@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser.jaxrs;
+package fr.norad.jaxrs.doc.parser;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_ATOM_XML;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -43,14 +43,11 @@ import fr.norad.jaxrs.doc.annotations.Summary;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.parser.ModelParser;
+ser;
 import fr.norad.jaxrs.doc.parser.ParameterParser;
-import fr.norad.jaxrs.doc.parser.jaxrs.ModelParser;
-import fr.norad.jaxrs.doc.parser.jaxrs.OperationParser;
-import fr.norad.jaxrs.doc.parser.jaxrs.ParameterParser;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OperationParserTest {
+public class OperationJaxrsParserTest {
 
     private ProjectDefinition p = new ProjectDefinition();
     private ApiDefinition api = new ApiDefinition() {
@@ -60,7 +57,7 @@ public class OperationParserTest {
     };
 
     @Mock
-    private ModelParser modelParser;
+    private ModelJavaParser modelParser;
 
     @Mock
     private ParameterParser paramParser;
@@ -68,7 +65,7 @@ public class OperationParserTest {
     @InjectMocks
     private DocConfig config = new DocConfig(Arrays.asList("fr.norad"));
 
-    private OperationParser parser = new OperationParser(config);
+    private OperationJaxrsParser parser = new OperationJaxrsParser(config);
 
     class api {
         @GET
@@ -123,13 +120,8 @@ public class OperationParserTest {
         assertThat(operation.getPath()).isEqualTo("/subpath");
     }
 
-    @Test
-    public void should_parse_return_type() throws Exception {
-        parser.parse(p, api, apiExtended.class.getMethod("getSomething"));
 
-        verify(modelParser).parse(p, String.class);
-    }
-
+    
     @Test
     public void should_parse_parameters() throws Exception {
         Method method = apiExtended.class.getMethod("withParam", UUID.class);
@@ -138,66 +130,6 @@ public class OperationParserTest {
         verify(paramParser).parse(p, method, 0);
     }
 
-    @Test
-    public void should_support_array_return_type() throws Exception {
-        class Test {
-            @GET
-            public String[] getSomething() {
-                return null;
-            }
-        }
-
-        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
-
-        assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
-        assertThat(operation.getResponseAsList()).isTrue();
-    }
-
-    @Test
-    public void should_support_list_return_type() throws Exception {
-        class Test {
-            @GET
-            public List<String> getSomething() {
-                return null;
-            }
-        }
-
-        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
-
-        assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
-        assertThat(operation.getResponseAsList()).isTrue();
-    }
-
-    @Test
-    public void should_support_standard_return_type() throws Exception {
-        class Test {
-            @GET
-            public String getSomething() {
-                return null;
-            }
-        }
-
-        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
-
-        assertThat((Object) operation.getResponseClass()).isEqualTo(String.class);
-        assertThat(operation.getResponseAsList()).isNull();
-    }
-
-    @Test
-    public void should_support_exception() throws Exception {
-        class Test {
-            @GET
-            public String getSomething() throws IllegalArgumentException, ParseException {
-                return null;
-            }
-        }
-
-        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
-
-        assertThat(operation.getErrors()).hasSize(2);
-        assertThat((Object) operation.getErrors().get(0).getErrorClass()).isSameAs(IllegalArgumentException.class);
-        assertThat((Object) operation.getErrors().get(1).getErrorClass()).isSameAs(ParseException.class);
-    }
 
     @Test
     public void should_support_consume_media_type() throws Exception {
@@ -231,50 +163,6 @@ public class OperationParserTest {
         assertThat(operation.getProduces()).containsExactly(APPLICATION_ATOM_XML, APPLICATION_JSON);
     }
 
-    @Test
-    public void not_fill_void_response() throws Exception {
-        class Test {
-            @GET
-            public void getSomething() {
-            }
-        }
-
-        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
-
-        assertThat(operation.getResponseClass()).isNull();
-    }
-
-    @Test
-    public void should_find_deprecated_with_outdated() throws Exception {
-        class Test {
-            @GET
-            @Outdated(since = "since", cause = "cause")
-            public void getSomething() {
-            }
-        }
-
-        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
-
-        assertThat(operation.getDeprecated()).isTrue();
-        assertThat(operation.getDeprecatedCause()).isEqualTo("cause");
-        assertThat(operation.getDeprecatedSince()).isEqualTo("since");
-    }
-
-    @Test
-    public void should_find_deprecated_with_outdated2() throws Exception {
-        class Test {
-            @GET
-            @Outdated(cause = "cause")
-            public void getSomething() {
-            }
-        }
-
-        OperationDefinition operation = parser.parse(p, api, Test.class.getMethod("getSomething"));
-
-        assertThat(operation.getDeprecated()).isTrue();
-        assertThat(operation.getDeprecatedCause()).isEqualTo("cause");
-        assertThat(operation.getDeprecatedSince()).isNull();
-    }
 
     @Test
     public void should_build_full_path() throws Exception {

@@ -14,29 +14,36 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser.jaxrs;
+package fr.norad.jaxrs.doc.parser;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.UUID;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.DocConfig;
-import fr.norad.jaxrs.doc.parser.jaxrs.ModelParser;
+import fr.norad.jaxrs.doc.domain.ModelDefinition;
 
-public class ModelParserTest {
+public class ModelJavaParserTest {
 
-    private DocConfig config = new DocConfig(Arrays.asList("fr.norad"));
+    private ModelDefinition model = new ModelDefinition();
+    private ModelJavaParser parser = new ModelJavaParser();
 
     @Test
     public void should_ignore_basic_class() throws Exception {
-        ModelParser modelParser = new ModelParser(config);
-
-        assertThat(modelParser.isIgnoreModel(String.class)).isTrue();
-        assertThat(modelParser.isIgnoreModel(int.class)).isTrue();
-        assertThat(modelParser.isIgnoreModel(void.class)).isTrue();
-        assertThat(modelParser.isIgnoreModel(UUID.class)).isTrue();
-        assertThat(modelParser.isIgnoreModel(InputStream.class)).isTrue();
+        assertThat(parser.isModelToIgnore(String.class)).isTrue();
+        assertThat(parser.isModelToIgnore(int.class)).isTrue();
+        assertThat(parser.isModelToIgnore(void.class)).isTrue();
+        assertThat(parser.isModelToIgnore(UUID.class)).isTrue();
+        assertThat(parser.isModelToIgnore(InputStream.class)).isTrue();
     }
 
+    @Test
+    public void should_fill_deprecated() throws Exception {
+        @Deprecated
+        class Test {
+
+        }
+        parser.parse(model, Test.class);
+
+        assertThat(model.getDeprecated()).isTrue();
+    }
 }

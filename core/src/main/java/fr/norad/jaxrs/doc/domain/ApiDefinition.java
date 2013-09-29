@@ -18,6 +18,7 @@ package fr.norad.jaxrs.doc.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 
@@ -27,7 +28,7 @@ public class ApiDefinition {
 
     private String path;
     private String description;
-    private Class<?> resourceClass;
+    private Class<?> apiClass;
     private List<OperationDefinition> operations = new ArrayList<>();
 
     private Boolean deprecated;
@@ -36,5 +37,7 @@ public class ApiDefinition {
 
     private List<String> consumes;
     private List<String> produces;
+
+    private Map<String, Object> extras;
 
 }

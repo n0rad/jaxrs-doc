@@ -14,46 +14,36 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser.jaxrs;
+package fr.norad.jaxrs.doc.parser;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
-import fr.norad.jaxrs.doc.DocConfig;
-import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.parserapi.ModelParser;
 import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 
-public class ModelParser {
+public class ModelJavaParser implements ModelParser {
 
-    protected final DocConfig config;
+    private final List<Pattern> modelToIgnore = Arrays.asList(
+            Pattern.compile("java\\.[lang|util|io]+\\.[\\w\\._-]+"),
+            Pattern.compile("void|int|long|byte|char|short|boolean|float|double"));
 
-    public ModelParser(DocConfig config) {
-        this.config = config;
-    }
-
-    public void parse(ProjectDefinition project, Class<?> modelClass) {
-        ModelDefinition model = new ModelDefinition();
+    @Override
+    public void parse(ModelDefinition model, Class<?> modelClass) {
         model.setModelClass(modelClass);
 
         Deprecated deprecated = AnnotationUtil.findAnnotation(modelClass, Deprecated.class);
         model.setDeprecated(deprecated != null ? true : null);
-
-        Outdated outdated = AnnotationUtil.findAnnotation(modelClass, Outdated.class);
-        if (outdated != null) {
-            model.setDeprecated(true);
-            model.setDeprecatedCause(outdated.cause());
-            model.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
-        }
-        project.getModels().put(model.getModelClass().getName(), model);
     }
 
-    protected boolean isIgnoreModel(Class<?> modelClass) {
-        for (Pattern pattern : config.getIgnoreModelPatterns()) {
+    @Override
+    public boolean isModelToIgnore(Class<?> modelClass) {
+        for (Pattern pattern : modelToIgnore) {
             if (pattern.matcher(modelClass.getName()).matches()) {
                 return true;
             }
         }
         return false;
     }
-
 }

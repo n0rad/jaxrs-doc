@@ -16,6 +16,7 @@
  */
 package fr.norad.jaxrs.doc.domain;
 
+import java.util.Map;
 import lombok.Data;
 
 @Data
@@ -24,6 +25,7 @@ public class ErrorDefinition {
     private Class<?> errorClass;
     private int httpCode;
     private String reason;
+    private Map<String, Object> extras;
 
     public ErrorDefinition() {
 

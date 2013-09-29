@@ -17,6 +17,7 @@
 package fr.norad.jaxrs.doc.domain;
 
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 
@@ -28,6 +29,7 @@ public class OperationDefinition {
     private String description;
     private String methodName;
     private String path;
+    private Map<String, Object> extras;
 
     private Boolean deprecated;
     private String deprecatedSince;

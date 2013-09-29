@@ -39,35 +39,18 @@ import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
-import fr.norad.jaxrs.doc.DocConfig;
-import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
-import fr.norad.jaxrs.doc.parser.jaxrs.ModelParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.parserapi.ModelParser;
 
-public class ModelJacksonParser extends ModelParser {
+public class ModelJacksonParser implements ModelParser {
 
     private final Logger log = Logger.getLogger(ModelJacksonParser.class.getName());
 
     private FakeSerializer fakeSerializer = new FakeSerializer();
 
-    public ModelJacksonParser(DocConfig config) {
-        super(config);
-    }
-
     @Override
-    public void parse(ProjectDefinition project, Class<?> modelClass) {
-        if (isIgnoreModel(modelClass)) {
-            return;
-        }
-        ModelDefinition model = new ModelDefinition();
-        model.setModelClass(modelClass);
-        project.getModels().put(model.getModelClass().getName(), model);
-
-        Description description = AnnotationUtil.findAnnotation(modelClass, Description.class);
-        model.setDescription(description != null ? description.value() : null);
+    public void parse(ModelDefinition model, Class<?> modelClass) {
 
         BasicBeanDescription beanDesc = fakeSerializer.getDescription(modelClass);
 

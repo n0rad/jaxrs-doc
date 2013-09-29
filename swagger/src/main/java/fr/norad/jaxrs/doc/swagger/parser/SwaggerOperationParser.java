@@ -17,15 +17,15 @@
 package fr.norad.jaxrs.doc.swagger.parser;
 
 import java.lang.reflect.Method;
-import fr.norad.jaxrs.doc.DocConfig;
+import fr.norad.jaxrs.doc.JaxRsDocProcessorFactory;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.parser.jaxrs.OperationParser;
+import fr.norad.jaxrs.doc.parser.OperationJaxrsParser;
 
-public class SwaggerOperationParser extends OperationParser {
+public class SwaggerOperationParser extends OperationJaxrsParser {
 
-    public SwaggerOperationParser(DocConfig config) {
+    public SwaggerOperationParser(JaxRsDocProcessorFactory config) {
         super(config);
     }
 

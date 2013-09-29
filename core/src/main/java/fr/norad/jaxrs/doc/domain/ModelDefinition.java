@@ -28,6 +28,7 @@ public class ModelDefinition {
     private String description;
     private Class<?> modelClass;
     private Map<String, PropertyDefinition> properties = new HashMap<>();
+    private Map<String, Object> extras;
 
     private Boolean deprecated;
     private String deprecatedSince;

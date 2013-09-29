@@ -18,21 +18,21 @@ package fr.norad.jaxrs.doc.resource;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import fr.norad.jaxrs.doc.DocConfig;
+import fr.norad.jaxrs.doc.JaxRsDocProcessorFactory;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 
 @Path("/doc")
-public abstract class GenericDocService {
+public abstract class GenericJaxrsDocService {
 
     private ProjectDefinition projectDefinition;
 
-    protected abstract DocConfig getDocConfig();
+    protected abstract JaxRsDocProcessorFactory getProcessorFactory();
 
     @GET
     @Path("/definition")
     public ProjectDefinition getProjectDefinition() {
         if (projectDefinition == null) {
-            projectDefinition = getDocConfig().getProjectParser().parse();
+            projectDefinition = getProcessorFactory().getProjectProcessor().process();
         }
         return projectDefinition;
     }

@@ -23,10 +23,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.norad.jaxrs.doc.DocConfig;
+import fr.norad.jaxrs.doc.JaxRsDocProcessorFactory;
 import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.parser.ModelJacksonParser;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ModelJacksonParserTest {
@@ -34,7 +35,7 @@ public class ModelJacksonParserTest {
     private ProjectDefinition p = new ProjectDefinition();
 
     @InjectMocks
-    private DocConfig config = new DocConfig(Arrays.asList("fr.norad"));
+    private JaxRsDocProcessorFactory config = new JaxRsDocProcessorFactory(Arrays.asList("fr.norad"));
 
     public class SimpleBean {
         @Description("publicDesc!")

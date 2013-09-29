@@ -27,11 +27,11 @@ import lombok.Data;
 @XmlRootElement
 public class ProjectDefinition {
 
+    private String name;
+    private String version;
+
     private List<ApiDefinition> apis = new ArrayList<>();
     private Map<String, ModelDefinition> models = new HashMap<>();
+    private Map<String, Object> extras = new HashMap<>();
 
-    //    var swaggerVersion: String,
-    //    var basePath: String,
-    //    var resourcePath: String) {
-    // apiVersion: "2.20.0-SNAPSHOT"
 }

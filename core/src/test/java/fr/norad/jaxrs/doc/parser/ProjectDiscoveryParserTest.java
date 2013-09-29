@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser.jaxrs;
+package fr.norad.jaxrs.doc.parser;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -26,22 +26,22 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import fr.norad.jaxrs.doc.DocConfig;
+import fr.norad.jaxrs.doc.JaxRsDocProcessorFactory;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.parser.jaxrs.ProjectParser;
+import fr.norad.jaxrs.doc.parser.ProjectDiscoveryParser;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProjectParserTest {
+public class ProjectDiscoveryParserTest {
 
     @Mock
-    private JaxrsApiParser apiParser;
+    private ApiJaxrsParser apiParser;
 
     @InjectMocks
-    private DocConfig config = new DocConfig(Arrays.asList("fr.norad"));
+    private JaxRsDocProcessorFactory config = new JaxRsDocProcessorFactory(Arrays.asList("fr.norad"));
 
     @Test
     public void should_find_some_api() throws Exception {
-        ProjectDefinition project = new ProjectParser(config).parse();
+        ProjectDefinition project = new ProjectDiscoveryParser(config).parse();
         verify(apiParser, atLeastOnce()).parse(eq(project), any(Class.class));
     }
 

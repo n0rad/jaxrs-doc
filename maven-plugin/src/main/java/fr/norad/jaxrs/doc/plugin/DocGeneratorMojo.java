@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
-import fr.norad.jaxrs.doc.DocConfig;
+import fr.norad.jaxrs.doc.JaxRsDocProcessorFactory;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parser.ModelJacksonParser;
 
@@ -59,7 +59,7 @@ public class DocGeneratorMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         outputFile = new File(outputFile.getAbsolutePath().replace("${version}", version));
         try {
-            DocConfig docConfig = new DocConfig(Arrays.asList(packageIncludes));
+            JaxRsDocProcessorFactory docConfig = new JaxRsDocProcessorFactory(Arrays.asList(packageIncludes));
             docConfig.setModelParser(new ModelJacksonParser(docConfig));
             writeDefinitionToFile(docConfig.getProjectParser().parse());
         } catch (Exception e) {
