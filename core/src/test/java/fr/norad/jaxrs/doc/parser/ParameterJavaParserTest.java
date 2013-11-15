@@ -42,9 +42,9 @@ public class ParameterJavaParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat((Object) parameter.getParamMapKeyClass()).isEqualTo(Integer.class);
+        assertThat((Object) parameter.getMapKeyClass()).isEqualTo(Integer.class);
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
-        assertThat(parameter.getParamAsList()).isTrue();
+        assertThat(parameter.getAsList()).isTrue();
     }
 
     @Test
@@ -58,9 +58,9 @@ public class ParameterJavaParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat((Object) parameter.getParamMapKeyClass()).isEqualTo(Integer.class);
+        assertThat((Object) parameter.getMapKeyClass()).isEqualTo(Integer.class);
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
-        assertThat(parameter.getParamAsList()).isTrue();
+        assertThat(parameter.getAsList()).isTrue();
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ParameterJavaParserTest {
         parser.parse(parameter, method, 0);
 
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
-        assertThat(parameter.getParamAsList()).isTrue();
+        assertThat(parameter.getAsList()).isTrue();
     }
 
     @Test
@@ -90,7 +90,7 @@ public class ParameterJavaParserTest {
         parser.parse(parameter, method, 0);
 
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
-        assertThat(parameter.getParamAsList()).isTrue();
+        assertThat(parameter.getAsList()).isTrue();
     }
 
     @Test
@@ -105,7 +105,7 @@ public class ParameterJavaParserTest {
         parser.parse(parameter, method, 0);
 
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
-        assertThat(parameter.getParamAsList()).isNull();
+        assertThat(parameter.getAsList()).isNull();
     }
 
     @Test

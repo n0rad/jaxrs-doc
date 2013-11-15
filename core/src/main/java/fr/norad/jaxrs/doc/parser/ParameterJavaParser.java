@@ -29,26 +29,28 @@ public class ParameterJavaParser implements ParameterParser {
     @Override
     public void parse(ParameterDefinition parameter, Method method, int position) {
         Deprecated deprecated = AnnotationUtil.findParameterAnnotation(method, position, Deprecated.class);
-        parameter.setDeprecated(deprecated != null ? true : null);
+        if (deprecated != null) {
+            parameter.setDeprecated(true);
+        }
 
         fillParamClassPart(parameter, method, position);
     }
 
     private void fillParamClassPart(ParameterDefinition param, Method method, int position) {
         if (Map.class.isAssignableFrom(method.getParameterTypes()[position])) {
-            param.setParamMapKeyClass(ReflectionUtil.getGenericParamTypeForPosition(method, position, 0));
+            param.setMapKeyClass(ReflectionUtil.getGenericParamTypeForPosition(method, position, 0));
             param.setParamClass(ReflectionUtil.getGenericParamTypeForPosition(method, position, 1));
-            param.setParamAsList(true);
+            param.setAsList(true);
             return;
         }
         if (Collection.class.isAssignableFrom(method.getParameterTypes()[position])) {
             param.setParamClass(ReflectionUtil.getSingleGenericParamType(method, position));
-            param.setParamAsList(true);
+            param.setAsList(true);
             return;
         }
         if (method.getParameterTypes()[position].isArray()) {
             param.setParamClass(method.getParameterTypes()[position].getComponentType());
-            param.setParamAsList(true);
+            param.setAsList(true);
             return;
         }
         param.setParamClass(method.getParameterTypes()[position]);

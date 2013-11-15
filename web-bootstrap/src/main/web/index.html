@@ -17,8 +17,9 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/jaxrs-doc.css">
     <!-- endbuild -->
+    
 </head>
-  <body ng-app="jaxrs-doc" ng-controller="navigation">
+  <body ng-app="jaxrs-doc" ng-controller="GlobalController">
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
     <![endif]-->
@@ -35,126 +36,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Project name</a>
-          <div class="nav-collapse collapse">
-            <p class="navbar-text pull-right">
-<!--               Logged in as <a href="#" class="navbar-link">Username</a> -->
-            </p>
-            <ul class="nav">
-              <li class="active dropdown" ng-controller="DropdownCtrl"><a class="dropdown-toggle">Version</a>
-                <ul class="dropdown-menu">
-                  <li ng-repeat="choice in items">
-                    <a href="/{{choice}}">{{choice}}</a>
-                  </li>
-                </ul>
-              
-              </li>
-<!--               <li><a href="#about">About</a></li> -->
-<!--               <li><a href="#contact">Contact</a></li> -->
-            </ul>
-          </div><!--/.nav-collapse -->
+          <a ng-cloak class="brand" href="#">Jaxrs Doc</a>
+          <ng-include src="'views/Filter.html'"></ng-include>
         </div>
       </div>
     </div>
 
-
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span9">
-          <h2 title="">{{currentGroupName}}</h2>
-
-
-
-          <div ng-repeat="operation in currentGroup.operations">
-            <pre title="{{operation.sourceClass}}.{{operation.methodName}}"> <span class="label label-method-{{operation.httpMethod}}">{{operation.httpMethod}}</span> <span ng-class="{deprecated: operation.deprecated}" >{{operation.path}}</span></pre>
-
-            <div class="row-fluid">
-                <div class="span6">
-                  <h6>Request</h6>
-                  <table>
-                      <tr>
-                          <th>Param Type</th>
-                          <th>Name</th>
-<!--                           <th>Description</th> -->
-                          <th>Type</th>
-<!--                           <th>Required</th> -->
-<!--                           <th>Validation</th> -->
-                      </tr>
-                      <tr ng-repeat="parameter in operation.parameters">
-                          <td>{{parameter.paramType}}</td>
-                          <td class="name">{{parameter.paramName}}</td>
-<!--                           <td></td> -->
-                          <td title="{{parameter.paramClass}}">{{parameter.paramClass | classShortName}}</td>
-<!--                           <td></td> -->
-<!--                           <td></td> -->
-                      </tr>
-                  </table>
-                </div>            
-
-                <div class="span6">
-                 <h6>Response</h6>
-                 
-<!--                   <div ng-controller="Ctrl2"> -->
-<!--                     Date format: <input ng-model="format"> <hr/> -->
-<!--                     Current time is: <span my-current-time="format"></span> -->
-<!--                   </div> -->
-                 
-<!--                  <table> -->
-<!--                     <tr> -->
-<!--                         <th>Code</th> -->
-<!--                         <th>Description</th> -->
-<!--                     </tr> -->
-<!--                     <tr> -->
-<!--                         <td>200</td> -->
-<!--                         <td>Success</td> -->
-<!--                     </tr> -->
-<!--                     <tr> -->
-<!--                         <td>404</td> -->
-<!--                         <td>Not found</td> -->
-<!--                     </tr> -->
-<!--                  </table> -->
-                 
-                  {{operation.responseAsList}}
-                  {{operation.responseMapKeyClass}}
-                  <br>
-                  {{operation.responseClass}}
-                  
-                  <div>
-                   <pre>{<div  ng-repeat="(propName, prop) in models[operation.responseClass].properties">  <span style="font-weight:bold">{{propName}}</span>: <span title="{{prop.propertyClass}}">{{prop.propertyClass | classShortName}}</span>,</div>}</pre>
-                  </div>
-                </div>            
-            </div>
-
-
-          </div>
-
-        </div><!--/span-->
-
-        <div class="span3" ng-controller="AccordionDemoCtrl">
-          <accordion>
-            <accordion-group heading="{{root}}" ng-repeat="(root, group) in apiGroups">
-              <ul class="js-guides" >
-                <li ng-repeat="(path, operationGroup) in group">
-                  <div class="card-methods" ng-repeat="method in operationGroup.methods" ng-hide="operationGroup.methods.length == 1 
-                  && operationGroup.methods.indexOf('GET') >= 0">
-                      <span class="card-method {{method}}" title="{{method}}"></span>
-                  </div>
-                  <a href="{{root}}#{{path}}">{{path}}</a>
-                </li>
-              </ul>
-            </accordion-group>
-          </accordion>
-        </div><!--/span-->
-
-      </div><!--/row-->
-
-      <hr>
-
+        <ng-view>loading..........</ng-view>
+        <hr>
       <footer>
         <p>&copy; <a href="http://github.com/n0rad/jaxrs-doc">Jaxrs doc</p>
       </footer>
-
-    </div><!--/.fluid-container-->
+    </div>
   
     <script type="text/javascript">
       var docServiceUrl = '${docServiceUrl}';
@@ -163,9 +57,17 @@
 
     <!-- build:js({.tmp,<%= yeoman.app %>}) scripts/scripts.js -->
     <script src="scripts/jaxrs-doc.js"></script>
-    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/MainController.js"></script>
+    <script src="scripts/controllers/GlobalController.js"></script>
+    <script src="scripts/controllers/FilterController.js"></script>
+    <script src="scripts/controllers/ApiController.js"></script>
+
+    <script src="scripts/services/Projects.js"></script>
+    <script src="scripts/services/ProjectConf.js"></script>
+    <script src="scripts/services/Apis.js"></script>
     
     <script src="scripts/filters/class-short-name.js"></script>
+    <script src="scripts/filters/default.js"></script>
     <script src="scripts/directives/my-current-time.js"></script>
     
     <!-- endbuild -->

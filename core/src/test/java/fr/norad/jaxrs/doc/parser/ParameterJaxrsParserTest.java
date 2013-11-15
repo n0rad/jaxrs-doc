@@ -1,3 +1,19 @@
+/**
+ *
+ *     Copyright (C) norad.fr
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *             http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
 package fr.norad.jaxrs.doc.parser;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -8,6 +24,7 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.Encoded;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.MatrixParam;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -21,6 +38,21 @@ public class ParameterJaxrsParserTest {
 
     private ParameterDefinition parameter = new ParameterDefinition();
     private ParameterJaxrsParser parser = new ParameterJaxrsParser();
+
+    @Test
+    public void should_fill_header() throws Exception {
+        class Test {
+            @GET
+            public void getSomething(@HeaderParam("param") String param) {
+            }
+        }
+        Method method = Test.class.getMethod("getSomething", String.class);
+
+        parser.parse(parameter, method, 0);
+
+        assertThat(parameter.getType()).isEqualTo(ParameterType.HEADER);
+        assertThat(parameter.getName()).isEqualTo("param");
+    }
 
     @Test
     public void should_fill_encoded() throws Exception {
@@ -61,8 +93,8 @@ public class ParameterJaxrsParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat(parameter.getParamType()).isEqualTo(ParameterType.PATH);
-        assertThat(parameter.getParamName()).isEqualTo("param");
+        assertThat(parameter.getType()).isEqualTo(ParameterType.PATH);
+        assertThat(parameter.getName()).isEqualTo("param");
     }
 
     @Test
@@ -76,7 +108,7 @@ public class ParameterJaxrsParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat(parameter.getParamType()).isEqualTo(ParameterType.CONTEXT);
+        assertThat(parameter.getType()).isEqualTo(ParameterType.CONTEXT);
     }
 
     @Test
@@ -90,7 +122,7 @@ public class ParameterJaxrsParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat(parameter.getParamType()).isEqualTo(ParameterType.BEAN);
+        assertThat(parameter.getType()).isEqualTo(ParameterType.BEAN);
     }
 
     @Test
@@ -104,8 +136,8 @@ public class ParameterJaxrsParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat(parameter.getParamType()).isEqualTo(ParameterType.QUERY);
-        assertThat(parameter.getParamName()).isEqualTo("yop");
+        assertThat(parameter.getType()).isEqualTo(ParameterType.QUERY);
+        assertThat(parameter.getName()).isEqualTo("yop");
     }
 
     @Test
@@ -119,8 +151,8 @@ public class ParameterJaxrsParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat(parameter.getParamType()).isEqualTo(ParameterType.MATRIX);
-        assertThat(parameter.getParamName()).isEqualTo("yop");
+        assertThat(parameter.getType()).isEqualTo(ParameterType.MATRIX);
+        assertThat(parameter.getName()).isEqualTo("yop");
     }
 
     @Test
@@ -134,8 +166,8 @@ public class ParameterJaxrsParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat(parameter.getParamType()).isEqualTo(ParameterType.FORM);
-        assertThat(parameter.getParamName()).isEqualTo("yop");
+        assertThat(parameter.getType()).isEqualTo(ParameterType.FORM);
+        assertThat(parameter.getName()).isEqualTo("yop");
     }
 
     @Test
@@ -149,8 +181,8 @@ public class ParameterJaxrsParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat(parameter.getParamType()).isEqualTo(ParameterType.COOKIE);
-        assertThat(parameter.getParamName()).isEqualTo("yop");
+        assertThat(parameter.getType()).isEqualTo(ParameterType.COOKIE);
+        assertThat(parameter.getName()).isEqualTo("yop");
     }
 
     @Test
@@ -164,7 +196,7 @@ public class ParameterJaxrsParserTest {
 
         parser.parse(parameter, method, 0);
 
-        assertThat(parameter.getParamType()).isEqualTo(ParameterType.REQUEST_BODY);
+        assertThat(parameter.getType()).isEqualTo(ParameterType.REQUEST_BODY);
     }
 
 }

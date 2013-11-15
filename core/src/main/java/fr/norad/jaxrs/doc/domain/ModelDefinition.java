@@ -26,13 +26,17 @@ import lombok.Data;
 public class ModelDefinition {
 
     private String description;
-    private Class<?> modelClass;
+    private final Class<?> modelClass;
     private Map<String, PropertyDefinition> properties = new HashMap<>();
     private Map<String, Object> extras;
 
     private Boolean deprecated;
     private String deprecatedSince;
     private String deprecatedCause;
+
+    public ModelDefinition(Class<?> modelClass) {
+        this.modelClass = modelClass;
+    }
 
     //    private Boolean required = false;
     //    private String name = null;

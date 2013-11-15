@@ -18,10 +18,12 @@ package fr.norad.jaxrs.doc.parser;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializationConfig;
@@ -39,10 +41,11 @@ import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
+import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 
+@JsonIgnoreType
 public class ModelJacksonParser implements ModelParser {
 
     private final Logger log = Logger.getLogger(ModelJacksonParser.class.getName());
@@ -52,8 +55,13 @@ public class ModelJacksonParser implements ModelParser {
     @Override
     public void parse(ModelDefinition model, Class<?> modelClass) {
 
-        BasicBeanDescription beanDesc = fakeSerializer.getDescription(modelClass);
+    }
 
+    @Override
+    public List<PropertyAccessor> findProperties(Class<?> modelClass) {
+        List<PropertyAccessor> properties = new ArrayList<>();
+
+        BasicBeanDescription beanDesc = fakeSerializer.getDescription(modelClass);
         List<BeanPropertyDefinition> findProperties = beanDesc.findProperties();
         for (BeanPropertyDefinition beanPropertyDefinition : findProperties) {
             AnnotatedMethod getterJackson = beanPropertyDefinition.getGetter();
@@ -69,23 +77,20 @@ public class ModelJacksonParser implements ModelParser {
             Method getter = getterJackson == null ? null : getterJackson.getAnnotated();
             Method setter = setterJackson == null ? null : setterJackson.getAnnotated();
             Field field = fieldJackson == null ? null : fieldJackson.getAnnotated();
-
             if (getter == null && setter == null && field == null) {
-                log.warning("Cannot process property " + beanPropertyDefinition
-                        + " because we can't find a valid element in bean");
+                log.warning("Cannot find valid property element for : " + beanPropertyDefinition);
                 continue;
             }
 
-            PropertyDefinition property = config.getPropertyParser().parse(project, field, getter, setter);
-            model.getProperties().put(beanPropertyDefinition.getName(), property);
+            PropertyAccessor property = new PropertyAccessor();
+            property.setField(field);
+            property.setGetter(getter);
+            property.setSetter(setter);
+            property.setName(beanPropertyDefinition.getName());
+
+            properties.add(property);
         }
-
-        //        for (BeanPropertyWriter property : description2) {
-        //            PropertyDefinition prop = config.getPropertyParser().parse(project, modelClass, property.getName(),
-        //                    property);
-        //            model.getProperties().put(property.getName(), prop);
-        //        }
-
+        return properties;
     }
 
     ////////////////////////////////////////////////////////////
@@ -105,16 +110,13 @@ public class ModelJacksonParser implements ModelParser {
                 throw new IllegalArgumentException("Can not construct SimpleType for a Collection (class: "
                         + model.getName() + ")");
             }
-            // ... and while we are at it, not array types either
             if (model.isArray()) {
                 throw new IllegalArgumentException("Can not construct SimpleType for an array (class: "
                         + model.getName() + ")");
             }
 
             JavaType origType = SimpleType.construct(model);
-
             BasicClassIntrospector basicClassIntrospector = new BasicClassIntrospector();
-
             AnnotationIntrospectorPair annotationIntrospector = new AnnotationIntrospectorPair(
                     new JacksonAnnotationIntrospector(),
                     new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
@@ -123,21 +125,13 @@ public class ModelJacksonParser implements ModelParser {
                     VisibilityChecker.Std.defaultInstance(), null, TypeFactory.defaultInstance(), null, null, null,
                     null, null, null);
             SerializationConfig config = new SerializationConfig(baseSettings, new StdSubtypeResolver(), null);
-            //            DefaultSerializerProvider.Impl prov = new DefaultSerializerProvider.Impl().createInstance(config, this);
             BeanDescription beanDesc = config.introspect(origType);
-
             return (BasicBeanDescription) beanDesc;
-
-            //            BeanSerializerBuilder builder = constructBeanSerializerBuilder(beanDesc);
-            //            List<BeanPropertyWriter> properties;
-            //            try {
-            //                properties = findBeanProperties(prov, beanDesc, builder);
-            //            } catch (JsonMappingException e) {
-            //                throw new IllegalStateException(e);
-            //            }
-            //
-            //            return properties;
         }
     }
 
+    @Override
+    public boolean isModelToIgnore(Class<?> modelClass) {
+        return false;
+    }
 }

@@ -17,8 +17,10 @@
 package fr.norad.jaxrs.doc.parser;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.Test;
+import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 
 @SuppressWarnings("unused")
@@ -28,12 +30,24 @@ public class PropertyJavaParserTest {
     private PropertyJavaParser parser = new PropertyJavaParser();
 
     @Test
+    public void should_read_complex_type_from_property() throws Exception {
+        class Test {
+            private Map<Integer, String> field;
+        }
+
+        parser.parse(property, new PropertyAccessor("field", Test.class.getDeclaredField("field"), null, null));
+
+        assertThat((Object) property.getPropertyClass()).isEqualTo(String.class);
+        assertThat((Object) property.getMapKeyClass()).isEqualTo(Integer.class);
+    }
+
+    @Test
     public void should_read_type_from_property() throws Exception {
         class Test {
             private UUID field;
         }
 
-        parser.parse(property, Test.class.getDeclaredField("field"), null, null);
+        parser.parse(property, new PropertyAccessor("field", Test.class.getDeclaredField("field"), null, null));
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(UUID.class);
     }
@@ -46,7 +60,7 @@ public class PropertyJavaParserTest {
             }
         }
 
-        parser.parse(property, null, Test.class.getMethod("getElement"), null);
+        parser.parse(property, new PropertyAccessor("field", null, Test.class.getMethod("getElement"), null));
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(UUID.class);
     }
@@ -58,7 +72,8 @@ public class PropertyJavaParserTest {
             }
         }
 
-        parser.parse(property, null, null, Test.class.getMethod("setElement", UUID.class));
+        parser.parse(property,
+                new PropertyAccessor("field", null, null, Test.class.getMethod("setElement", UUID.class)));
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(UUID.class);
     }
@@ -71,7 +86,7 @@ public class PropertyJavaParserTest {
 
         }
 
-        parser.parse(property, TheClass.class.getDeclaredField("genre"), null, null);
+        parser.parse(property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null));
 
         assertThat(property.getDeprecated()).isTrue();
     }
@@ -83,7 +98,7 @@ public class PropertyJavaParserTest {
 
         }
 
-        parser.parse(property, TheClass.class.getDeclaredField("genre"), null, null);
+        parser.parse(property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null));
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(String.class);
         assertThat(property.getAsList()).isTrue();
@@ -97,7 +112,7 @@ public class PropertyJavaParserTest {
             }
         }
 
-        parser.parse(property, null, TheClass.class.getMethod("getElement"), null);
+        parser.parse(property, new PropertyAccessor("field", null, TheClass.class.getMethod("getElement"), null));
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(UUID.class);
         assertThat(property.getAsList()).isTrue();

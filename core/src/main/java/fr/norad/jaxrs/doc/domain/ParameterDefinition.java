@@ -24,26 +24,24 @@ import lombok.Data;
 @XmlRootElement
 public class ParameterDefinition {
 
-    private ParameterType paramType;
+    private ParameterType type;
     private Boolean encoded;
-    private String paramName;
+    private String name;
     private Class<?> paramClass;
-    private Boolean paramAsList;
-    private Class<?> paramMapKeyClass;
+    private Boolean asList;
+    private Class<?> mapKeyClass;
     private String defaultValue;
+    private String allowedValues; //TODO process enum
     private String description;
     private Map<String, Object> extras;
+    private Boolean mandatory;
 
     private Boolean deprecated;
     private String deprecatedSince;
     private String deprecatedCause;
 
-    //    private String name;
-    //    private String description;
     //    private String notes;
-    //    private String allowableValues;
     //    private Boolean required;
-    //    private Boolean allowMultiple;
     //    private String paramAccess;
     //    private String internalDescription;
     //    private String wrapperName;

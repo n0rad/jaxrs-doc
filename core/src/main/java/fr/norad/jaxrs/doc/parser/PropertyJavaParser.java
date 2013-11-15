@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
+import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
 import fr.norad.jaxrs.doc.utils.AnnotationUtil;
@@ -28,26 +29,26 @@ import fr.norad.jaxrs.doc.utils.ReflectionUtil;
 public class PropertyJavaParser implements PropertyParser {
 
     @Override
-    public void parse(PropertyDefinition property, Field field, Method getter, Method setter) {
-        if (field != null) {
-            processType(property, field.getType());
+    public void parse(PropertyDefinition property, PropertyAccessor accessor) {
+        if (accessor.getField() != null) {
+            processTypeFromField(property, accessor.getField());
         }
-        if (setter != null) {
-            processType(property, setter.getParameterTypes()[0]);
+        if (accessor.getSetter() != null) {
+            processTypeFromSetter(property, accessor.getSetter());
         }
-        if (getter != null) {
-            processType(property, getter.getReturnType());
-        }
-
-        processGetterSetter(property, getter);
-        processGetterSetter(property, setter);
-
-        if (field != null) {
-            Deprecated deprecated = field.getAnnotation(Deprecated.class);
-            property.setDeprecated(deprecated != null ? true : null);
-
+        if (accessor.getGetter() != null) {
+            processTypeFromGetter(property, accessor.getGetter());
         }
 
+        processGetterSetter(property, accessor.getGetter());
+        processGetterSetter(property, accessor.getSetter());
+
+        if (accessor.getField() != null) {
+            Deprecated deprecated = accessor.getField().getAnnotation(Deprecated.class);
+            if (deprecated != null) {
+                property.setDeprecated(true);
+            }
+        }
     }
 
     private void processGetterSetter(PropertyDefinition property, Method method) {
@@ -56,19 +57,21 @@ public class PropertyJavaParser implements PropertyParser {
         }
 
         Deprecated deprecated = AnnotationUtil.findAnnotation(method, Deprecated.class);
-        property.setDeprecated(deprecated != null ? true : null);
-
+        if (deprecated != null) {
+            property.setDeprecated(true);
+        }
     }
 
-    private void processType(PropertyDefinition property, Class<?> propertyClass) {
+    private void processTypeFromField(PropertyDefinition property, Field field) {
+        Class<?> propertyClass = field.getType();
         if (Map.class.isAssignableFrom(propertyClass)) {
-            property.setResponseMapKeyClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 0));
-            property.setResponseClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 1));
+            property.setMapKeyClass(ReflectionUtil.getGenericFieldTypeFromPosition(field, 0));
+            property.setPropertyClass(ReflectionUtil.getGenericFieldTypeFromPosition(field, 1));
             property.setAsList(true);
             return;
         }
         if (Collection.class.isAssignableFrom(propertyClass)) {
-            property.setResponseClass(ReflectionUtil.getSingleGenericReturnType(method));
+            property.setPropertyClass(ReflectionUtil.getGenericFieldTypeFromPosition(field, 0));
             property.setAsList(true);
             return;
         }
@@ -77,6 +80,55 @@ public class PropertyJavaParser implements PropertyParser {
             property.setAsList(true);
             return;
         }
+        property.setPropertyClass(propertyClass);
+    }
+
+    private void processTypeFromSetter(PropertyDefinition property, Method method) {
+        Class<?> propertyClass = method.getParameterTypes()[0];
+        if (Map.class.isAssignableFrom(propertyClass)) {
+            property.setMapKeyClass(ReflectionUtil.getGenericParamTypeForPosition(method, 0, 0));
+            property.setPropertyClass(ReflectionUtil.getGenericParamTypeForPosition(method, 0, 1));
+            property.setAsList(true);
+            return;
+        }
+        if (Collection.class.isAssignableFrom(propertyClass)) {
+            property.setPropertyClass(ReflectionUtil.getSingleGenericReturnType(method));
+            property.setAsList(true);
+            return;
+        }
+        if (propertyClass.isArray()) {
+            property.setPropertyClass(propertyClass.getComponentType());
+            property.setAsList(true);
+            return;
+        }
+        property.setPropertyClass(propertyClass);
+    }
+
+    private void processTypeFromGetter(PropertyDefinition property, Method method) {
+        Class<?> propertyClass = method.getReturnType();
+        if (Map.class.isAssignableFrom(propertyClass)) {
+            property.setMapKeyClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 0));
+            property.setPropertyClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 1));
+            property.setAsList(true);
+            return;
+        }
+        if (Collection.class.isAssignableFrom(propertyClass)) {
+            property.setPropertyClass(ReflectionUtil.getSingleGenericReturnType(method));
+            property.setAsList(true);
+            return;
+        }
+        if (propertyClass.isArray()) {
+            property.setPropertyClass(propertyClass.getComponentType());
+            property.setAsList(true);
+            return;
+        }
+        property.setPropertyClass(propertyClass);
+    }
+
+    @Override
+    public void isPropertyToIgnore(PropertyAccessor accessor) {
+        // TODO Auto-generated method stub
+
     }
 
 }

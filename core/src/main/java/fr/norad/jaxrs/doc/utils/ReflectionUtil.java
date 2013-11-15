@@ -16,6 +16,7 @@
  */
 package fr.norad.jaxrs.doc.utils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -33,6 +34,16 @@ public class ReflectionUtil {
             Type genericParamType = method.getGenericParameterTypes()[paramPosition];
             ParameterizedType type = (ParameterizedType) genericParamType;
             return (Class<?>) type.getActualTypeArguments()[genericPosition];
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Class<?> getGenericFieldTypeFromPosition(Field field, int position) {
+        try {
+            Type genericType = field.getGenericType();
+            ParameterizedType type = (ParameterizedType) genericType;
+            return (Class<?>) type.getActualTypeArguments()[position];
         } catch (Exception e) {
             return null;
         }

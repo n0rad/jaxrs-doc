@@ -30,7 +30,14 @@
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>javax.ws.rs-api</artifactId>
 		</dependency>
-
+		
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-multipart</artifactId>
+            <version>1.17.1</version>
+            <scope>provided</scope>
+        </dependency>
+        
 		<!-- TODO SUX -->
 		<dependency>
 			<groupId>org.reflections</groupId>

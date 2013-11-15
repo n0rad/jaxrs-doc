@@ -16,6 +16,7 @@
  */
 package fr.norad.jaxrs.doc.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,17 +26,18 @@ import lombok.Data;
 @XmlRootElement
 public class OperationDefinition {
 
+    private Class<?> operationClass;
+    private String path;
+
     private String httpMethod;
     private String description;
     private String methodName;
-    private String path;
     private Map<String, Object> extras;
 
     private Boolean deprecated;
     private String deprecatedSince;
     private String deprecatedCause;
 
-    private Class<?> sourceClass;
     private Class<?> responseClass;
     private Class<?> responseMapKeyClass;
     private Boolean responseAsList;
@@ -52,6 +54,13 @@ public class OperationDefinition {
 
     public OperationDefinition(String path) {
         this.path = path;
+    }
+
+    public List<ErrorDefinition> createdErrors() {
+        if (errors == null) {
+            errors = new ArrayList<>();
+        }
+        return getErrors();
     }
 
 }

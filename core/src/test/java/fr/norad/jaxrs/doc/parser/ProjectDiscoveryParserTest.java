@@ -16,33 +16,32 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
-import java.util.Arrays;
+import static java.util.Arrays.asList;
+import static org.fest.assertions.api.Assertions.assertThat;
+import java.util.List;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import fr.norad.jaxrs.doc.JaxRsDocProcessorFactory;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.parser.ProjectDiscoveryParser;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ProjectDiscoveryParserTest {
 
-    @Mock
-    private ApiJaxrsParser apiParser;
+    @Test
+    public void should_fill_name_and_version() throws Exception {
+        ProjectDefinition project = new ProjectDefinition();
+        ProjectDiscoveryParser parser = new ProjectDiscoveryParser(asList("fr.norad.jaxrs.doc"), "name", "version");
 
-    @InjectMocks
-    private JaxRsDocProcessorFactory config = new JaxRsDocProcessorFactory(Arrays.asList("fr.norad"));
+        parser.parse(project);
+
+        assertThat(project.getName()).isEqualTo("name");
+        assertThat(project.getVersion()).isEqualTo("version");
+    }
 
     @Test
-    public void should_find_some_api() throws Exception {
-        ProjectDefinition project = new ProjectDiscoveryParser(config).parse();
-        verify(apiParser, atLeastOnce()).parse(eq(project), any(Class.class));
+    public void should_discover_api() throws Exception {
+        ProjectDiscoveryParser parser = new ProjectDiscoveryParser(asList("fr.norad.jaxrs.doc"), "name", "version");
+
+        List<Class<?>> apiClasses = parser.apiClasses();
+
+        assertThat(apiClasses).isNotEmpty();
     }
 
 }

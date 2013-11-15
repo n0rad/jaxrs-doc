@@ -16,24 +16,64 @@
  */
 package fr.norad.jaxrs.doc.swagger.parser;
 
+import static fr.norad.jaxrs.doc.utils.TypeUtils.notEmpty;
 import java.lang.reflect.Method;
-import fr.norad.jaxrs.doc.JaxRsDocProcessorFactory;
+import java.util.logging.Logger;
+import com.wordnik.swagger.annotations.ApiError;
+import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.ApiOperation;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.domain.ErrorDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.parser.OperationJaxrsParser;
+import fr.norad.jaxrs.doc.parserapi.OperationParser;
+import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 
-public class SwaggerOperationParser extends OperationJaxrsParser {
+public class SwaggerOperationParser implements OperationParser {
 
-    public SwaggerOperationParser(JaxRsDocProcessorFactory config) {
-        super(config);
-    }
+    private Logger log = Logger.getLogger(SwaggerOperationParser.class.getName());
 
     @Override
-    public OperationDefinition parse(ProjectDefinition project, ApiDefinition api, Method method) {
-        OperationDefinition parse = super.parse(project, api, method);
+    public void parse(ApiDefinition api, OperationDefinition operation, Method method) {
+        ApiOperation operationSwagger = AnnotationUtil.findAnnotation(method, ApiOperation.class);
+        if (operationSwagger != null) {
+            if (notEmpty(operationSwagger.value())) {
+                operation.setDescription(operationSwagger.value());
+            }
+            if (operationSwagger.multiValueResponse()) {
+                operation.setResponseAsList(true);
+            }
+            if (notEmpty(operationSwagger.httpMethod())) {
+                operation.setHttpMethod(operationSwagger.httpMethod());
+            }
+            if (!operationSwagger.responseClass().equals("void")) {
+                try {
+                    Class<?> responseClass = Class.forName(operationSwagger.responseClass());
+                    operation.setResponseClass(responseClass);
+                } catch (ClassNotFoundException e) {
+                    log.warning("invalid response class from swagger ApiOperation annotation on : " + method);
+                }
+            }
+        }
 
-        return parse;
+        ApiErrors errorsSwagger = AnnotationUtil.findAnnotation(method, ApiErrors.class);
+        if (errorsSwagger != null) {
+            for (ApiError errorSwagger : errorsSwagger.value()) {
+                processError(operation, errorSwagger);
+            }
+        }
+
+        ApiError errorSwagger = AnnotationUtil.findAnnotation(method, ApiError.class);
+        if (errorSwagger != null) {
+            processError(operation, errorSwagger);
+        }
+    }
+
+    private void processError(OperationDefinition operation, ApiError errorSwagger) {
+        ErrorDefinition error = new ErrorDefinition();//TODO handle already existing error from throws
+        error.setReason(errorSwagger.reason());
+        error.setHttpCode(errorSwagger.code());
+
+        operation.createdErrors().add(error);
     }
 
 }

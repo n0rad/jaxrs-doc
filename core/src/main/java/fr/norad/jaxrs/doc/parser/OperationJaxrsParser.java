@@ -37,7 +37,10 @@ public class OperationJaxrsParser implements OperationParser {
         }
 
         Path path = AnnotationUtil.findAnnotation(method, Path.class);
-        String methodPath = path != null ? path.value() : null;
+        String methodPath = null;
+        if (path != null) {
+            methodPath = path.value();
+        }
         operation.setPath(buildFullPath(api.getPath(), methodPath));
 
         Consumes consumes = AnnotationUtil.findAnnotation(method, Consumes.class);

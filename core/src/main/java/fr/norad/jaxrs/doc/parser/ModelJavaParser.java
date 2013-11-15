@@ -19,6 +19,7 @@ package fr.norad.jaxrs.doc.parser;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 import fr.norad.jaxrs.doc.utils.AnnotationUtil;
@@ -26,13 +27,11 @@ import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 public class ModelJavaParser implements ModelParser {
 
     private final List<Pattern> modelToIgnore = Arrays.asList(
-            Pattern.compile("java\\.[lang|util|io]+\\.[\\w\\._-]+"),
+            Pattern.compile("java\\.[lang|util|io|net]+\\.[\\w\\._-]+"),
             Pattern.compile("void|int|long|byte|char|short|boolean|float|double"));
 
     @Override
     public void parse(ModelDefinition model, Class<?> modelClass) {
-        model.setModelClass(modelClass);
-
         Deprecated deprecated = AnnotationUtil.findAnnotation(modelClass, Deprecated.class);
         model.setDeprecated(deprecated != null ? true : null);
     }
@@ -45,5 +44,11 @@ public class ModelJavaParser implements ModelParser {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<PropertyAccessor> findProperties(Class<?> modelClass) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

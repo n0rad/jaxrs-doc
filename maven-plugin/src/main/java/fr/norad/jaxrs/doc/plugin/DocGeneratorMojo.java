@@ -17,7 +17,9 @@
 package fr.norad.jaxrs.doc.plugin;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -30,9 +32,20 @@ import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
-import fr.norad.jaxrs.doc.JaxRsDocProcessorFactory;
+import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.parser.ModelJacksonParser;
+import fr.norad.jaxrs.doc.parserapi.ApiParser;
+import fr.norad.jaxrs.doc.parserapi.ModelParser;
+import fr.norad.jaxrs.doc.parserapi.OperationParser;
+import fr.norad.jaxrs.doc.parserapi.ParameterParser;
+import fr.norad.jaxrs.doc.parserapi.ProjectParser;
+import fr.norad.jaxrs.doc.parserapi.PropertyParser;
+import fr.norad.jaxrs.doc.processor.ApiProcessor;
+import fr.norad.jaxrs.doc.processor.ModelProcessor;
+import fr.norad.jaxrs.doc.processor.OperationProcessor;
+import fr.norad.jaxrs.doc.processor.ParameterProcessor;
+import fr.norad.jaxrs.doc.processor.ProjectProcessor;
+import fr.norad.jaxrs.doc.processor.PropertyProcessor;
 
 @Mojo(name = "generate-doc", defaultPhase = LifecyclePhase.PROCESS_CLASSES, configurator = "include-project-dependencies", requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class DocGeneratorMojo extends AbstractMojo {
@@ -40,11 +53,27 @@ public class DocGeneratorMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.build.directory}/jaxrs-doc-${version}.json", property = "outputFile", required = false)
     private File outputFile;
 
+    @Parameter(defaultValue = "${project.artifactId}", property = "artifactId", required = false)
+    private String name;
+
     @Parameter(defaultValue = "${project.version}", property = "version", required = false)
     private String version;
 
     @Parameter(defaultValue = "${packageIncludes}", property = "packageIncludes", required = true)
     private String[] packageIncludes;
+
+    @Parameter(property = "projectParsers", required = false)
+    private String[] projectParsers;
+    @Parameter(property = "apiParsers", required = false)
+    private String[] apiParsers;
+    @Parameter(property = "operationParsers", required = false)
+    private String[] operationParsers;
+    @Parameter(property = "parameterParsers", required = false)
+    private String[] parameterParsers;
+    @Parameter(property = "modelParsers", required = false)
+    private String[] modelParsers;
+    @Parameter(property = "propertyParsers", required = false)
+    private String[] propertyParsers;
 
     private ObjectMapper objectMapper;
 
@@ -59,12 +88,59 @@ public class DocGeneratorMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         outputFile = new File(outputFile.getAbsolutePath().replace("${version}", version));
         try {
-            JaxRsDocProcessorFactory docConfig = new JaxRsDocProcessorFactory(Arrays.asList(packageIncludes));
-            docConfig.setModelParser(new ModelJacksonParser(docConfig));
-            writeDefinitionToFile(docConfig.getProjectParser().parse());
+            JaxrsDocProcessorFactory processorFactory = prepareFactory();
+            writeDefinitionToFile(processorFactory.getProjectProcessor().process());
         } catch (Exception e) {
             getLog().error(e);
             throw new MojoExecutionException("Jaxrs doc generation fail", e);
+        }
+    }
+
+    private JaxrsDocProcessorFactory prepareFactory() {
+        JaxrsDocProcessorFactory factory = new JaxrsDocProcessorFactory(Arrays.asList(packageIncludes),
+                name, version);
+        if (projectParsers.length > 0) {
+            factory.setProjectProcessor(new ProjectProcessor(factory,
+                    buildParserList(projectParsers, ProjectParser.class)));
+        }
+        if (apiParsers.length > 0) {
+            factory.setApiProcessor(new ApiProcessor(factory,
+                    buildParserList(apiParsers, ApiParser.class)));
+        }
+        if (operationParsers.length > 0) {
+            factory.setOperationProcessor(new OperationProcessor(factory,
+                    buildParserList(operationParsers, OperationParser.class)));
+        }
+        if (parameterParsers.length > 0) {
+            factory.setParameterProcessor(new ParameterProcessor(factory,
+                    buildParserList(parameterParsers, ParameterParser.class)));
+        }
+        if (modelParsers.length > 0) {
+            factory.setModelProcessor(new ModelProcessor(factory,
+                    buildParserList(modelParsers, ModelParser.class)));
+        }
+        if (propertyParsers.length > 0) {
+            factory.setPropertyProcessor(new PropertyProcessor(factory,
+                    buildParserList(propertyParsers, PropertyParser.class)));
+        }
+        return factory;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> List<T> buildParserList(String[] parserClassNames, Class<T> t) {
+        List<T> parsers = new ArrayList<>();
+        for (String parserClassName : parserClassNames) {
+            parsers.add((T) buildParser(parserClassName));
+        }
+        return parsers;
+    }
+
+    private Object buildParser(String parserClassName) {
+        try {
+            Class<?> parserClass = Class.forName(parserClassName);
+            return parserClass.newInstance();
+        } catch (Exception e) {
+            throw new IllegalStateException("Cannot build parser : " + parserClassName, e);
         }
     }
 

@@ -27,6 +27,7 @@ import lombok.Data;
 public class ApiDefinition {
 
     private String path;
+    private String summary;
     private String description;
     private Class<?> apiClass;
     private List<OperationDefinition> operations = new ArrayList<>();

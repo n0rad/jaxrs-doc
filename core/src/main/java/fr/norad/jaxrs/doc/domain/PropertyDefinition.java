@@ -25,6 +25,7 @@ import lombok.Data;
 public class PropertyDefinition {
 
     private Boolean asList;
+    private Class<?> mapKeyClass;
     private Class<?> propertyClass;
     private String description;
 

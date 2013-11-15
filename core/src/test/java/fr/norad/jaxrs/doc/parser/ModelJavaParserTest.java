@@ -18,13 +18,15 @@ package fr.norad.jaxrs.doc.parser;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.UUID;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 
 public class ModelJavaParserTest {
 
-    private ModelDefinition model = new ModelDefinition();
+    private ModelDefinition model = new ModelDefinition(String.class);
     private ModelJavaParser parser = new ModelJavaParser();
 
     @Test
@@ -34,6 +36,8 @@ public class ModelJavaParserTest {
         assertThat(parser.isModelToIgnore(void.class)).isTrue();
         assertThat(parser.isModelToIgnore(UUID.class)).isTrue();
         assertThat(parser.isModelToIgnore(InputStream.class)).isTrue();
+        assertThat(parser.isModelToIgnore(URL.class)).isTrue();
+        assertThat(parser.isModelToIgnore(URI.class)).isTrue();
     }
 
     @Test

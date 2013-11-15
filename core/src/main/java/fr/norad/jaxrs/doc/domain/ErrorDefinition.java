@@ -23,7 +23,7 @@ import lombok.Data;
 public class ErrorDefinition {
 
     private Class<?> errorClass;
-    private int httpCode;
+    private Integer httpCode;
     private String reason;
     private Map<String, Object> extras;
 

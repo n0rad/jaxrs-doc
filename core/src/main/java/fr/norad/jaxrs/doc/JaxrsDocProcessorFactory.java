@@ -23,6 +23,7 @@ import lombok.Data;
 import fr.norad.jaxrs.doc.parser.ApiJavaParser;
 import fr.norad.jaxrs.doc.parser.ApiJaxrsDocParser;
 import fr.norad.jaxrs.doc.parser.ApiJaxrsParser;
+import fr.norad.jaxrs.doc.parser.ModelJacksonParser;
 import fr.norad.jaxrs.doc.parser.ModelJavaParser;
 import fr.norad.jaxrs.doc.parser.ModelJaxrsDocParser;
 import fr.norad.jaxrs.doc.parser.ModelJaxrsParser;
@@ -32,6 +33,7 @@ import fr.norad.jaxrs.doc.parser.OperationJaxrsParser;
 import fr.norad.jaxrs.doc.parser.ParameterJavaParser;
 import fr.norad.jaxrs.doc.parser.ParameterJaxrsDocParser;
 import fr.norad.jaxrs.doc.parser.ParameterJaxrsParser;
+import fr.norad.jaxrs.doc.parser.ParameterJerseyParser;
 import fr.norad.jaxrs.doc.parser.ProjectDiscoveryParser;
 import fr.norad.jaxrs.doc.parser.PropertyJavaParser;
 import fr.norad.jaxrs.doc.parser.PropertyJaxrsDocParser;
@@ -44,7 +46,7 @@ import fr.norad.jaxrs.doc.processor.ProjectProcessor;
 import fr.norad.jaxrs.doc.processor.PropertyProcessor;
 
 @Data
-public class JaxRsDocProcessorFactory {
+public class JaxrsDocProcessorFactory {
 
     private ProjectProcessor projectProcessor;
     private ApiProcessor apiProcessor = new ApiProcessor(this, asList( //
@@ -58,22 +60,24 @@ public class JaxRsDocProcessorFactory {
     private ParameterProcessor parameterProcessor = new ParameterProcessor(this, asList( //
             new ParameterJavaParser(), //
             new ParameterJaxrsParser(), //
+            new ParameterJerseyParser(), //
             new ParameterJaxrsDocParser()));
     private ModelProcessor modelProcessor = new ModelProcessor(this, asList( //
             new ModelJavaParser(), //
             new ModelJaxrsParser(), //
-            new ModelJaxrsDocParser() //
+            new ModelJaxrsDocParser(), //
+            new ModelJacksonParser() //
             ));
     private PropertyProcessor propertyProcessor = new PropertyProcessor(this, asList( //
             new PropertyJavaParser(), //
             new PropertyJaxrsDocParser() //
             ));
 
-    public JaxRsDocProcessorFactory(ProjectParser projectParser) {
+    public JaxrsDocProcessorFactory(ProjectParser projectParser) {
         projectProcessor = new ProjectProcessor(this, Arrays.<ProjectParser> asList(projectParser));
     }
 
-    public JaxRsDocProcessorFactory(List<String> packagesToScan, String name, String version) {
+    public JaxrsDocProcessorFactory(List<String> packagesToScan, String name, String version) {
         projectProcessor = new ProjectProcessor(this, Arrays.<ProjectParser> asList(new ProjectDiscoveryParser(
                 packagesToScan, name, version)));
     }
