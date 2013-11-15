@@ -1,6 +1,7 @@
 'use strict';
 
-jaxrsDoc.controller('ApiController', ['$scope', 'ProjectConf', 'Apis', function($scope, ProjectConf, Apis) {
+jaxrsDoc.controller('ApiController', ['$scope', 'Projects', 'Apis', function($scope, Projects, Apis) {
 //  $scope.currentProject = ProjectConf.currentProject;
-  $scope.projectDefinition = ProjectConf.loadProject(ProjectConf.currentProject, ProjectConf.currentVersion);
+//  $scope.projectDefinition = Projects.getProject(Projects.currentProject, Projects.currentVersion);
+
 }]);

@@ -14,8 +14,11 @@ jaxrsDoc.config(function ($routeProvider, $locationProvider) {
   	    controller : 'ApiController',
   	    templateUrl : 'views/Main.html'
   	  }).when('/:currentProject/:currentVersion', {
-  	    controller : 'ApiController',
-  	    templateUrl : 'views/Project.html'
-  	  });
+          controller : 'ApiController',
+          templateUrl : 'views/Project.html'
+      }).when('/:currentProject/:currentVersion/api/:currentApi', {
+          controller : 'ApiController',
+          templateUrl : 'views/Project.html'
+      });
 //	.otherwise({redirectTo:'/'});
 });

@@ -1,12 +1,12 @@
 'use strict';
 
-jaxrsDoc.controller('FilterController', ['$scope', 'ProjectConf', '$location', function($scope, ProjectConf, $location) {
+jaxrsDoc.controller('FilterController', ['$scope', 'Projects', '$location', function($scope, Projects, $location) {
 
-  $scope.projects = ProjectConf.getProjects();
+  $scope.projects = Projects.loadProjectList();
 //  $scope.currentProject = Projects.currentProject;
   
   $scope.$on('currentProject', function() {
-    $scope.currentProject = ProjectConf.currentProject;
+    $scope.currentProject = Projects.currentProject;
   });
   
   
