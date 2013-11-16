@@ -43,7 +43,7 @@
     </div>
 
     <div class="container-fluid">
-        <ng-view>loading..........</ng-view>
+        <ui-view>loading..........</ui-view>
         <hr>
       <footer>
         <p>&copy; <a href="http://github.com/n0rad/jaxrs-doc">Jaxrs doc</p>
@@ -54,6 +54,7 @@
       var docServiceUrl = '${docServiceUrl}';
     </script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 
     <!-- build:js({.tmp,<%= yeoman.app %>}) scripts/scripts.js -->
     <script src="scripts/jaxrs-doc.js"></script>

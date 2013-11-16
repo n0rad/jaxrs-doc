@@ -1,12 +1,8 @@
 <div class="span9" ng-controller="ApiController">
-    <input ng-model="currentProject">
-    <input ng-model="currentVersion">
-    <input ng-model="currentApi">
-    yopla!!!
 
-    <h2 title="">{{currentGroupName}}</h2>
+    <h2 title="">{{currentApiUrl}}</h2>
 
-    <div ng-repeat="operation in currentGroup.operations">
+    <div ng-repeat="operation in currentApiGroup.operations">
         <h3>{{operation.summary}}</h3>
         <pre title="{{operation.operationClass}}.{{operation.methodName}}"> <span
                 class="label label-method-{{operation.httpMethod}}">{{operation.httpMethod}}</span> <span

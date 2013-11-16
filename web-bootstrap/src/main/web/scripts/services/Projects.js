@@ -28,6 +28,21 @@ jaxrsDoc.factory('Projects', ['$http', '$rootScope', function($http, $rootScope)
             return promise;
         },
 
+        findApiGroup : function(apiUrl) {
+            var groups = projects[this.currentProject][this.currentVersion].apiGroups;
+            for (var k in groups){
+                if (groups.hasOwnProperty(k)) {
+                    for (var j in groups[k]){
+                        if (groups[k].hasOwnProperty(j)) {
+                            if (j == apiUrl) {
+                                return groups[k][j];
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
         getProject : function(project, version) {
             if (!project || !version || !projects[project] || !projects[project][version]) {
                 return;
