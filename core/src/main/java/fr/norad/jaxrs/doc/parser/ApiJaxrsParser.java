@@ -27,18 +27,18 @@ import javax.ws.rs.Produces;
 import org.reflections.ReflectionUtils;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class ApiJaxrsParser implements ApiParser {
 
     @Override
     public void parse(ApiDefinition api, Class<?> apiClass) {
-        Path path = AnnotationUtil.findAnnotation(apiClass, Path.class);
+        Path path = AnnotationUtils.findAnnotation(apiClass, Path.class);
         if (path != null) {
             api.setPath(path.value());
         }
 
-        Consumes consumes = AnnotationUtil.findAnnotation(apiClass, Consumes.class);
+        Consumes consumes = AnnotationUtils.findAnnotation(apiClass, Consumes.class);
         if (consumes != null) {
             for (String consume : consumes.value()) {
                 if (api.getConsumes() == null) {
@@ -48,7 +48,7 @@ public class ApiJaxrsParser implements ApiParser {
             }
         }
 
-        Produces produces = AnnotationUtil.findAnnotation(apiClass, Produces.class);
+        Produces produces = AnnotationUtils.findAnnotation(apiClass, Produces.class);
         if (produces != null) {
             for (String produce : produces.value()) {
                 if (api.getProduces() == null) {
@@ -73,7 +73,7 @@ public class ApiJaxrsParser implements ApiParser {
     }
 
     private HttpMethod getHttpMethod(Method method) {
-        return AnnotationUtil.findAnnotation(method, HttpMethod.class);
+        return AnnotationUtils.findAnnotation(method, HttpMethod.class);
     }
 
 }

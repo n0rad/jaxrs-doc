@@ -23,7 +23,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReflectionUtil {
+public class ReflectionUtils {
 
     public static Class<?> getSingleGenericParamType(Method method, int paramPosition) {
         return getGenericParamTypeForPosition(method, paramPosition, 0);

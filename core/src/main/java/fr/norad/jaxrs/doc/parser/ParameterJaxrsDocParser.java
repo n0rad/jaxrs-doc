@@ -18,17 +18,22 @@ package fr.norad.jaxrs.doc.parser;
 
 import static fr.norad.jaxrs.doc.utils.TypeUtils.notEmpty;
 import java.lang.reflect.Method;
+import java.util.Locale;
+import java.util.Map;
 import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.annotations.Outdated;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
+import fr.norad.jaxrs.doc.utils.DocUtils;
 
 public class ParameterJaxrsDocParser implements ParameterParser {
 
     @Override
-    public void parse(ParameterDefinition parameter, Method method, int position) {
-        Outdated outdated = AnnotationUtil.findParameterAnnotation(method, position, Outdated.class);
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ParameterDefinition parameter,
+                      Method method, int position) {
+        Outdated outdated = AnnotationUtils.findParameterAnnotation(method, position, Outdated.class);
         if (outdated != null) {
             parameter.setDeprecated(true);
             if (notEmpty(outdated.cause())) {
@@ -39,9 +44,9 @@ public class ParameterJaxrsDocParser implements ParameterParser {
             }
         }
 
-        Description desc = AnnotationUtil.findParameterAnnotation(method, position, Description.class);
-        if (desc != null && notEmpty(desc.value())) {
-            parameter.setDescription(desc.value());
+        Description desc = AnnotationUtils.findParameterAnnotation(method, position, Description.class);
+        if (desc != null && notEmpty(DocUtils.getDescription(desc))) {
+            parameter.setDescription(DocUtils.getDescription(desc));
         }
 
     }

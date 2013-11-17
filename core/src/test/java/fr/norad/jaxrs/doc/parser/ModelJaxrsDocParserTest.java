@@ -33,7 +33,7 @@ public class ModelJaxrsDocParserTest {
         class Test {
 
         }
-        parser.parse(model, Test.class);
+        parser.parse(null, model, Test.class);
 
         assertThat(model.getDeprecated()).isTrue();
         assertThat(model.getDeprecatedCause()).isEqualTo("cause");
@@ -46,7 +46,7 @@ public class ModelJaxrsDocParserTest {
         class Test {
 
         }
-        parser.parse(model, Test.class);
+        parser.parse(null, model, Test.class);
 
         assertThat(model.getDescription()).isEqualTo("yopla");
     }

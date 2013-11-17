@@ -18,17 +18,20 @@ package fr.norad.jaxrs.doc.parser;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
-import fr.norad.jaxrs.doc.utils.ReflectionUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
+import fr.norad.jaxrs.doc.utils.ReflectionUtils;
 
 public class ParameterJavaParser implements ParameterParser {
 
     @Override
-    public void parse(ParameterDefinition parameter, Method method, int position) {
-        Deprecated deprecated = AnnotationUtil.findParameterAnnotation(method, position, Deprecated.class);
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ParameterDefinition parameter,
+                      Method method, int position) {
+        Deprecated deprecated = AnnotationUtils.findParameterAnnotation(method, position, Deprecated.class);
         if (deprecated != null) {
             parameter.setDeprecated(true);
         }
@@ -38,13 +41,13 @@ public class ParameterJavaParser implements ParameterParser {
 
     private void fillParamClassPart(ParameterDefinition param, Method method, int position) {
         if (Map.class.isAssignableFrom(method.getParameterTypes()[position])) {
-            param.setMapKeyClass(ReflectionUtil.getGenericParamTypeForPosition(method, position, 0));
-            param.setParamClass(ReflectionUtil.getGenericParamTypeForPosition(method, position, 1));
+            param.setMapKeyClass(ReflectionUtils.getGenericParamTypeForPosition(method, position, 0));
+            param.setParamClass(ReflectionUtils.getGenericParamTypeForPosition(method, position, 1));
             param.setAsList(true);
             return;
         }
         if (Collection.class.isAssignableFrom(method.getParameterTypes()[position])) {
-            param.setParamClass(ReflectionUtil.getSingleGenericParamType(method, position));
+            param.setParamClass(ReflectionUtils.getSingleGenericParamType(method, position));
             param.setAsList(true);
             return;
         }

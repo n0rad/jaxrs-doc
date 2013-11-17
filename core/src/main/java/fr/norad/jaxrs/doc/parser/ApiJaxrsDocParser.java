@@ -23,24 +23,25 @@ import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.annotations.Summary;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
+import fr.norad.jaxrs.doc.utils.DocUtils;
 
 public class ApiJaxrsDocParser implements ApiParser {
 
     @Override
     public void parse(ApiDefinition api, Class<?> apiClass) {
-        Outdated outdated = AnnotationUtil.findAnnotation(apiClass, Outdated.class);
+        Outdated outdated = AnnotationUtils.findAnnotation(apiClass, Outdated.class);
         if (outdated != null) {
             api.setDeprecated(true);
             api.setDeprecatedCause(outdated.cause());
             api.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
         }
 
-        Summary summary = AnnotationUtil.findAnnotation(apiClass, Summary.class);
+        Summary summary = AnnotationUtils.findAnnotation(apiClass, Summary.class);
         api.setSummary(summary != null ? summary.value().trim() : null);
 
-        Description description = AnnotationUtil.findAnnotation(apiClass, Description.class);
-        api.setDescription(description != null ? description.value().trim() : null);
+        Description description = AnnotationUtils.findAnnotation(apiClass, Description.class);
+        api.setDescription(description != null ? DocUtils.getDescription(description) : null);
     }
 
     @Override

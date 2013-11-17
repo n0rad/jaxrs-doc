@@ -18,8 +18,11 @@ package fr.norad.jaxrs.doc.parser;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 import fr.norad.jaxrs.doc.PropertyAccessor;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 
@@ -28,7 +31,7 @@ public class ModelJaxrsParser implements ModelParser {
     private final List<Pattern> modelToIgnore = Arrays.asList(Pattern.compile("javax\\.ws\\.rs\\.core\\.Response"));
 
     @Override
-    public void parse(ModelDefinition model, Class<?> modelClass) {
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ModelDefinition model, Class<?> modelClass) {
         // for now I don't see any jaxrs information to fill from model
     }
 

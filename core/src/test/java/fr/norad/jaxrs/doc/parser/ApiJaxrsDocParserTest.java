@@ -25,7 +25,6 @@ import fr.norad.jaxrs.doc.annotations.Summary;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 
 public class ApiJaxrsDocParserTest {
-
     @Test
     public void should_support_outdated() throws Exception {
         @Path("/")
@@ -63,5 +62,18 @@ public class ApiJaxrsDocParserTest {
         new ApiJaxrsDocParser().parse(api, Test.class);
 
         assertThat(api.getDescription()).isEqualTo("description");
+    }
+
+    @Test
+    public void should_support_description_with_multiline() throws Exception {
+        @Description({"very long description that needs to use 2 lines to be able to say everything we want to",
+                      "say and keep the formater able to do what we want to do"})
+        class Test {
+        }
+
+        ApiDefinition api = new ApiDefinition();
+        new ApiJaxrsDocParser().parse(api, Test.class);
+
+        assertThat(api.getDescription()).startsWith("very").endsWith("do").contains("to say and keep");
     }
 }

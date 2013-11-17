@@ -16,42 +16,43 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.Set;
+import javax.validation.metadata.BeanDescriptor;
+import javax.validation.metadata.ConstraintDescriptor;
 import fr.norad.jaxrs.doc.PropertyAccessor;
+import fr.norad.jaxrs.doc.domain.ConstraintDefinition;
 import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
+import fr.norad.jaxrs.doc.utils.ValidationUtils;
 
-public class ModelJavaParser implements ModelParser {
-
-    private final List<Pattern> modelToIgnore = Arrays.asList(
-            Pattern.compile("java\\.[lang|util|io|net]+\\.[\\w\\._-]+"),
-            Pattern.compile("void|int|long|byte|char|short|boolean|float|double"));
-
+public class ModelBeanValidationParser implements ModelParser {
     @Override
-    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ModelDefinition model, Class<?> modelClass) {
-        Deprecated deprecated = AnnotationUtils.findAnnotation(modelClass, Deprecated.class);
-        model.setDeprecated(deprecated != null ? true : null);
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ModelDefinition model,
+                      Class<?> modelClass) {
+        BeanDescriptor beanDescriptor = ValidationUtils.getBeanDescriptor(modelClass);
+        Set<ConstraintDescriptor<?>> beanConstraints = beanDescriptor.getConstraintDescriptors();
+        for (ConstraintDescriptor constraint : beanConstraints) {
+            if (model.getConstraints() == null) {
+                model.setConstraints(new ArrayList<ConstraintDefinition>());
+            }
+            ConstraintDefinition constraintDefinition = new ConstraintDefinition();
+            ValidationUtils.fillConstraint(localeDefinitions, constraintDefinition, constraint);
+            model.getConstraints().add(constraintDefinition);
+        }
     }
 
     @Override
     public boolean isModelToIgnore(Class<?> modelClass) {
-        for (Pattern pattern : modelToIgnore) {
-            if (pattern.matcher(modelClass.getName()).matches()) {
-                return true;
-            }
-        }
         return false;
     }
 
     @Override
     public List<PropertyAccessor> findProperties(Class<?> modelClass) {
-        // TODO Auto-generated method stub
         return null;
     }
 }

@@ -19,17 +19,20 @@ package fr.norad.jaxrs.doc.parser;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import fr.norad.jaxrs.doc.PropertyAccessor;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
-import fr.norad.jaxrs.doc.utils.ReflectionUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
+import fr.norad.jaxrs.doc.utils.ReflectionUtils;
 
 public class PropertyJavaParser implements PropertyParser {
 
     @Override
-    public void parse(PropertyDefinition property, PropertyAccessor accessor) {
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, PropertyDefinition property,
+                      PropertyAccessor accessor) {
         if (accessor.getField() != null) {
             processTypeFromField(property, accessor.getField());
         }
@@ -56,7 +59,7 @@ public class PropertyJavaParser implements PropertyParser {
             return;
         }
 
-        Deprecated deprecated = AnnotationUtil.findAnnotation(method, Deprecated.class);
+        Deprecated deprecated = AnnotationUtils.findAnnotation(method, Deprecated.class);
         if (deprecated != null) {
             property.setDeprecated(true);
         }
@@ -65,13 +68,13 @@ public class PropertyJavaParser implements PropertyParser {
     private void processTypeFromField(PropertyDefinition property, Field field) {
         Class<?> propertyClass = field.getType();
         if (Map.class.isAssignableFrom(propertyClass)) {
-            property.setMapKeyClass(ReflectionUtil.getGenericFieldTypeFromPosition(field, 0));
-            property.setPropertyClass(ReflectionUtil.getGenericFieldTypeFromPosition(field, 1));
+            property.setMapKeyClass(ReflectionUtils.getGenericFieldTypeFromPosition(field, 0));
+            property.setPropertyClass(ReflectionUtils.getGenericFieldTypeFromPosition(field, 1));
             property.setAsList(true);
             return;
         }
         if (Collection.class.isAssignableFrom(propertyClass)) {
-            property.setPropertyClass(ReflectionUtil.getGenericFieldTypeFromPosition(field, 0));
+            property.setPropertyClass(ReflectionUtils.getGenericFieldTypeFromPosition(field, 0));
             property.setAsList(true);
             return;
         }
@@ -86,13 +89,13 @@ public class PropertyJavaParser implements PropertyParser {
     private void processTypeFromSetter(PropertyDefinition property, Method method) {
         Class<?> propertyClass = method.getParameterTypes()[0];
         if (Map.class.isAssignableFrom(propertyClass)) {
-            property.setMapKeyClass(ReflectionUtil.getGenericParamTypeForPosition(method, 0, 0));
-            property.setPropertyClass(ReflectionUtil.getGenericParamTypeForPosition(method, 0, 1));
+            property.setMapKeyClass(ReflectionUtils.getGenericParamTypeForPosition(method, 0, 0));
+            property.setPropertyClass(ReflectionUtils.getGenericParamTypeForPosition(method, 0, 1));
             property.setAsList(true);
             return;
         }
         if (Collection.class.isAssignableFrom(propertyClass)) {
-            property.setPropertyClass(ReflectionUtil.getSingleGenericReturnType(method));
+            property.setPropertyClass(ReflectionUtils.getSingleGenericReturnType(method));
             property.setAsList(true);
             return;
         }
@@ -107,13 +110,13 @@ public class PropertyJavaParser implements PropertyParser {
     private void processTypeFromGetter(PropertyDefinition property, Method method) {
         Class<?> propertyClass = method.getReturnType();
         if (Map.class.isAssignableFrom(propertyClass)) {
-            property.setMapKeyClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 0));
-            property.setPropertyClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 1));
+            property.setMapKeyClass(ReflectionUtils.getGenericReturnTypeForPosition(method, 0));
+            property.setPropertyClass(ReflectionUtils.getGenericReturnTypeForPosition(method, 1));
             property.setAsList(true);
             return;
         }
         if (Collection.class.isAssignableFrom(propertyClass)) {
-            property.setPropertyClass(ReflectionUtil.getSingleGenericReturnType(method));
+            property.setPropertyClass(ReflectionUtils.getSingleGenericReturnType(method));
             property.setAsList(true);
             return;
         }
@@ -123,12 +126,6 @@ public class PropertyJavaParser implements PropertyParser {
             return;
         }
         property.setPropertyClass(propertyClass);
-    }
-
-    @Override
-    public void isPropertyToIgnore(PropertyAccessor accessor) {
-        // TODO Auto-generated method stub
-
     }
 
 }

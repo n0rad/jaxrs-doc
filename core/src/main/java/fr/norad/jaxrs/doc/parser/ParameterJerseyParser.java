@@ -17,17 +17,21 @@
 package fr.norad.jaxrs.doc.parser;
 
 import java.lang.reflect.Method;
+import java.util.Locale;
+import java.util.Map;
 import com.sun.jersey.multipart.FormDataParam;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterType;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class ParameterJerseyParser implements ParameterParser {
 
     @Override
-    public void parse(ParameterDefinition parameter, Method method, int position) {
-        FormDataParam formData = AnnotationUtil.findParameterAnnotation(method, position, FormDataParam.class);
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ParameterDefinition parameter,
+                      Method method, int position) {
+        FormDataParam formData = AnnotationUtils.findParameterAnnotation(method, position, FormDataParam.class);
         if (formData != null) {
             parameter.setName(formData.value());
             parameter.setType(ParameterType.FORM);

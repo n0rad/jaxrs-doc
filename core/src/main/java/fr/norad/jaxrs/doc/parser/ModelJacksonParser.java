@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
@@ -42,6 +43,7 @@ import com.fasterxml.jackson.databind.type.SimpleType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import fr.norad.jaxrs.doc.PropertyAccessor;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 
@@ -53,7 +55,7 @@ public class ModelJacksonParser implements ModelParser {
     private FakeSerializer fakeSerializer = new FakeSerializer();
 
     @Override
-    public void parse(ModelDefinition model, Class<?> modelClass) {
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ModelDefinition model, Class<?> modelClass) {
 
     }
 
@@ -78,7 +80,8 @@ public class ModelJacksonParser implements ModelParser {
             Method setter = setterJackson == null ? null : setterJackson.getAnnotated();
             Field field = fieldJackson == null ? null : fieldJackson.getAnnotated();
             if (getter == null && setter == null && field == null) {
-                log.warning("Cannot find valid property element for : " + beanPropertyDefinition);
+                log.warning("Cannot find valid property element for : " + beanPropertyDefinition + " on " +
+                                    modelClass);
                 continue;
             }
 

@@ -25,11 +25,12 @@ import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ProjectParser;
+import lombok.Getter;
 
 public class ProjectProcessor {
-
-    private final Set<ProjectParser> parsers = new LinkedHashSet<>();
     private final JaxrsDocProcessorFactory factory;
+    @Getter
+    private final Set<ProjectParser> parsers = new LinkedHashSet<>();
 
     public ProjectProcessor(JaxrsDocProcessorFactory factory, Collection<ProjectParser> parsers) {
         this.factory = factory;

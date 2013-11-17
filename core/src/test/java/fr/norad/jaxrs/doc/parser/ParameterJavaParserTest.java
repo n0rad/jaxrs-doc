@@ -40,7 +40,7 @@ public class ParameterJavaParserTest {
         }
         Method method = Test.class.getMethod("getSomething", Map.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat((Object) parameter.getMapKeyClass()).isEqualTo(Integer.class);
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
@@ -56,7 +56,7 @@ public class ParameterJavaParserTest {
         }
         Method method = Test.class.getMethod("getSomething", HashMap.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat((Object) parameter.getMapKeyClass()).isEqualTo(Integer.class);
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
@@ -72,7 +72,7 @@ public class ParameterJavaParserTest {
         }
 
         Method method = Test.class.getMethod("getSomething", String[].class);
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
         assertThat(parameter.getAsList()).isTrue();
@@ -87,7 +87,7 @@ public class ParameterJavaParserTest {
         }
         Method method = Test.class.getMethod("getSomething", List.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
         assertThat(parameter.getAsList()).isTrue();
@@ -102,7 +102,7 @@ public class ParameterJavaParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat((Object) parameter.getParamClass()).isEqualTo(String.class);
         assertThat(parameter.getAsList()).isNull();
@@ -117,7 +117,7 @@ public class ParameterJavaParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getDeprecated()).isTrue();
     }

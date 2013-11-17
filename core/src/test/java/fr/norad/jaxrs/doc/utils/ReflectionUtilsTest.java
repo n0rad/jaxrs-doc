@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.Test;
 
-public class ReflectionUtilTest {
+public class ReflectionUtilsTest {
 
     interface ITest {
         public void getSomething() throws ParseException;
@@ -35,7 +35,7 @@ public class ReflectionUtilTest {
             public void getSomething() throws IllegalArgumentException {
             }
         }
-        List<Class<?>> type = ReflectionUtil.getExceptions(Test.class.getMethod("getSomething"));
+        List<Class<?>> type = ReflectionUtils.getExceptions(Test.class.getMethod("getSomething"));
 
         assertThat(type).hasSize(1);
         assertThat(type.toArray()[0]).isEqualTo(IllegalArgumentException.class);
@@ -48,7 +48,7 @@ public class ReflectionUtilTest {
             public void getSomething() throws IllegalArgumentException {
             }
         }
-        List<Class<?>> type = ReflectionUtil.getExceptions(Test.class.getMethod("getSomething"));
+        List<Class<?>> type = ReflectionUtils.getExceptions(Test.class.getMethod("getSomething"));
 
         assertThat(type).hasSize(2);
         assertThat(type).containsExactly(ParseException.class, IllegalArgumentException.class);
@@ -67,7 +67,7 @@ public class ReflectionUtilTest {
             public void getSomething() throws IllegalArgumentException {
             }
         }
-        List<Class<?>> type = ReflectionUtil.getExceptions(Test.class.getMethod("getSomething"));
+        List<Class<?>> type = ReflectionUtils.getExceptions(Test.class.getMethod("getSomething"));
 
         assertThat(type).hasSize(3);
         assertThat(type).containsExactly(IllegalArgumentException.class, ParseException.class,
@@ -81,7 +81,7 @@ public class ReflectionUtilTest {
                 return null;
             }
         }
-        Class<?> type = ReflectionUtil.getSingleGenericReturnType(Test.class.getMethod("getSomething"));
+        Class<?> type = ReflectionUtils.getSingleGenericReturnType(Test.class.getMethod("getSomething"));
 
         assertThat((Object) type).isEqualTo(UUID.class);
     }
@@ -93,7 +93,7 @@ public class ReflectionUtilTest {
                 return null;
             }
         }
-        Class<?> type = ReflectionUtil.getSingleGenericReturnType(Test.class.getMethod("getSomething"));
+        Class<?> type = ReflectionUtils.getSingleGenericReturnType(Test.class.getMethod("getSomething"));
 
         assertThat((Object) type).isNull();
     }

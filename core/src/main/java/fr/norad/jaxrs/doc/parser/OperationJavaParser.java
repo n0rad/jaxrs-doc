@@ -25,8 +25,8 @@ import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ErrorDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
-import fr.norad.jaxrs.doc.utils.ReflectionUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
+import fr.norad.jaxrs.doc.utils.ReflectionUtils;
 
 public class OperationJavaParser implements OperationParser {
 
@@ -35,10 +35,10 @@ public class OperationJavaParser implements OperationParser {
         operation.setMethodName(method.getName());
         operation.setOperationClass(api.getApiClass());
 
-        Deprecated deprecated = AnnotationUtil.findAnnotation(method, Deprecated.class);
+        Deprecated deprecated = AnnotationUtils.findAnnotation(method, Deprecated.class);
         operation.setDeprecated(deprecated != null ? true : null);
 
-        List<Class<?>> exceptions = ReflectionUtil.getExceptions(method);
+        List<Class<?>> exceptions = ReflectionUtils.getExceptions(method);
         for (Class<?> exception : exceptions) {
             if (operation.getErrors() == null) {
                 operation.setErrors(new ArrayList<ErrorDefinition>());
@@ -51,13 +51,13 @@ public class OperationJavaParser implements OperationParser {
 
     protected void fillReturnPart(OperationDefinition operation, Method method) {
         if (Map.class.isAssignableFrom(method.getReturnType())) {
-            operation.setResponseMapKeyClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 0));
-            operation.setResponseClass(ReflectionUtil.getGenericReturnTypeForPosition(method, 1));
+            operation.setResponseMapKeyClass(ReflectionUtils.getGenericReturnTypeForPosition(method, 0));
+            operation.setResponseClass(ReflectionUtils.getGenericReturnTypeForPosition(method, 1));
             operation.setResponseAsList(true);
             return;
         }
         if (Collection.class.isAssignableFrom(method.getReturnType())) {
-            operation.setResponseClass(ReflectionUtil.getSingleGenericReturnType(method));
+            operation.setResponseClass(ReflectionUtils.getSingleGenericReturnType(method));
             operation.setResponseAsList(true);
             return;
         }

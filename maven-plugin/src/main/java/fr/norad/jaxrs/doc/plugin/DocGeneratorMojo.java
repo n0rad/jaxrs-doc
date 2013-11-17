@@ -47,21 +47,19 @@ import fr.norad.jaxrs.doc.processor.ParameterProcessor;
 import fr.norad.jaxrs.doc.processor.ProjectProcessor;
 import fr.norad.jaxrs.doc.processor.PropertyProcessor;
 
-@Mojo(name = "generate-doc", defaultPhase = LifecyclePhase.PROCESS_CLASSES, configurator = "include-project-dependencies", requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
+@Mojo(name = "generate-doc", defaultPhase = LifecyclePhase.PROCESS_CLASSES,
+      configurator = "include-project-dependencies",
+      requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class DocGeneratorMojo extends AbstractMojo {
-
-    @Parameter(defaultValue = "${project.build.directory}/jaxrs-doc-${version}.json", property = "outputFile", required = false)
+    @Parameter(defaultValue = "${project.build.directory}/jaxrs-doc-${version}.json", property = "outputFile",
+               required = false)
     private File outputFile;
-
     @Parameter(defaultValue = "${project.artifactId}", property = "artifactId", required = false)
     private String name;
-
     @Parameter(defaultValue = "${project.version}", property = "version", required = false)
     private String version;
-
     @Parameter(defaultValue = "${packageIncludes}", property = "packageIncludes", required = true)
     private String[] packageIncludes;
-
     @Parameter(property = "projectParsers", required = false)
     private String[] projectParsers;
     @Parameter(property = "apiParsers", required = false)
@@ -74,14 +72,26 @@ public class DocGeneratorMojo extends AbstractMojo {
     private String[] modelParsers;
     @Parameter(property = "propertyParsers", required = false)
     private String[] propertyParsers;
-
+    @Parameter(property = "AdditionalProjectParsers", required = false)
+    private String[] AdditionalProjectParsers;
+    @Parameter(property = "AdditionalApiParsers", required = false)
+    private String[] AdditionalApiParsers;
+    @Parameter(property = "AdditionalOperationParsers", required = false)
+    private String[] AdditionalOperationParsers;
+    @Parameter(property = "AdditionalParameterParsers", required = false)
+    private String[] AdditionalParameterParsers;
+    @Parameter(property = "AdditionalModelParsers", required = false)
+    private String[] AdditionalModelParsers;
+    @Parameter(property = "AdditionalPropertyParsers", required = false)
+    private String[] AdditionalPropertyParsers;
     private ObjectMapper objectMapper;
 
     public DocGeneratorMojo() {
         objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(Include.NON_NULL);
         objectMapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(new JacksonAnnotationIntrospector(),
-                new JaxbAnnotationIntrospector(TypeFactory.defaultInstance())));
+                                                                              new JaxbAnnotationIntrospector(
+                                                                                      TypeFactory.defaultInstance())));
     }
 
     @Override
@@ -98,36 +108,53 @@ public class DocGeneratorMojo extends AbstractMojo {
 
     private JaxrsDocProcessorFactory prepareFactory() {
         JaxrsDocProcessorFactory factory = new JaxrsDocProcessorFactory(Arrays.asList(packageIncludes),
-                name, version);
+                                                                        name, version);
         if (projectParsers.length > 0) {
-            factory.setProjectProcessor(new ProjectProcessor(factory,
-                    buildParserList(projectParsers, ProjectParser.class)));
+            factory.setProjectProcessor(new ProjectProcessor(factory, toList(projectParsers, ProjectParser.class)));
+        } else if (AdditionalProjectParsers.length > 0) {
+            factory.getProjectProcessor().getParsers().addAll(toList(AdditionalProjectParsers, ProjectParser.class));
         }
+
         if (apiParsers.length > 0) {
-            factory.setApiProcessor(new ApiProcessor(factory,
-                    buildParserList(apiParsers, ApiParser.class)));
+            factory.setApiProcessor(new ApiProcessor(factory, toList(apiParsers, ApiParser.class)));
+        } else if (AdditionalApiParsers.length > 0) {
+            factory.getApiProcessor().getApiParsers().addAll(toList(AdditionalApiParsers, ApiParser.class));
         }
+
         if (operationParsers.length > 0) {
-            factory.setOperationProcessor(new OperationProcessor(factory,
-                    buildParserList(operationParsers, OperationParser.class)));
+            factory.setOperationProcessor(new OperationProcessor(factory, toList(operationParsers,
+                                                                                 OperationParser.class)));
+        } else if (AdditionalOperationParsers.length > 0) {
+            factory.getOperationProcessor().getOperationParsers().addAll(toList(AdditionalOperationParsers,
+                                                                                OperationParser.class));
         }
+
         if (parameterParsers.length > 0) {
-            factory.setParameterProcessor(new ParameterProcessor(factory,
-                    buildParserList(parameterParsers, ParameterParser.class)));
+            factory.setParameterProcessor(new ParameterProcessor(factory, toList(parameterParsers,
+                                                                                 ParameterParser.class)));
+        } else if (AdditionalParameterParsers.length > 0) {
+            factory.getParameterProcessor().getParsers().addAll(toList(AdditionalParameterParsers,
+                                                                       ParameterParser.class));
         }
+
         if (modelParsers.length > 0) {
-            factory.setModelProcessor(new ModelProcessor(factory,
-                    buildParserList(modelParsers, ModelParser.class)));
+            factory.setModelProcessor(new ModelProcessor(factory, toList(modelParsers, ModelParser.class)));
+        } else if (AdditionalModelParsers.length > 0) {
+            factory.getModelProcessor().getParsers().addAll(toList(AdditionalModelParsers, ModelParser.class));
         }
+
         if (propertyParsers.length > 0) {
-            factory.setPropertyProcessor(new PropertyProcessor(factory,
-                    buildParserList(propertyParsers, PropertyParser.class)));
+            factory.setPropertyProcessor(new PropertyProcessor(factory, toList(propertyParsers,
+                                                                               PropertyParser.class)));
+        } else if (AdditionalPropertyParsers.length > 0) {
+            factory.getPropertyProcessor().getParsers().addAll(toList(AdditionalPropertyParsers,
+                                                                      PropertyParser.class));
         }
         return factory;
     }
 
     @SuppressWarnings("unchecked")
-    private <T> List<T> buildParserList(String[] parserClassNames, Class<T> t) {
+    private <T> List<T> toList(String[] parserClassNames, Class<T> t) {
         List<T> parsers = new ArrayList<>();
         for (String parserClassName : parserClassNames) {
             parsers.add((T) buildParser(parserClassName));

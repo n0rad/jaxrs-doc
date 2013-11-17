@@ -25,11 +25,12 @@ import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
+import lombok.Getter;
 
 public class ParameterProcessor {
-
-    private final Set<ParameterParser> parsers = new LinkedHashSet<>();
     private final JaxrsDocProcessorFactory factory;
+    @Getter
+    private final Set<ParameterParser> parsers = new LinkedHashSet<>();
 
     public ParameterProcessor(JaxrsDocProcessorFactory factory, Collection<ParameterParser> parsers) {
         this.factory = factory;
@@ -37,10 +38,10 @@ public class ParameterProcessor {
     }
 
     public ParameterDefinition process(ProjectDefinition project, OperationDefinition operation, Method method,
-            int position) {
+                                       int position) {
         ParameterDefinition parameter = new ParameterDefinition();
         for (ParameterParser parser : parsers) {
-            parser.parse(parameter, method, position);
+            parser.parse(project.getLocalizations(), parameter, method, position);
             factory.getModelProcessor().process(project, parameter.getParamClass());
             factory.getModelProcessor().process(project, parameter.getMapKeyClass());
         }

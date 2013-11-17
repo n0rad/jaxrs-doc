@@ -22,13 +22,13 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiClass;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class SwaggerApiParser implements ApiParser {
 
     @Override
     public void parse(ApiDefinition api, Class<?> apiClass) {
-        Api apiSwagger = AnnotationUtil.findAnnotation(apiClass, Api.class);
+        Api apiSwagger = AnnotationUtils.findAnnotation(apiClass, Api.class);
         if (apiSwagger != null) {
             if (apiSwagger.value() != null) {
                 api.setPath(apiSwagger.value());
@@ -38,7 +38,7 @@ public class SwaggerApiParser implements ApiParser {
             }
         }
 
-        ApiClass apiClassSwagger = AnnotationUtil.findAnnotation(apiClass, ApiClass.class);
+        ApiClass apiClassSwagger = AnnotationUtils.findAnnotation(apiClass, ApiClass.class);
         if (apiClassSwagger != null) {
             if (apiClassSwagger.description() != null) {
                 api.setDescription(apiClassSwagger.description());

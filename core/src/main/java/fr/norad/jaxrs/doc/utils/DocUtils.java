@@ -14,15 +14,27 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.annotations;
+package fr.norad.jaxrs.doc.utils;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import fr.norad.jaxrs.doc.annotations.Description;
 
-@Target({ ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Description {
-    String[] value();
+public class DocUtils {
+
+    public static String getDescription(Description description) {
+        if (description == null || description.value() == null || description.value().length == 0) {
+            return null;
+        }
+        String result = "";
+        int i = 0;
+        for (String line : description.value()) {
+            if (i++ != 0) {
+                result += ' ';
+            }
+            result += line.trim();
+        }
+        if (result.isEmpty()) {
+            return null;
+        }
+        return result;
+    }
 }

@@ -36,7 +36,7 @@ public class SwaggerParameterParserTest {
             }
         }
 
-        parser.parse(parameter, Test.class.getDeclaredMethod("method", String.class), 0);
+        parser.parse(null, parameter, Test.class.getDeclaredMethod("method", String.class), 0);
 
         assertThat(parameter.getDescription()).isEqualTo("yop");
         assertThat(parameter.getName()).isEqualTo("name");
@@ -53,7 +53,7 @@ public class SwaggerParameterParserTest {
             }
         }
 
-        parser.parse(parameter, Test.class.getDeclaredMethod("method", String.class), 0);
+        parser.parse(null, parameter, Test.class.getDeclaredMethod("method", String.class), 0);
 
         assertThat(parameter.getDescription()).isNull();
         assertThat(parameter.getName()).isNull();

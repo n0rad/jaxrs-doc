@@ -19,6 +19,7 @@ package fr.norad.jaxrs.doc.domain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
@@ -26,12 +27,15 @@ import lombok.Data;
 @Data
 @XmlRootElement
 public class ProjectDefinition {
-
     private String name;
     private String version;
-
     private List<ApiDefinition> apis = new ArrayList<>();
     private Map<String, ModelDefinition> models = new HashMap<>();
+    private Map<Locale, LocalizationDefinition> localizations = new HashMap<Locale, LocalizationDefinition>() {
+        {
+            put(Locale.getDefault(), new LocalizationDefinition());
+        }
+    };
     private Map<String, Object> extras = new HashMap<>();
 
 }

@@ -20,9 +20,8 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import java.util.UUID;
 import javax.ws.rs.DefaultValue;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
 
-public class AnnotationUtilTest {
+public class AnnotationUtilsTest {
 
     interface ParameterInterface {
         public UUID getUUID(@DefaultValue("defValue") UUID uid);
@@ -47,7 +46,7 @@ public class AnnotationUtilTest {
 
     @Test
     public void should_find_annotation() throws Exception {
-        DefaultValue annotation = AnnotationUtil.findParameterAnnotation(
+        DefaultValue annotation = AnnotationUtils.findParameterAnnotation(
                 ParameterClass.class.getMethod("getUUID", UUID.class), 0, DefaultValue.class);
 
         assertThat(annotation.value()).isEqualTo("defValue");

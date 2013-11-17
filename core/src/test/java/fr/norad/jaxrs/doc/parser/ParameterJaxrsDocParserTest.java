@@ -37,7 +37,7 @@ public class ParameterJaxrsDocParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        new ParameterJaxrsDocParser().parse(parameter, method, 0);
+        new ParameterJaxrsDocParser().parse(null, parameter, method, 0);
 
         assertThat(parameter.getDeprecated()).isTrue();
         assertThat(parameter.getDeprecatedSince()).isEqualTo("since");
@@ -53,7 +53,7 @@ public class ParameterJaxrsDocParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        new ParameterJaxrsDocParser().parse(parameter, method, 0);
+        new ParameterJaxrsDocParser().parse(null, parameter, method, 0);
 
         assertThat(parameter.getDescription()).isEqualTo("yop");
     }

@@ -17,12 +17,15 @@
 package fr.norad.jaxrs.doc.parserapi;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import fr.norad.jaxrs.doc.PropertyAccessor;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 
 public interface ModelParser {
 
-    void parse(ModelDefinition model, Class<?> modelClass);
+    void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ModelDefinition model, Class<?> modelClass);
 
     boolean isModelToIgnore(Class<?> modelClass);
 

@@ -38,7 +38,7 @@ public class ParameterJerseyParserTest {
 
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.FORM);
         assertThat(parameter.getName()).isEqualTo("caller");

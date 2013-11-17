@@ -46,7 +46,7 @@ public class ModelJavaParserTest {
         class Test {
 
         }
-        parser.parse(model, Test.class);
+        parser.parse(null, model, Test.class);
 
         assertThat(model.getDeprecated()).isTrue();
     }

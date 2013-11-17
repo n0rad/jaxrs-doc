@@ -16,10 +16,7 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class OperationJaxrsParserTest {
 
     //    private ProjectDefinition p = new ProjectDefinition();

@@ -48,7 +48,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.HEADER);
         assertThat(parameter.getName()).isEqualTo("param");
@@ -63,7 +63,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getEncoded()).isTrue();
     }
@@ -77,7 +77,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getDefaultValue()).isEqualTo("yop");
     }
@@ -91,7 +91,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.PATH);
         assertThat(parameter.getName()).isEqualTo("param");
@@ -106,7 +106,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.CONTEXT);
     }
@@ -120,7 +120,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.BEAN);
     }
@@ -134,7 +134,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.QUERY);
         assertThat(parameter.getName()).isEqualTo("yop");
@@ -149,7 +149,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.MATRIX);
         assertThat(parameter.getName()).isEqualTo("yop");
@@ -164,7 +164,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.FORM);
         assertThat(parameter.getName()).isEqualTo("yop");
@@ -179,7 +179,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.COOKIE);
         assertThat(parameter.getName()).isEqualTo("yop");
@@ -194,7 +194,7 @@ public class ParameterJaxrsParserTest {
         }
         Method method = Test.class.getMethod("getSomething", String.class);
 
-        parser.parse(parameter, method, 0);
+        parser.parse(null, parameter, method, 0);
 
         assertThat(parameter.getType()).isEqualTo(ParameterType.REQUEST_BODY);
     }

@@ -27,11 +27,12 @@ import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
+import lombok.Getter;
 
 public class OperationProcessor {
-
-    private final Set<OperationParser> operationParsers = new LinkedHashSet<>();
     private final JaxrsDocProcessorFactory factory;
+    @Getter
+    private final Set<OperationParser> operationParsers = new LinkedHashSet<>();
 
     public OperationProcessor(JaxrsDocProcessorFactory factory, Collection<OperationParser> operationParsers) {
         this.factory = factory;

@@ -17,6 +17,8 @@
 package fr.norad.jaxrs.doc.parser;
 
 import java.lang.reflect.Method;
+import java.util.Locale;
+import java.util.Map;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.DefaultValue;
@@ -27,78 +29,80 @@ import javax.ws.rs.MatrixParam;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterType;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 import fr.norad.jaxrs.doc.utils.TypeUtils;
 
 public class ParameterJaxrsParser implements ParameterParser {
 
     @Override
-    public void parse(ParameterDefinition parameter, Method method, int position) {
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ParameterDefinition parameter,
+                      Method method, int position) {
         fillTypeAndValue(parameter, method, position);
 
-        Encoded encoded = AnnotationUtil.findParameterAnnotation(method, position, Encoded.class);
+        Encoded encoded = AnnotationUtils.findParameterAnnotation(method, position, Encoded.class);
         if (encoded != null) {
             parameter.setEncoded(true);
         }
 
-        DefaultValue defValue = AnnotationUtil.findParameterAnnotation(method, position, DefaultValue.class);
+        DefaultValue defValue = AnnotationUtils.findParameterAnnotation(method, position, DefaultValue.class);
         if (defValue != null && TypeUtils.notEmpty(defValue.value())) {
             parameter.setDefaultValue(defValue.value());
         }
     }
 
     private void fillTypeAndValue(ParameterDefinition param, Method method, int position) {
-        Context context = AnnotationUtil.findParameterAnnotation(method, position, Context.class);
+        Context context = AnnotationUtils.findParameterAnnotation(method, position, Context.class);
         if (context != null) {
             param.setType(ParameterType.CONTEXT); //TODO SPECIAL PARSE
             return;
         }
 
-        BeanParam bean = AnnotationUtil.findParameterAnnotation(method, position, BeanParam.class);
+        BeanParam bean = AnnotationUtils.findParameterAnnotation(method, position, BeanParam.class);
         if (bean != null) {
             param.setType(ParameterType.BEAN); //TODO SPECIAL PARSE
             return;
         }
 
-        PathParam path = AnnotationUtil.findParameterAnnotation(method, position, PathParam.class);
+        PathParam path = AnnotationUtils.findParameterAnnotation(method, position, PathParam.class);
         if (path != null) {
             param.setType(ParameterType.PATH);
             param.setName(path.value());
             return;
         }
 
-        QueryParam query = AnnotationUtil.findParameterAnnotation(method, position, QueryParam.class);
+        QueryParam query = AnnotationUtils.findParameterAnnotation(method, position, QueryParam.class);
         if (query != null) {
             param.setType(ParameterType.QUERY);
             param.setName(query.value());
             return;
         }
 
-        MatrixParam matrix = AnnotationUtil.findParameterAnnotation(method, position, MatrixParam.class);
+        MatrixParam matrix = AnnotationUtils.findParameterAnnotation(method, position, MatrixParam.class);
         if (matrix != null) {
             param.setType(ParameterType.MATRIX);
             param.setName(matrix.value());
             return;
         }
 
-        FormParam form = AnnotationUtil.findParameterAnnotation(method, position, FormParam.class);
+        FormParam form = AnnotationUtils.findParameterAnnotation(method, position, FormParam.class);
         if (form != null) {
             param.setType(ParameterType.FORM);
             param.setName(form.value());
             return;
         }
 
-        CookieParam cookie = AnnotationUtil.findParameterAnnotation(method, position, CookieParam.class);
+        CookieParam cookie = AnnotationUtils.findParameterAnnotation(method, position, CookieParam.class);
         if (cookie != null) {
             param.setType(ParameterType.COOKIE);
             param.setName(cookie.value());
             return;
         }
 
-        HeaderParam header = AnnotationUtil.findParameterAnnotation(method, position, HeaderParam.class);
+        HeaderParam header = AnnotationUtils.findParameterAnnotation(method, position, HeaderParam.class);
         if (header != null) {
             param.setType(ParameterType.HEADER);
             param.setName(header.value());

@@ -25,7 +25,7 @@ import javax.ws.rs.Produces;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class OperationJaxrsParser implements OperationParser {
 
@@ -36,14 +36,14 @@ public class OperationJaxrsParser implements OperationParser {
             operation.setHttpMethod(httpMethod.value());
         }
 
-        Path path = AnnotationUtil.findAnnotation(method, Path.class);
+        Path path = AnnotationUtils.findAnnotation(method, Path.class);
         String methodPath = null;
         if (path != null) {
             methodPath = path.value();
         }
         operation.setPath(buildFullPath(api.getPath(), methodPath));
 
-        Consumes consumes = AnnotationUtil.findAnnotation(method, Consumes.class);
+        Consumes consumes = AnnotationUtils.findAnnotation(method, Consumes.class);
         if (consumes != null) {
             for (String consume : consumes.value()) {
                 if (operation.getConsumes() == null) {
@@ -53,7 +53,7 @@ public class OperationJaxrsParser implements OperationParser {
             }
         }
 
-        Produces produces = AnnotationUtil.findAnnotation(method, Produces.class);
+        Produces produces = AnnotationUtils.findAnnotation(method, Produces.class);
         if (produces != null) {
             for (String produce : produces.value()) {
                 if (operation.getProduces() == null) {
@@ -86,7 +86,7 @@ public class OperationJaxrsParser implements OperationParser {
     }
 
     private HttpMethod getHttpMethod(Method method) {
-        return AnnotationUtil.findAnnotation(method, HttpMethod.class);
+        return AnnotationUtils.findAnnotation(method, HttpMethod.class);
     }
 
 }

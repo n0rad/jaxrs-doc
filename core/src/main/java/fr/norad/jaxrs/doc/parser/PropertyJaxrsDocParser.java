@@ -18,17 +18,22 @@ package fr.norad.jaxrs.doc.parser;
 
 import static fr.norad.jaxrs.doc.utils.TypeUtils.notEmpty;
 import java.lang.reflect.Method;
+import java.util.Locale;
+import java.util.Map;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.annotations.Outdated;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
+import fr.norad.jaxrs.doc.utils.DocUtils;
 
 public class PropertyJaxrsDocParser implements PropertyParser {
 
     @Override
-    public void parse(PropertyDefinition property, PropertyAccessor accessor) {
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, PropertyDefinition property,
+                      PropertyAccessor accessor) {
         if (accessor.getField() != null) {
             Outdated outdated = accessor.getField().getAnnotation(Outdated.class);
             if (outdated != null) {
@@ -43,8 +48,8 @@ public class PropertyJaxrsDocParser implements PropertyParser {
             }
 
             Description desc = accessor.getField().getAnnotation(Description.class);
-            if (desc != null && notEmpty(desc.value())) {
-                property.setDescription(desc.value());
+            if (desc != null && notEmpty(DocUtils.getDescription(desc))) {
+                property.setDescription(DocUtils.getDescription(desc));
             }
         }
 
@@ -57,12 +62,12 @@ public class PropertyJaxrsDocParser implements PropertyParser {
             return;
         }
 
-        Description desc = AnnotationUtil.findAnnotation(method, Description.class);
-        if (desc != null && notEmpty(desc.value())) {
-            property.setDescription(desc.value());
+        Description desc = AnnotationUtils.findAnnotation(method, Description.class);
+        if (desc != null && notEmpty(DocUtils.getDescription(desc))) {
+            property.setDescription(DocUtils.getDescription(desc));
         }
 
-        Outdated outdated = AnnotationUtil.findAnnotation(method, Outdated.class);
+        Outdated outdated = AnnotationUtils.findAnnotation(method, Outdated.class);
         if (outdated != null) {
             property.setDeprecated(true);
             if (notEmpty(outdated.cause())) {
@@ -72,12 +77,6 @@ public class PropertyJaxrsDocParser implements PropertyParser {
                 property.setDeprecatedSince(outdated.since());
             }
         }
-
-    }
-
-    @Override
-    public void isPropertyToIgnore(PropertyAccessor accessor) {
-        // TODO Auto-generated method stub
 
     }
 

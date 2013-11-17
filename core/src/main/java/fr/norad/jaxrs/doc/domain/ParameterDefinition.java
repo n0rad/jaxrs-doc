@@ -16,6 +16,7 @@
  */
 package fr.norad.jaxrs.doc.domain;
 
+import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
@@ -39,6 +40,9 @@ public class ParameterDefinition {
     private Boolean deprecated;
     private String deprecatedSince;
     private String deprecatedCause;
+
+    private List<ConstraintDefinition> constraints;
+    private Boolean validationCascaded;
 
     //    private String notes;
     //    private Boolean required;

@@ -14,15 +14,13 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.annotations;
+package fr.norad.jaxrs.doc.domain;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.Data;
 
-@Target({ ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Description {
-    String[] value();
+@Data
+public class LocalizationDefinition {
+    private Map<String, String> messages = new HashMap<>();
 }

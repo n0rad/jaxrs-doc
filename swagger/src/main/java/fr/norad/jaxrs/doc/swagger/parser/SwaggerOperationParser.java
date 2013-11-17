@@ -26,7 +26,7 @@ import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ErrorDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class SwaggerOperationParser implements OperationParser {
 
@@ -34,7 +34,7 @@ public class SwaggerOperationParser implements OperationParser {
 
     @Override
     public void parse(ApiDefinition api, OperationDefinition operation, Method method) {
-        ApiOperation operationSwagger = AnnotationUtil.findAnnotation(method, ApiOperation.class);
+        ApiOperation operationSwagger = AnnotationUtils.findAnnotation(method, ApiOperation.class);
         if (operationSwagger != null) {
             if (notEmpty(operationSwagger.value())) {
                 operation.setDescription(operationSwagger.value());
@@ -55,14 +55,14 @@ public class SwaggerOperationParser implements OperationParser {
             }
         }
 
-        ApiErrors errorsSwagger = AnnotationUtil.findAnnotation(method, ApiErrors.class);
+        ApiErrors errorsSwagger = AnnotationUtils.findAnnotation(method, ApiErrors.class);
         if (errorsSwagger != null) {
             for (ApiError errorSwagger : errorsSwagger.value()) {
                 processError(operation, errorSwagger);
             }
         }
 
-        ApiError errorSwagger = AnnotationUtil.findAnnotation(method, ApiError.class);
+        ApiError errorSwagger = AnnotationUtils.findAnnotation(method, ApiError.class);
         if (errorSwagger != null) {
             processError(operation, errorSwagger);
         }

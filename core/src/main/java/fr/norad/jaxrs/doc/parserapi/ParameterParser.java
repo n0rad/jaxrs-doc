@@ -17,10 +17,14 @@
 package fr.norad.jaxrs.doc.parserapi;
 
 import java.lang.reflect.Method;
+import java.util.Locale;
+import java.util.Map;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 
 public interface ParameterParser {
 
-    void parse(ParameterDefinition parameter, Method method, int position);
+    void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ParameterDefinition parameter, Method method,
+               int position);
 
 }

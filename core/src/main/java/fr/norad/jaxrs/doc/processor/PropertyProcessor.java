@@ -24,11 +24,12 @@ import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
+import lombok.Getter;
 
 public class PropertyProcessor {
-
-    private final Set<PropertyParser> parsers = new LinkedHashSet<>();
     private final JaxrsDocProcessorFactory factory;
+    @Getter
+    private final Set<PropertyParser> parsers = new LinkedHashSet<>();
 
     public PropertyProcessor(JaxrsDocProcessorFactory factory, Collection<PropertyParser> parsers) {
         this.factory = factory;
@@ -38,8 +39,7 @@ public class PropertyProcessor {
     public PropertyDefinition process(ProjectDefinition project, PropertyAccessor accessor) {
         PropertyDefinition property = new PropertyDefinition();
         for (PropertyParser parser : parsers) {
-            parser.parse(property, accessor);
-
+            parser.parse(project.getLocalizations(), property, accessor);
             factory.getModelProcessor().process(project, property.getPropertyClass());
             factory.getModelProcessor().process(project, property.getMapKeyClass());
         }

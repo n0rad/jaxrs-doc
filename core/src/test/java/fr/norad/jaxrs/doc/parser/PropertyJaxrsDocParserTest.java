@@ -38,7 +38,7 @@ public class PropertyJaxrsDocParserTest {
             }
         }
 
-        parser.parse(property,
+        parser.parse(null, property,
                 new PropertyAccessor("field", null, null, TheClass.class.getMethod("setField", UUID.class)));
 
         assertThat(property.getDeprecated()).isTrue();
@@ -55,7 +55,7 @@ public class PropertyJaxrsDocParserTest {
             }
         }
 
-        parser.parse(property, new PropertyAccessor("field", null, TheClass.class.getMethod("getField"), null));
+        parser.parse(null, property, new PropertyAccessor("field", null, TheClass.class.getMethod("getField"), null));
 
         assertThat(property.getDeprecated()).isTrue();
         assertThat(property.getDeprecatedCause()).isEqualTo("cause");
@@ -69,7 +69,7 @@ public class PropertyJaxrsDocParserTest {
             private String genre;
         }
 
-        parser.parse(property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null));
+        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null));
 
         assertThat(property.getDeprecated()).isTrue();
         assertThat(property.getDeprecatedCause()).isEqualTo("cause");
@@ -84,7 +84,7 @@ public class PropertyJaxrsDocParserTest {
                 return null;
             }
         }
-        parser.parse(property, new PropertyAccessor("field", null, TheClass.class.getMethod("getField"), null));
+        parser.parse(null, property, new PropertyAccessor("field", null, TheClass.class.getMethod("getField"), null));
 
         assertThat(property.getDescription()).isEqualTo("desc");
     }
@@ -96,7 +96,7 @@ public class PropertyJaxrsDocParserTest {
             public void setField(UUID field) {
             }
         }
-        parser.parse(property,
+        parser.parse(null, property,
                 new PropertyAccessor("field", null, null, TheClass.class.getMethod("setField", UUID.class)));
 
         assertThat(property.getDescription()).isEqualTo("desc");
@@ -108,7 +108,7 @@ public class PropertyJaxrsDocParserTest {
             @Description("desc")
             private UUID field;
         }
-        parser.parse(property, new PropertyAccessor("field", TheClass.class.getDeclaredField("field"), null, null));
+        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("field"), null, null));
 
         assertThat(property.getDescription()).isEqualTo("desc");
     }

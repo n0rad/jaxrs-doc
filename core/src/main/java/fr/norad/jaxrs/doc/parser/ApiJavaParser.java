@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class ApiJavaParser implements ApiParser {
 
@@ -28,7 +28,7 @@ public class ApiJavaParser implements ApiParser {
     public void parse(ApiDefinition api, Class<?> apiClass) {
         api.setApiClass(apiClass);
 
-        Deprecated deprecated = AnnotationUtil.findAnnotation(apiClass, Deprecated.class);
+        Deprecated deprecated = AnnotationUtils.findAnnotation(apiClass, Deprecated.class);
         api.setDeprecated(deprecated != null ? true : null);
     }
 

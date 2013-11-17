@@ -17,6 +17,7 @@
 package fr.norad.jaxrs.doc.domain;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class ModelDefinition {
     private final Class<?> modelClass;
     private Map<String, PropertyDefinition> properties = new HashMap<>();
     private Map<String, Object> extras;
+    private List<ConstraintDefinition> constraints;
 
     private Boolean deprecated;
     private String deprecatedSince;

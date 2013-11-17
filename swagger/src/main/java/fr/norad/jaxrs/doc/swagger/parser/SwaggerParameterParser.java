@@ -17,16 +17,20 @@
 package fr.norad.jaxrs.doc.swagger.parser;
 
 import java.lang.reflect.Method;
+import java.util.Locale;
+import java.util.Map;
 import com.wordnik.swagger.annotations.ApiParam;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class SwaggerParameterParser implements ParameterParser {
 
     @Override
-    public void parse(ParameterDefinition parameter, Method method, int position) {
-        ApiParam paramSwagger = AnnotationUtil.findParameterAnnotation(method, position, ApiParam.class);
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ParameterDefinition parameter,
+                      Method method, int position) {
+        ApiParam paramSwagger = AnnotationUtils.findParameterAnnotation(method, position, ApiParam.class);
         if (paramSwagger != null) {
             if (!paramSwagger.value().isEmpty()) {
                 parameter.setDescription(paramSwagger.value());

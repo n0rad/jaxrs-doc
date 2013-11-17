@@ -17,26 +17,30 @@
 package fr.norad.jaxrs.doc.parser;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.annotations.Outdated;
+import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtil;
+import fr.norad.jaxrs.doc.utils.AnnotationUtils;
+import fr.norad.jaxrs.doc.utils.DocUtils;
 
 public class ModelJaxrsDocParser implements ModelParser {
 
     @Override
-    public void parse(ModelDefinition model, Class<?> modelClass) {
-        Outdated outdated = AnnotationUtil.findAnnotation(modelClass, Outdated.class);
+    public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ModelDefinition model, Class<?> modelClass) {
+        Outdated outdated = AnnotationUtils.findAnnotation(modelClass, Outdated.class);
         if (outdated != null) {
             model.setDeprecated(true);
             model.setDeprecatedCause(outdated.cause());
             model.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
         }
 
-        Description description = AnnotationUtil.findAnnotation(modelClass, Description.class);
-        model.setDescription(description != null ? description.value() : null);
+        Description description = AnnotationUtils.findAnnotation(modelClass, Description.class);
+        model.setDescription(description != null ? DocUtils.getDescription(description) : null);
 
     }
 

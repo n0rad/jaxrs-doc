@@ -14,22 +14,16 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parser;
+package fr.norad.jaxrs.doc.domain;
 
-import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
-import fr.norad.jaxrs.doc.parserapi.PropertyParser;
+import java.util.Map;
+import java.util.Set;
+import lombok.Data;
 
-public class PropertyJacksonParser implements PropertyParser {
-
-    @Override
-    public void parse(PropertyDefinition property, PropertyAccessor accessor) {
-
-    }
-
-    @Override
-    public void isPropertyToIgnore(PropertyAccessor accessor) {
-
-    }
-
+@Data
+public class ConstraintDefinition {
+    private String constraintClass;
+    private Map<String, Object> attributes;
+    private Boolean reportAsSingle;
+    private Set<ConstraintDefinition> composingConstraints;
 }
