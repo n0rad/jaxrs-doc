@@ -16,17 +16,17 @@
  */
 package fr.norad.jaxrs.doc.swagger.parser;
 
-import static fr.norad.jaxrs.doc.utils.TypeUtils.notEmpty;
+import static fr.norad.core.lang.StringUtils.notEmpty;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 import com.wordnik.swagger.annotations.ApiError;
 import com.wordnik.swagger.annotations.ApiErrors;
 import com.wordnik.swagger.annotations.ApiOperation;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ErrorDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class SwaggerOperationParser implements OperationParser {
 

@@ -17,13 +17,13 @@
 package fr.norad.jaxrs.doc.parser;
 
 import java.lang.reflect.Method;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.annotations.Summary;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 import fr.norad.jaxrs.doc.utils.DocUtils;
 
 public class OperationJaxrsDocParser implements OperationParser {

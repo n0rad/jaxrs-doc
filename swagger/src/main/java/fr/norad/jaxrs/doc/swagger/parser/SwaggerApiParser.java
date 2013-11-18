@@ -20,9 +20,9 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiClass;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class SwaggerApiParser implements ApiParser {
 

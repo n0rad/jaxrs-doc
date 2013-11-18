@@ -25,9 +25,9 @@ import javax.ws.rs.HttpMethod;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import org.reflections.ReflectionUtils;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class ApiJaxrsParser implements ApiParser {
 

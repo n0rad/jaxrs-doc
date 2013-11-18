@@ -76,6 +76,11 @@
                 <artifactId>jackson-module-jaxb-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>fr.norad.core</groupId>
+                <artifactId>core</artifactId>
+                <version>0.8-SNAPSHOT</version>
+            </dependency>
 
             <!-- VALIDATION -->
             <dependency>

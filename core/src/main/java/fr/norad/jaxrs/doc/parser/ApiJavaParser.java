@@ -18,9 +18,9 @@ package fr.norad.jaxrs.doc.parser;
 
 import java.lang.reflect.Method;
 import java.util.Set;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class ApiJavaParser implements ApiParser {
 

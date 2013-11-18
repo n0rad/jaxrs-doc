@@ -16,17 +16,17 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
-import static fr.norad.jaxrs.doc.utils.TypeUtils.notEmpty;
+import static fr.norad.core.lang.StringUtils.notEmpty;
 import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Map;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 import fr.norad.jaxrs.doc.utils.DocUtils;
 
 public class PropertyJaxrsDocParser implements PropertyParser {

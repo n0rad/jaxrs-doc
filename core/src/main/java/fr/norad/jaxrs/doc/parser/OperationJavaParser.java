@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import fr.norad.core.lang.reflect.AnnotationUtils;
+import fr.norad.core.lang.reflect.ReflectionUtils;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ErrorDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
-import fr.norad.jaxrs.doc.utils.ReflectionUtils;
 
 public class OperationJavaParser implements OperationParser {
 

@@ -20,10 +20,10 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Map;
 import com.wordnik.swagger.annotations.ApiParam;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class SwaggerParameterParser implements ParameterParser {
 

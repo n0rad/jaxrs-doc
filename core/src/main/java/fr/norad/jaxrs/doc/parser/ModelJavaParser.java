@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class ModelJavaParser implements ModelParser {
 

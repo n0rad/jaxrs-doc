@@ -19,13 +19,13 @@ package fr.norad.jaxrs.doc.parser;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.annotations.Description;
 import fr.norad.jaxrs.doc.annotations.Outdated;
 import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 import fr.norad.jaxrs.doc.utils.DocUtils;
 
 public class ModelJaxrsDocParser implements ModelParser {

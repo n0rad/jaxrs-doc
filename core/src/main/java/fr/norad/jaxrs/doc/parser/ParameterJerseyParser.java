@@ -20,11 +20,11 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Map;
 import com.sun.jersey.multipart.FormDataParam;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterType;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
 
 public class ParameterJerseyParser implements ParameterParser {
 

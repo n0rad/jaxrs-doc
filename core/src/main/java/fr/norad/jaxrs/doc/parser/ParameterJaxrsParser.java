@@ -16,6 +16,7 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
+import static fr.norad.core.lang.StringUtils.notEmpty;
 import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Map;
@@ -29,12 +30,11 @@ import javax.ws.rs.MatrixParam;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterType;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
-import fr.norad.jaxrs.doc.utils.AnnotationUtils;
-import fr.norad.jaxrs.doc.utils.TypeUtils;
 
 public class ParameterJaxrsParser implements ParameterParser {
 
@@ -49,7 +49,7 @@ public class ParameterJaxrsParser implements ParameterParser {
         }
 
         DefaultValue defValue = AnnotationUtils.findParameterAnnotation(method, position, DefaultValue.class);
-        if (defValue != null && TypeUtils.notEmpty(defValue.value())) {
+        if (defValue != null && notEmpty(defValue.value())) {
             parameter.setDefaultValue(defValue.value());
         }
     }

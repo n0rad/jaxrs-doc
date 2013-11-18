@@ -49,6 +49,10 @@
             <version>1.17.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>fr.norad.core</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
 
 
         <!-- TODO SUX -->
