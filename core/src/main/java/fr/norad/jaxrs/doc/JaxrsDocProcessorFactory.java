@@ -30,7 +30,9 @@ import fr.norad.jaxrs.doc.parser.ModelJaxrsParser;
 import fr.norad.jaxrs.doc.parser.OperationJavaParser;
 import fr.norad.jaxrs.doc.parser.OperationJaxrsDocParser;
 import fr.norad.jaxrs.doc.parser.OperationJaxrsParser;
+import fr.norad.jaxrs.doc.parser.OperationOauth2Parser;
 import fr.norad.jaxrs.doc.parser.ParameterBeanValidationParser;
+import fr.norad.jaxrs.doc.parser.ParameterCxfParser;
 import fr.norad.jaxrs.doc.parser.ParameterJavaParser;
 import fr.norad.jaxrs.doc.parser.ParameterJaxrsDocParser;
 import fr.norad.jaxrs.doc.parser.ParameterJaxrsParser;
@@ -69,6 +71,7 @@ public class JaxrsDocProcessorFactory {
             add(new OperationJavaParser());
             add(new OperationJaxrsParser());
             add(new OperationJaxrsDocParser());
+            add(new OperationOauth2Parser());
         }
     });
     private ParameterProcessor parameterProcessor = new ParameterProcessor(this, new ArrayList<ParameterParser>() {
@@ -76,6 +79,7 @@ public class JaxrsDocProcessorFactory {
             add(new ParameterJavaParser());
             add(new ParameterJaxrsParser());
             add(new ParameterJerseyParser());
+            add(new ParameterCxfParser());
             add(new ParameterJaxrsDocParser());
             add(new ParameterBeanValidationParser());
         }

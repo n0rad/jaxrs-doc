@@ -34,7 +34,7 @@ public class ParameterJerseyParser implements ParameterParser {
         FormDataParam formData = AnnotationUtils.findParameterAnnotation(method, position, FormDataParam.class);
         if (formData != null) {
             parameter.setName(formData.value());
-            parameter.setType(ParameterType.FORM);
+            parameter.setType(ParameterType.MULTIPART);
             return;
         }
     }

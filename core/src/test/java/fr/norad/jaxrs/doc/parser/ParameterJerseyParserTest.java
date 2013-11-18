@@ -30,7 +30,7 @@ public class ParameterJerseyParserTest {
     private ParameterJerseyParser parser = new ParameterJerseyParser();
 
     @Test
-    public void should_support_form_data_pamram() throws Exception {
+    public void should_support_form_data_param_as_multipart() throws Exception {
         class Test {
             public void getSomething(@FormDataParam("caller") String caller) {
             }
@@ -40,7 +40,7 @@ public class ParameterJerseyParserTest {
 
         parser.parse(null, parameter, method, 0);
 
-        assertThat(parameter.getType()).isEqualTo(ParameterType.FORM);
+        assertThat(parameter.getType()).isEqualTo(ParameterType.MULTIPART);
         assertThat(parameter.getName()).isEqualTo("caller");
     }
 

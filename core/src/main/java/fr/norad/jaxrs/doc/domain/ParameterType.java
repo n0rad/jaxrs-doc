@@ -24,6 +24,7 @@ public enum ParameterType {
     COOKIE, //
     FORM, //
     BEAN, // TODO: process bean and remove it from here
+    MULTIPART,
 
     REQUEST_BODY, //
     CONTEXT, //

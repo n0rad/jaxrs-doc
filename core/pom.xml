@@ -1,48 +1,51 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>jaxrs-doc-core</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>jaxrs-doc-core</artifactId>
 
-	<parent>
-		<groupId>fr.norad.jaxrs.doc</groupId>
-		<artifactId>jaxrs-doc</artifactId>
-		<version>0.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
-	</parent>
+    <parent>
+        <groupId>fr.norad.jaxrs.doc</groupId>
+        <artifactId>jaxrs-doc</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <relativePath>../</relativePath>
+    </parent>
 
-	<dependencies>
-		<dependency>
-			<groupId>fr.norad.jaxrs.doc</groupId>
-			<artifactId>jaxrs-doc-annotations</artifactId>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>fr.norad.jaxrs.doc</groupId>
+            <artifactId>jaxrs-doc-annotations</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.module</groupId>
-			<artifactId>jackson-module-jaxb-annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>javax.ws.rs-api</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>2.2.5</version>
-        </dependency>
-        <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.el</artifactId>
-            <version>3.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>fr.norad.core</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.norad.jaxrs.oauth2</groupId>
+            <artifactId>jaxrs-oauth2-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-multipart</artifactId>
@@ -50,16 +53,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>fr.norad.core</groupId>
-            <artifactId>core</artifactId>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <version>2.7.7</version>
+            <scope>provided</scope>
         </dependency>
 
 
         <!-- TODO SUX -->
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+        </dependency>
 
         <!-- TEST -->
         <dependency>
@@ -68,5 +73,5 @@
             <scope>test</scope>
         </dependency>
 
-	</dependencies>
+    </dependencies>
 </project> 
