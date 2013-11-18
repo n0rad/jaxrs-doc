@@ -11,7 +11,7 @@
         </a>
        <ul class="dropdown-menu">
         <li ng-repeat="(project,version) in projects" ng-model="currentProject">
-          <a href="/{{project}}">{{project}}</a>
+          <a href="{{project}}">{{project}}</a>
         </li>
       </ul>
     </li>
@@ -23,7 +23,7 @@
         </a>
       <ul class="dropdown-menu">
         <li ng-repeat="(version,file) in projects[currentProject]">
-          <a href="/{{currentProject}}/{{version}}">{{version}}</a>
+          <a href="{{currentProject}}/{{version}}">{{version}}</a>
         </li>
       </ul>
     </li>

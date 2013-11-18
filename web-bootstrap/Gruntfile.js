@@ -68,7 +68,7 @@ module.exports = function (grunt) {
         options: {
           replacements: [{
             pattern: /\$\{contextPath\}/,
-            replacement: ''
+            replacement: grunt.option('contextPath') == undefined ? '' : grunt.option('contextPath')
           }, {
             pattern: /\$\{docServiceUrl\}/,
             replacement: ''
@@ -78,7 +78,7 @@ module.exports = function (grunt) {
     },
     connect: {
       options: {
-        port: 4500,
+        port: 4501,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost'
       },

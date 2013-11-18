@@ -9,7 +9,7 @@ jaxrsDoc.factory('Projects', ['$http', '$rootScope', function($http, $rootScope)
         currentProject : undefined,
 
         loadProjectList : function() {
-            var promise = $http.get('/projects.csv').then(function (response) {
+            var promise = $http.get('projects.csv').then(function (response) {
                 console.log(response);
                 var projLine = response.data.split('\n');
                 for (var i = 0; i < projLine.length; i++) {
