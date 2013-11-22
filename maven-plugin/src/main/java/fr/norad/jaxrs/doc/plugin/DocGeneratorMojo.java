@@ -71,17 +71,17 @@ public class DocGeneratorMojo extends AbstractMojo {
     private String[] modelParsers;
     @Parameter(property = "propertyParsers", required = false)
     private String[] propertyParsers;
-    @Parameter(property = "AdditionalProjectParsers", required = false)
+    @Parameter(property = "additionalProjectParsers", required = false)
     private String[] AdditionalProjectParsers;
-    @Parameter(property = "AdditionalApiParsers", required = false)
+    @Parameter(property = "additionalApiParsers", required = false)
     private String[] AdditionalApiParsers;
-    @Parameter(property = "AdditionalOperationParsers", required = false)
+    @Parameter(property = "additionalOperationParsers", required = false)
     private String[] AdditionalOperationParsers;
-    @Parameter(property = "AdditionalParameterParsers", required = false)
+    @Parameter(property = "additionalParameterParsers", required = false)
     private String[] AdditionalParameterParsers;
-    @Parameter(property = "AdditionalModelParsers", required = false)
+    @Parameter(property = "additionalModelParsers", required = false)
     private String[] AdditionalModelParsers;
-    @Parameter(property = "AdditionalPropertyParsers", required = false)
+    @Parameter(property = "additionalPropertyParsers", required = false)
     private String[] AdditionalPropertyParsers;
     private ObjectMapper objectMapper;
 
