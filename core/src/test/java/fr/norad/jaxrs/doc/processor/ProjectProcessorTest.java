@@ -19,28 +19,30 @@ package fr.norad.jaxrs.doc.processor;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
+import fr.norad.jaxrs.doc.ParserHolder;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ProjectParser;
 
 public class ProjectProcessorTest {
-
     ProjectParser parser = mock(ProjectParser.class);
     ApiProcessor apiProcessor = mock(ApiProcessor.class);
     ApiDefinition api = mock(ApiDefinition.class);
     JaxrsDocProcessorFactory factory = mock(JaxrsDocProcessorFactory.class);
-    ProjectProcessor processor = new ProjectProcessor(factory, Arrays.asList(parser));
+    ProjectProcessor processor = new ProjectProcessor(factory, new ParserHolder<ProjectParser>() {
+        {
+            add(parser);
+        }
+    });
 
     @Test
     public void should_call_parser_find_classes_and_process_api() throws Exception {
-        List<Class<?>> classes = Arrays.<Class<?>> asList(String.class);
+        List<Class<?>> classes = Arrays.<Class<?>>asList(String.class);
         when(parser.apiClasses()).thenReturn(classes);
         when(factory.getApiProcessor()).thenReturn(apiProcessor);
         when(apiProcessor.process(any(ProjectDefinition.class), eq(String.class))).thenReturn(api);

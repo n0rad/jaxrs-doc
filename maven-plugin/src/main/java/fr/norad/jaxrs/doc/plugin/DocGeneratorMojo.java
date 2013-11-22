@@ -17,9 +17,7 @@
 package fr.norad.jaxrs.doc.plugin;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -33,6 +31,7 @@ import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
+import fr.norad.jaxrs.doc.ParserHolder;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
@@ -110,65 +109,44 @@ public class DocGeneratorMojo extends AbstractMojo {
         JaxrsDocProcessorFactory factory = new JaxrsDocProcessorFactory(Arrays.asList(packageIncludes),
                                                                         name, version);
         if (projectParsers.length > 0) {
-            factory.setProjectProcessor(new ProjectProcessor(factory, toList(projectParsers, ProjectParser.class)));
+            factory.setProjectProcessor(new ProjectProcessor(factory, new ParserHolder<ProjectParser>(projectParsers)));
         } else if (AdditionalProjectParsers.length > 0) {
-            factory.getProjectProcessor().getParsers().addAll(toList(AdditionalProjectParsers, ProjectParser.class));
+            factory.getProjectProcessor().getParsers().addAll(AdditionalProjectParsers);
         }
 
         if (apiParsers.length > 0) {
-            factory.setApiProcessor(new ApiProcessor(factory, toList(apiParsers, ApiParser.class)));
+            factory.setApiProcessor(new ApiProcessor(factory, new ParserHolder<ApiParser>(apiParsers)));
         } else if (AdditionalApiParsers.length > 0) {
-            factory.getApiProcessor().getApiParsers().addAll(toList(AdditionalApiParsers, ApiParser.class));
+            factory.getApiProcessor().getParsers().addAll(AdditionalApiParsers);
         }
 
         if (operationParsers.length > 0) {
-            factory.setOperationProcessor(new OperationProcessor(factory, toList(operationParsers,
-                                                                                 OperationParser.class)));
+            factory.setOperationProcessor(new OperationProcessor(factory,
+                                                                 new ParserHolder<OperationParser>(operationParsers)));
         } else if (AdditionalOperationParsers.length > 0) {
-            factory.getOperationProcessor().getOperationParsers().addAll(toList(AdditionalOperationParsers,
-                                                                                OperationParser.class));
+            factory.getOperationProcessor().getParsers().addAll(AdditionalOperationParsers);
         }
 
         if (parameterParsers.length > 0) {
-            factory.setParameterProcessor(new ParameterProcessor(factory, toList(parameterParsers,
-                                                                                 ParameterParser.class)));
+            factory.setParameterProcessor(new ParameterProcessor(factory,
+                                                                 new ParserHolder<ParameterParser>(parameterParsers)));
         } else if (AdditionalParameterParsers.length > 0) {
-            factory.getParameterProcessor().getParsers().addAll(toList(AdditionalParameterParsers,
-                                                                       ParameterParser.class));
+            factory.getParameterProcessor().getParsers().addAll(AdditionalParameterParsers);
         }
 
         if (modelParsers.length > 0) {
-            factory.setModelProcessor(new ModelProcessor(factory, toList(modelParsers, ModelParser.class)));
+            factory.setModelProcessor(new ModelProcessor(factory, new ParserHolder<ModelParser>(modelParsers)));
         } else if (AdditionalModelParsers.length > 0) {
-            factory.getModelProcessor().getParsers().addAll(toList(AdditionalModelParsers, ModelParser.class));
+            factory.getModelProcessor().getParsers().addAll(AdditionalModelParsers);
         }
 
         if (propertyParsers.length > 0) {
-            factory.setPropertyProcessor(new PropertyProcessor(factory, toList(propertyParsers,
-                                                                               PropertyParser.class)));
+            factory.setPropertyProcessor(
+                    new PropertyProcessor(factory, new ParserHolder<PropertyParser>(propertyParsers)));
         } else if (AdditionalPropertyParsers.length > 0) {
-            factory.getPropertyProcessor().getParsers().addAll(toList(AdditionalPropertyParsers,
-                                                                      PropertyParser.class));
+            factory.getPropertyProcessor().getParsers().addAll(AdditionalPropertyParsers);
         }
         return factory;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> List<T> toList(String[] parserClassNames, Class<T> t) {
-        List<T> parsers = new ArrayList<>();
-        for (String parserClassName : parserClassNames) {
-            parsers.add((T) buildParser(parserClassName));
-        }
-        return parsers;
-    }
-
-    private Object buildParser(String parserClassName) {
-        try {
-            Class<?> parserClass = Class.forName(parserClassName);
-            return parserClass.newInstance();
-        } catch (Exception e) {
-            throw new IllegalStateException("Cannot build parser : " + parserClassName, e);
-        }
     }
 
     private void writeDefinitionToFile(ProjectDefinition definition) {

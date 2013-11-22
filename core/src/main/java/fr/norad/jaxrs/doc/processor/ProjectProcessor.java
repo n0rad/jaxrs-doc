@@ -17,11 +17,9 @@
 package fr.norad.jaxrs.doc.processor;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
+import fr.norad.jaxrs.doc.ParserHolder;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ProjectParser;
@@ -30,16 +28,16 @@ import lombok.Getter;
 public class ProjectProcessor {
     private final JaxrsDocProcessorFactory factory;
     @Getter
-    private final Set<ProjectParser> parsers = new LinkedHashSet<>();
+    private ParserHolder<ProjectParser> parsers;
 
-    public ProjectProcessor(JaxrsDocProcessorFactory factory, Collection<ProjectParser> parsers) {
+    public ProjectProcessor(JaxrsDocProcessorFactory factory, ParserHolder<ProjectParser> parsers) {
         this.factory = factory;
-        this.parsers.addAll(parsers);
+        this.parsers = parsers;
     }
 
     public ProjectDefinition process() {
         ProjectDefinition project = new ProjectDefinition();
-        for (ProjectParser parser : parsers) {
+        for (ProjectParser parser : parsers.get()) {
             parser.parse(project);
             List<Class<?>> apiClasses = parser.apiClasses();
             for (Class<?> apiClass : apiClasses) {

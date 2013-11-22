@@ -17,10 +17,8 @@
 package fr.norad.jaxrs.doc.processor;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
+import fr.norad.jaxrs.doc.ParserHolder;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
@@ -30,17 +28,17 @@ import lombok.Getter;
 public class ParameterProcessor {
     private final JaxrsDocProcessorFactory factory;
     @Getter
-    private final Set<ParameterParser> parsers = new LinkedHashSet<>();
+    private ParserHolder<ParameterParser> parsers;
 
-    public ParameterProcessor(JaxrsDocProcessorFactory factory, Collection<ParameterParser> parsers) {
+    public ParameterProcessor(JaxrsDocProcessorFactory factory, ParserHolder<ParameterParser> parsers) {
         this.factory = factory;
-        this.parsers.addAll(parsers);
+        this.parsers = parsers;
     }
 
     public ParameterDefinition process(ProjectDefinition project, OperationDefinition operation, Method method,
                                        int position) {
         ParameterDefinition parameter = new ParameterDefinition();
-        for (ParameterParser parser : parsers) {
+        for (ParameterParser parser : parsers.get()) {
             parser.parse(project.getLocalizations(), parameter, method, position);
             factory.getModelProcessor().process(project, parameter.getParamClass());
             factory.getModelProcessor().process(project, parameter.getMapKeyClass());

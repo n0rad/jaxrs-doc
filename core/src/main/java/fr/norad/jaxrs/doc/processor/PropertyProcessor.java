@@ -16,10 +16,8 @@
  */
 package fr.norad.jaxrs.doc.processor;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
+import fr.norad.jaxrs.doc.ParserHolder;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
@@ -29,16 +27,16 @@ import lombok.Getter;
 public class PropertyProcessor {
     private final JaxrsDocProcessorFactory factory;
     @Getter
-    private final Set<PropertyParser> parsers = new LinkedHashSet<>();
+    private ParserHolder<PropertyParser> parsers;
 
-    public PropertyProcessor(JaxrsDocProcessorFactory factory, Collection<PropertyParser> parsers) {
+    public PropertyProcessor(JaxrsDocProcessorFactory factory, ParserHolder<PropertyParser> parsers) {
         this.factory = factory;
-        this.parsers.addAll(parsers);
+        this.parsers = parsers;
     }
 
     public PropertyDefinition process(ProjectDefinition project, PropertyAccessor accessor) {
         PropertyDefinition property = new PropertyDefinition();
-        for (PropertyParser parser : parsers) {
+        for (PropertyParser parser : parsers.get()) {
             parser.parse(project.getLocalizations(), property, accessor);
             factory.getModelProcessor().process(project, property.getPropertyClass());
             factory.getModelProcessor().process(project, property.getMapKeyClass());

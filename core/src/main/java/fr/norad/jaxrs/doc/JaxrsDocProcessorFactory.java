@@ -16,8 +16,6 @@
  */
 package fr.norad.jaxrs.doc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import fr.norad.jaxrs.doc.parser.ApiJavaParser;
 import fr.norad.jaxrs.doc.parser.ApiJaxrsDocParser;
@@ -45,7 +43,6 @@ import fr.norad.jaxrs.doc.parserapi.ApiParser;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
-import fr.norad.jaxrs.doc.parserapi.ProjectParser;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
 import fr.norad.jaxrs.doc.processor.ApiProcessor;
 import fr.norad.jaxrs.doc.processor.ModelProcessor;
@@ -57,16 +54,15 @@ import lombok.Data;
 
 @Data
 public class JaxrsDocProcessorFactory {
-
     private ProjectProcessor projectProcessor;
-    private ApiProcessor apiProcessor = new ApiProcessor(this, new ArrayList<ApiParser>() {
+    private ApiProcessor apiProcessor = new ApiProcessor(this, new ParserHolder<ApiParser>() {
         {
             add(new ApiJavaParser());
             add(new ApiJaxrsParser());
             add(new ApiJaxrsDocParser());
         }
     });
-    private OperationProcessor operationProcessor = new OperationProcessor(this, new ArrayList<OperationParser>() {
+    private OperationProcessor operationProcessor = new OperationProcessor(this, new ParserHolder<OperationParser>() {
         {
             add(new OperationJavaParser());
             add(new OperationJaxrsParser());
@@ -74,17 +70,17 @@ public class JaxrsDocProcessorFactory {
             add(new OperationOauth2Parser());
         }
     });
-    private ParameterProcessor parameterProcessor = new ParameterProcessor(this, new ArrayList<ParameterParser>() {
+    private ParameterProcessor parameterProcessor = new ParameterProcessor(this, new ParserHolder<ParameterParser>() {
         {
             add(new ParameterJavaParser());
             add(new ParameterJaxrsParser());
-            add(new ParameterJerseyParser());
-            add(new ParameterCxfParser());
+            addOnlyIfLoadable(new ParameterJerseyParser(), "com.sun.jersey.multipart.FormDataParam");
+            addOnlyIfLoadable(new ParameterCxfParser(), "org.apache.cxf.jaxrs.ext.multipart.Multipart");
             add(new ParameterJaxrsDocParser());
             add(new ParameterBeanValidationParser());
         }
     });
-    private ModelProcessor modelProcessor = new ModelProcessor(this, new ArrayList<ModelParser>() {
+    private ModelProcessor modelProcessor = new ModelProcessor(this, new ParserHolder<ModelParser>() {
         {
             add(new ModelJavaParser());
             add(new ModelJaxrsParser());
@@ -93,7 +89,7 @@ public class JaxrsDocProcessorFactory {
             add(new ModelBeanValidationParser());
         }
     });
-    private PropertyProcessor propertyProcessor = new PropertyProcessor(this, new ArrayList<PropertyParser>() {
+    private PropertyProcessor propertyProcessor = new PropertyProcessor(this, new ParserHolder<PropertyParser>() {
         {
             add(new PropertyJavaParser());
             add(new PropertyJaxrsDocParser());
@@ -101,13 +97,10 @@ public class JaxrsDocProcessorFactory {
         }
     });
 
-    public JaxrsDocProcessorFactory(ProjectParser projectParser) {
-        projectProcessor = new ProjectProcessor(this, Arrays.<ProjectParser> asList(projectParser));
-    }
-
-    public JaxrsDocProcessorFactory(List<String> packagesToScan, String name, String version) {
-        projectProcessor = new ProjectProcessor(this, Arrays.<ProjectParser> asList(new ProjectDiscoveryParser(
-                packagesToScan, name, version)));
+    public JaxrsDocProcessorFactory(final List<String> packagesToScan, final String name, final String version) {
+        ParserHolder holder = new ParserHolder();
+        holder.add(new ProjectDiscoveryParser(packagesToScan, name, version));
+        projectProcessor = new ProjectProcessor(this, holder);
     }
 
 }

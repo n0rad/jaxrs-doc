@@ -21,21 +21,23 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
+import fr.norad.jaxrs.doc.ParserHolder;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
+import fr.norad.jaxrs.doc.parserapi.ProjectParser;
 import lombok.Getter;
 
 public class ModelProcessor {
     private final JaxrsDocProcessorFactory factory;
     @Getter
-    private final Set<ModelParser> parsers = new LinkedHashSet<>();
+    private ParserHolder<ModelParser> parsers;
 
-    public ModelProcessor(JaxrsDocProcessorFactory factory, Collection<ModelParser> parsers) {
+    public ModelProcessor(JaxrsDocProcessorFactory factory, ParserHolder<ModelParser> parsers) {
         this.factory = factory;
-        this.parsers.addAll(parsers);
+        this.parsers = parsers;
     }
 
     public void process(ProjectDefinition project, Class<?> modelClass) {
@@ -49,7 +51,7 @@ public class ModelProcessor {
         ModelDefinition model = new ModelDefinition(modelClass);
         project.getModels().put(model.getModelClass().getName(), model);
 
-        for (ModelParser parser : parsers) {
+        for (ModelParser parser : parsers.get()) {
             parser.parse(project.getLocalizations(), model, modelClass);
             List<PropertyAccessor> propertyAccessors = parser.findProperties(modelClass);
             if (propertyAccessors == null) {
@@ -68,7 +70,7 @@ public class ModelProcessor {
         if (modelClass == null) {
             return true;
         }
-        for (ModelParser parser : parsers) {
+        for (ModelParser parser : parsers.get()) {
             if (parser.isModelToIgnore(modelClass)) {
                 return true;
             }

@@ -18,10 +18,8 @@ package fr.norad.jaxrs.doc.processor;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
+import fr.norad.jaxrs.doc.ParserHolder;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.domain.ParameterDefinition;
@@ -32,16 +30,16 @@ import lombok.Getter;
 public class OperationProcessor {
     private final JaxrsDocProcessorFactory factory;
     @Getter
-    private final Set<OperationParser> operationParsers = new LinkedHashSet<>();
+    private ParserHolder<OperationParser> parsers;
 
-    public OperationProcessor(JaxrsDocProcessorFactory factory, Collection<OperationParser> operationParsers) {
+    public OperationProcessor(JaxrsDocProcessorFactory factory, ParserHolder<OperationParser> parsers) {
         this.factory = factory;
-        this.operationParsers.addAll(operationParsers);
+        this.parsers = parsers;
     }
 
     public OperationDefinition process(ProjectDefinition project, ApiDefinition api, Method method) {
         OperationDefinition operation = new OperationDefinition();
-        for (OperationParser operationParser : operationParsers) {
+        for (OperationParser operationParser : parsers.get()) {
             operationParser.parse(api, operation, method);
 
             factory.getModelProcessor().process(project, operation.getResponseClass());
