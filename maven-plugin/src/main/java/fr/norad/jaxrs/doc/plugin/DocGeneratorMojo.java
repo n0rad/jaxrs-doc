@@ -72,17 +72,17 @@ public class DocGeneratorMojo extends AbstractMojo {
     @Parameter(property = "propertyParsers", required = false)
     private String[] propertyParsers;
     @Parameter(property = "additionalProjectParsers", required = false)
-    private String[] AdditionalProjectParsers;
+    private String[] additionalProjectParsers;
     @Parameter(property = "additionalApiParsers", required = false)
-    private String[] AdditionalApiParsers;
+    private String[] additionalApiParsers;
     @Parameter(property = "additionalOperationParsers", required = false)
-    private String[] AdditionalOperationParsers;
+    private String[] additionalOperationParsers;
     @Parameter(property = "additionalParameterParsers", required = false)
-    private String[] AdditionalParameterParsers;
+    private String[] additionalParameterParsers;
     @Parameter(property = "additionalModelParsers", required = false)
-    private String[] AdditionalModelParsers;
+    private String[] additionalModelParsers;
     @Parameter(property = "additionalPropertyParsers", required = false)
-    private String[] AdditionalPropertyParsers;
+    private String[] additionalPropertyParsers;
     private ObjectMapper objectMapper;
 
     public DocGeneratorMojo() {
@@ -110,41 +110,41 @@ public class DocGeneratorMojo extends AbstractMojo {
                                                                         name, version);
         if (projectParsers.length > 0) {
             factory.setProjectProcessor(new ProjectProcessor(factory, new ParserHolder<ProjectParser>(projectParsers)));
-        } else if (AdditionalProjectParsers.length > 0) {
-            factory.getProjectProcessor().getParsers().addAll(AdditionalProjectParsers);
+        } else if (additionalProjectParsers.length > 0) {
+            factory.getProjectProcessor().getParsers().addAll(additionalProjectParsers);
         }
 
         if (apiParsers.length > 0) {
             factory.setApiProcessor(new ApiProcessor(factory, new ParserHolder<ApiParser>(apiParsers)));
-        } else if (AdditionalApiParsers.length > 0) {
-            factory.getApiProcessor().getParsers().addAll(AdditionalApiParsers);
+        } else if (additionalApiParsers.length > 0) {
+            factory.getApiProcessor().getParsers().addAll(additionalApiParsers);
         }
 
         if (operationParsers.length > 0) {
             factory.setOperationProcessor(new OperationProcessor(factory,
                                                                  new ParserHolder<OperationParser>(operationParsers)));
-        } else if (AdditionalOperationParsers.length > 0) {
-            factory.getOperationProcessor().getParsers().addAll(AdditionalOperationParsers);
+        } else if (additionalOperationParsers.length > 0) {
+            factory.getOperationProcessor().getParsers().addAll(additionalOperationParsers);
         }
 
         if (parameterParsers.length > 0) {
             factory.setParameterProcessor(new ParameterProcessor(factory,
                                                                  new ParserHolder<ParameterParser>(parameterParsers)));
-        } else if (AdditionalParameterParsers.length > 0) {
-            factory.getParameterProcessor().getParsers().addAll(AdditionalParameterParsers);
+        } else if (additionalParameterParsers.length > 0) {
+            factory.getParameterProcessor().getParsers().addAll(additionalParameterParsers);
         }
 
         if (modelParsers.length > 0) {
             factory.setModelProcessor(new ModelProcessor(factory, new ParserHolder<ModelParser>(modelParsers)));
-        } else if (AdditionalModelParsers.length > 0) {
-            factory.getModelProcessor().getParsers().addAll(AdditionalModelParsers);
+        } else if (additionalModelParsers.length > 0) {
+            factory.getModelProcessor().getParsers().addAll(additionalModelParsers);
         }
 
         if (propertyParsers.length > 0) {
             factory.setPropertyProcessor(
                     new PropertyProcessor(factory, new ParserHolder<PropertyParser>(propertyParsers)));
-        } else if (AdditionalPropertyParsers.length > 0) {
-            factory.getPropertyProcessor().getParsers().addAll(AdditionalPropertyParsers);
+        } else if (additionalPropertyParsers.length > 0) {
+            factory.getPropertyProcessor().getParsers().addAll(additionalPropertyParsers);
         }
         return factory;
     }
