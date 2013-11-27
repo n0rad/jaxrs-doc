@@ -33,7 +33,7 @@ public class OperationOauth2ParserTest {
         OperationDefinition operation = new OperationDefinition();
         operationParser.parse(null, operation, Test.class.getMethod("getString"));
 
-        assertThat(operation.getSecured()).isNull();
+        assertThat(operation.getSecuredInfo()).isNull();
     }
 
     @Test
@@ -46,7 +46,7 @@ public class OperationOauth2ParserTest {
         OperationDefinition operation = new OperationDefinition();
         operationParser.parse(null, operation, Test.class.getMethod("getString"));
 
-        assertThat(operation.getSecured()).isNotNull();
-        assertThat(operation.getSecured().getScopes()).containsOnly("genre");
+        assertThat(operation.getSecuredInfo()).isNotNull();
+        assertThat(operation.getSecuredInfo().getScopes()).containsOnly("genre");
     }
 }

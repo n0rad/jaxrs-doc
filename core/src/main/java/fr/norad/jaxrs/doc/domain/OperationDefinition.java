@@ -43,7 +43,7 @@ public class OperationDefinition {
     private Class<?> responseMapKeyClass;
     private Boolean responseAsList;
     private String summary;
-    private SecuredInfo secured;
+    private SecuredInfo securedInfo;
 
     private List<ParameterDefinition> parameters;
     private List<ErrorDefinition> errors;

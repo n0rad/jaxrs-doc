@@ -25,6 +25,6 @@ import fr.norad.jaxrs.oauth2.SecuredUtils;
 public class OperationOauth2Parser implements OperationParser {
     @Override
     public void parse(ApiDefinition api, OperationDefinition operation, Method method) {
-        operation.setSecured(SecuredUtils.findSecured(method));
+        operation.setSecuredInfo(SecuredUtils.findSecuredInfo(method));
     }
 }
