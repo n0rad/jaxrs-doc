@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
-import fr.norad.jaxrs.oauth2.Secured;
+import fr.norad.jaxrs.oauth2.SecuredInfo;
 import lombok.Data;
 
 @Data
@@ -43,7 +43,7 @@ public class OperationDefinition {
     private Class<?> responseMapKeyClass;
     private Boolean responseAsList;
     private String summary;
-    private Secured secured;
+    private SecuredInfo secured;
 
     private List<ParameterDefinition> parameters;
     private List<ErrorDefinition> errors;
