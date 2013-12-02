@@ -32,7 +32,7 @@ public class ParameterJaxrsDocParserTest {
     public void should_find_deprecated_with_outdate() throws Exception {
         class Test {
             @GET
-            public void getSomething(@Outdated(cause = "cause", since = "since") String param) {
+            public void getSomething(@Outdated(cause = "cause", since = "since", willBeRemovedOn = "2.2") String param) {
             }
         }
         Method method = Test.class.getMethod("getSomething", String.class);
@@ -42,6 +42,7 @@ public class ParameterJaxrsDocParserTest {
         assertThat(parameter.getDeprecated()).isTrue();
         assertThat(parameter.getDeprecatedSince()).isEqualTo("since");
         assertThat(parameter.getDeprecatedCause()).isEqualTo("cause");
+        assertThat(parameter.getDeprecatedWillBeRemovedOn()).isEqualTo("2.2");
     }
 
     @Test

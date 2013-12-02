@@ -34,7 +34,7 @@ public class OperationJaxrsDocParserTest {
     public void should_find_deprecated_with_outdated() throws Exception {
         class Test {
             @GET
-            @Outdated(since = "since", cause = "cause")
+            @Outdated(since = "since", cause = "cause", willBeRemovedOn = "2.2")
             public void getSomething() {
             }
         }
@@ -44,6 +44,7 @@ public class OperationJaxrsDocParserTest {
         assertThat(operation.getDeprecated()).isTrue();
         assertThat(operation.getDeprecatedCause()).isEqualTo("cause");
         assertThat(operation.getDeprecatedSince()).isEqualTo("since");
+        assertThat(operation.getDeprecatedWillBeRemovedOn()).isEqualTo("2.2");
     }
 
     @Test

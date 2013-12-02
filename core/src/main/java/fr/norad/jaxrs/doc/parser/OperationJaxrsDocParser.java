@@ -16,6 +16,7 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
+import static fr.norad.core.lang.StringUtils.notEmpty;
 import java.lang.reflect.Method;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.annotations.Description;
@@ -32,17 +33,28 @@ public class OperationJaxrsDocParser implements OperationParser {
     public void parse(ApiDefinition api, OperationDefinition operation, Method method) {
 
         Summary summary = AnnotationUtils.findAnnotation(method, Summary.class);
-        operation.setSummary(summary != null ? summary.value().trim() : null);
+        if (summary != null && notEmpty(summary.value())) {
+            operation.setSummary(summary.value().trim());
+        }
 
         Outdated outdated = AnnotationUtils.findAnnotation(method, Outdated.class);
         if (outdated != null) {
             operation.setDeprecated(true);
-            operation.setDeprecatedCause(outdated.cause());
-            operation.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
+            if (notEmpty(outdated.cause())) {
+                operation.setDeprecatedCause(outdated.cause());
+            }
+            if (notEmpty(outdated.since())) {
+                operation.setDeprecatedSince(outdated.since());
+            }
+            if (notEmpty(outdated.willBeRemovedOn())) {
+                operation.setDeprecatedWillBeRemovedOn(outdated.willBeRemovedOn());
+            }
         }
 
-        Description description = AnnotationUtils.findAnnotation(method, Description.class);
-        operation.setDescription(description != null ? DocUtils.getDescription(description) : null);
+        Description desc = AnnotationUtils.findAnnotation(method, Description.class);
+        if (desc != null && notEmpty(DocUtils.getDescription(desc))) {
+            operation.setDescription(DocUtils.getDescription(desc));
+        }
     }
 
 }

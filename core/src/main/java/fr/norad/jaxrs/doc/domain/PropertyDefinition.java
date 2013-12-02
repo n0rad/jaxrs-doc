@@ -35,6 +35,7 @@ public class PropertyDefinition {
     private Boolean deprecated;
     private String deprecatedSince;
     private String deprecatedCause;
+    private String deprecatedWillBeRemovedOn;
 
     private Map<String, Object> extras;
 

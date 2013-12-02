@@ -40,6 +40,7 @@ public class ParameterDefinition {
     private Boolean deprecated;
     private String deprecatedSince;
     private String deprecatedCause;
+    private String deprecatedWillBeRemovedOn;
 
     private List<ConstraintDefinition> constraints;
     private Boolean validationCascaded;

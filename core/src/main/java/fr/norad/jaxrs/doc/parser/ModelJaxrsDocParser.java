@@ -16,6 +16,7 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
+import static fr.norad.core.lang.StringUtils.notEmpty;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -35,12 +36,20 @@ public class ModelJaxrsDocParser implements ModelParser {
         Outdated outdated = AnnotationUtils.findAnnotation(modelClass, Outdated.class);
         if (outdated != null) {
             model.setDeprecated(true);
-            model.setDeprecatedCause(outdated.cause());
-            model.setDeprecatedSince(outdated.since().isEmpty() ? null : outdated.since());
+            if (notEmpty(outdated.cause())) {
+                model.setDeprecatedCause(outdated.cause());
+            }
+            if (notEmpty(outdated.since())) {
+                model.setDeprecatedSince(outdated.since());
+            }
+            if (notEmpty(outdated.willBeRemovedOn())) {
+                model.setDeprecatedWillBeRemovedOn(outdated.willBeRemovedOn());
+            }
         }
-
-        Description description = AnnotationUtils.findAnnotation(modelClass, Description.class);
-        model.setDescription(description != null ? DocUtils.getDescription(description) : null);
+        Description desc = AnnotationUtils.findAnnotation(modelClass, Description.class);
+        if (desc != null && notEmpty(DocUtils.getDescription(desc))) {
+            model.setDescription(DocUtils.getDescription(desc));
+        }
 
     }
 

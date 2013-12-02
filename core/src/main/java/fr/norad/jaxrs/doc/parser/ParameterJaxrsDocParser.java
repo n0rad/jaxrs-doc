@@ -42,6 +42,9 @@ public class ParameterJaxrsDocParser implements ParameterParser {
             if (notEmpty(outdated.since())) {
                 parameter.setDeprecatedSince(outdated.since());
             }
+            if (notEmpty(outdated.willBeRemovedOn())) {
+                parameter.setDeprecatedWillBeRemovedOn(outdated.willBeRemovedOn());
+            }
         }
 
         Description desc = AnnotationUtils.findParameterAnnotation(method, position, Description.class);

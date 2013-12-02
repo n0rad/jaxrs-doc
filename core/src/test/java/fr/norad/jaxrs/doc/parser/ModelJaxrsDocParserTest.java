@@ -29,7 +29,7 @@ public class ModelJaxrsDocParserTest {
 
     @Test
     public void should_fill_oudated_part() throws Exception {
-        @Outdated(since = "since", cause = "cause")
+        @Outdated(since = "since", cause = "cause", willBeRemovedOn = "3.3")
         class Test {
 
         }
@@ -38,6 +38,7 @@ public class ModelJaxrsDocParserTest {
         assertThat(model.getDeprecated()).isTrue();
         assertThat(model.getDeprecatedCause()).isEqualTo("cause");
         assertThat(model.getDeprecatedSince()).isEqualTo("since");
+        assertThat(model.getDeprecatedWillBeRemovedOn()).isEqualTo("3.3");
     }
 
     @Test

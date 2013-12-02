@@ -33,7 +33,7 @@ public class PropertyJaxrsDocParserTest {
     @Test
     public void should_support_outdated_on_setter() throws Exception {
         class TheClass {
-            @Outdated(cause = "cause", since = "since")
+            @Outdated(cause = "cause", since = "since", willBeRemovedOn = "2.2")
             public void setField(UUID field) {
             }
         }
@@ -44,6 +44,7 @@ public class PropertyJaxrsDocParserTest {
         assertThat(property.getDeprecated()).isTrue();
         assertThat(property.getDeprecatedCause()).isEqualTo("cause");
         assertThat(property.getDeprecatedSince()).isEqualTo("since");
+        assertThat(property.getDeprecatedWillBeRemovedOn()).isEqualTo("2.2");
     }
 
     @Test
@@ -65,7 +66,7 @@ public class PropertyJaxrsDocParserTest {
     @Test
     public void should_support_outdated_on_field() throws Exception {
         class TheClass {
-            @Outdated(cause = "cause", since = "since")
+            @Outdated(cause = "cause", since = "since", willBeRemovedOn = "2.2")
             private String genre;
         }
 
@@ -74,6 +75,7 @@ public class PropertyJaxrsDocParserTest {
         assertThat(property.getDeprecated()).isTrue();
         assertThat(property.getDeprecatedCause()).isEqualTo("cause");
         assertThat(property.getDeprecatedSince()).isEqualTo("since");
+        assertThat(property.getDeprecatedWillBeRemovedOn()).isEqualTo("2.2");
     }
 
     @Test

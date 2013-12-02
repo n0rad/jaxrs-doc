@@ -45,6 +45,9 @@ public class PropertyJaxrsDocParser implements PropertyParser {
                 if (notEmpty(outdated.since())) {
                     property.setDeprecatedSince(outdated.since());
                 }
+                if (notEmpty(outdated.willBeRemovedOn())) {
+                    property.setDeprecatedWillBeRemovedOn(outdated.willBeRemovedOn());
+                }
             }
 
             Description desc = accessor.getField().getAnnotation(Description.class);
@@ -75,6 +78,9 @@ public class PropertyJaxrsDocParser implements PropertyParser {
             }
             if (notEmpty(outdated.since())) {
                 property.setDeprecatedSince(outdated.since());
+            }
+            if (notEmpty(outdated.willBeRemovedOn())) {
+                property.setDeprecatedWillBeRemovedOn(outdated.willBeRemovedOn());
             }
         }
 

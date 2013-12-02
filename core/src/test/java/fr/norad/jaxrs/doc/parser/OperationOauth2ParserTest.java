@@ -37,7 +37,7 @@ public class OperationOauth2ParserTest {
     }
 
     @Test
-    public void should_not_fill_secured_for_annotated() throws Exception {
+    public void should_fill_secured_for_annotated() throws Exception {
         class Test {
             @SecuredWithScope("genre")
             public void getString() {
@@ -49,4 +49,5 @@ public class OperationOauth2ParserTest {
         assertThat(operation.getSecuredInfo()).isNotNull();
         assertThat(operation.getSecuredInfo().getScopes()).containsOnly("genre");
     }
+
 }

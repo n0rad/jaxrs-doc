@@ -38,6 +38,7 @@ public class OperationDefinition {
     private Boolean deprecated;
     private String deprecatedSince;
     private String deprecatedCause;
+    private String deprecatedWillBeRemovedOn;
 
     private Class<?> responseClass;
     private Class<?> responseMapKeyClass;

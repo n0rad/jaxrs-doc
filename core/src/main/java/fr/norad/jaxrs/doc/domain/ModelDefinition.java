@@ -35,6 +35,7 @@ public class ModelDefinition {
     private Boolean deprecated;
     private String deprecatedSince;
     private String deprecatedCause;
+    private String deprecatedWillBeRemovedOn;
 
     public ModelDefinition(Class<?> modelClass) {
         this.modelClass = modelClass;

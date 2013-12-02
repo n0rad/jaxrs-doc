@@ -33,4 +33,6 @@ public @interface Outdated {
 
     String cause();
 
+    String willBeRemovedOn() default "";
+
 }
