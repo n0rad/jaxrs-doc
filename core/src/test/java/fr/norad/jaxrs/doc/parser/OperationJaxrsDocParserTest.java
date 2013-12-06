@@ -16,19 +16,123 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
+import static fr.norad.jaxrs.doc.annotations.HttpStatus.OK;
 import static org.fest.assertions.api.Assertions.assertThat;
 import javax.ws.rs.GET;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.annotations.Description;
-import fr.norad.jaxrs.doc.annotations.Outdated;
-import fr.norad.jaxrs.doc.annotations.Summary;
+import fr.norad.jaxrs.doc.annotations.*;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 
 public class OperationJaxrsDocParserTest {
 
+
     private ApiDefinition api = new ApiDefinition();
     private OperationDefinition operation = new OperationDefinition();
+
+    @Test
+    public void should_override_from_class() throws Exception {
+        @HttpStatus(OK)
+        @ErrorType("NOT_FOUND")
+        class NotFoundException extends Exception {
+        }
+
+        @OperationError(errorClass = NotFoundException.class, reason = "generic")
+        class EventResource {
+            @OperationError(errorClass = NotFoundException.class, reason = "Event not found")
+            public void getEvent() throws NotFoundException {
+            }
+        }
+
+        new OperationJaxrsDocParser().parse(api, operation, EventResource.class.getMethod("getEvent"));
+
+        assertThat(operation.getErrors()).hasSize(1);
+        ErrorOperationDefinition errorDefinition = operation.getErrors().get(0);
+        assertThat((Object) errorDefinition.getErrorClass()).isEqualTo(NotFoundException.class);
+        assertThat(errorDefinition.getReason()).isEqualTo("Event not found");
+    }
+
+    @Test
+    public void should_find_2_error_annotation_on_method_and_class() throws Exception {
+        @OperationError(errorClass = RuntimeException.class, reason = "bou")
+        class Test {
+            @OperationError(errorClass = Exception.class, reason = "bou")
+            public void getSomething() {
+            }
+        }
+
+        new OperationJaxrsDocParser().parse(api, operation, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getErrors()).hasSize(2);
+    }
+
+    @Test
+    public void should_override_exception_on_method() throws Exception {
+        class Test {
+            @OperationErrors({
+                    @OperationError(errorClass = Exception.class, reason = "boubou"),
+            })
+            @OperationError(errorClass = Exception.class, reason = "bou")
+            public void getSomething() {
+            }
+        }
+
+        new OperationJaxrsDocParser().parse(api, operation, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getErrors()).hasSize(1);
+        ErrorOperationDefinition errorDefinition = operation.getErrors().get(0);
+        assertThat((Object) errorDefinition.getErrorClass()).isEqualTo(Exception.class);
+        assertThat(errorDefinition.getReason()).isEqualTo("boubou");
+    }
+
+    @Test
+    public void should_find_2_error_annotation_on_method_for_list_and_single() throws Exception {
+        class Test {
+            @OperationErrors({
+                    @OperationError(errorClass = RuntimeException.class, reason = "bou"),
+            })
+            @OperationError(errorClass = Exception.class, reason = "bou")
+            public void getSomething() {
+            }
+        }
+
+        new OperationJaxrsDocParser().parse(api, operation, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getErrors()).hasSize(2);
+    }
+
+    @Test
+    public void should_find_2_error_annotation_on_method_for_list() throws Exception {
+        class Test {
+            @OperationErrors({
+                    @OperationError(errorClass = RuntimeException.class, reason = "bou"),
+                    @OperationError(errorClass = Exception.class, reason = "bou"),
+            })
+            public void getSomething() {
+            }
+        }
+
+        new OperationJaxrsDocParser().parse(api, operation, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getErrors()).hasSize(2);
+    }
+
+    @Test
+    public void should_find_error_annotation_on_method() throws Exception {
+        class Test {
+            @OperationError(errorClass = Exception.class, reason = "bou")
+            public void getSomething() {
+            }
+        }
+
+        new OperationJaxrsDocParser().parse(api, operation, Test.class.getMethod("getSomething"));
+
+        assertThat(operation.getErrors()).hasSize(1);
+        ErrorOperationDefinition errorDefinition = operation.getErrors().get(0);
+        assertThat((Object) errorDefinition.getErrorClass()).isEqualTo(Exception.class);
+        assertThat(errorDefinition.getReason()).isEqualTo("bou");
+    }
 
     @Test
     public void should_find_deprecated_with_outdated() throws Exception {

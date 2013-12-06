@@ -17,12 +17,18 @@
 package fr.norad.jaxrs.doc.parser;
 
 import static fr.norad.core.lang.StringUtils.notEmpty;
+import static fr.norad.core.lang.reflect.AnnotationUtils.findAnnotation;
+import static fr.norad.core.lang.reflect.AnnotationUtils.findAnnotationOnMethodOrClass;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import fr.norad.core.lang.reflect.AnnotationUtils;
-import fr.norad.jaxrs.doc.annotations.Description;
-import fr.norad.jaxrs.doc.annotations.Outdated;
-import fr.norad.jaxrs.doc.annotations.Summary;
+import fr.norad.jaxrs.doc.annotations.*;
+import fr.norad.jaxrs.doc.annotations.OperationError;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.domain.ErrorDefinition;
+import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
 import fr.norad.jaxrs.doc.utils.DocUtils;
@@ -51,9 +57,48 @@ public class OperationJaxrsDocParser implements OperationParser {
             }
         }
 
+        fillErrorPart(operation, method);
+
         Description desc = AnnotationUtils.findAnnotation(method, Description.class);
         if (desc != null && notEmpty(DocUtils.getDescription(desc))) {
             operation.setDescription(DocUtils.getDescription(desc));
+        }
+    }
+
+    public void fillErrorPart(OperationDefinition operation, Method method) {
+        OperationError errorOnClass = findAnnotation(method.getDeclaringClass(), OperationError.class);
+        OperationErrors errorsOnClass = findAnnotation(method.getDeclaringClass(), OperationErrors.class);
+        OperationError error = findAnnotationOnMethodOrClass(method, OperationError.class);
+        OperationErrors errors = findAnnotationOnMethodOrClass(method, OperationErrors.class);
+
+        Map<Class<?>, OperationError> errorByClass = new HashMap<>();
+        if (errorOnClass != null) {
+            errorByClass.put(errorOnClass.errorClass(), errorOnClass);
+        }
+        if (errorsOnClass != null) {
+            for (OperationError e : errorsOnClass.value()) {
+                errorByClass.put(e.errorClass(), e);
+            }
+        }
+        if (error != null) {
+            errorByClass.put(error.errorClass(), error);
+        }
+        if (errors != null) {
+            for (OperationError e : errors.value()) {
+                errorByClass.put(e.errorClass(), e);
+            }
+        }
+
+        for (Class<?> exception : errorByClass.keySet()) {
+            if (operation.getErrors() == null) {
+                operation.setErrors(new ArrayList<ErrorOperationDefinition>());
+            }
+            ErrorOperationDefinition errorDefinition = operation.findErrorDefinition(exception);
+            if (errorDefinition == null) {
+                operation.getErrors().add(new ErrorOperationDefinition(errorByClass.get(exception)));
+            } else {
+                errorDefinition.setReason(errorByClass.get(exception).reason());
+            }
         }
     }
 

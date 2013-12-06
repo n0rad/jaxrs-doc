@@ -83,7 +83,7 @@
             <dependency>
                 <groupId>fr.norad.core</groupId>
                 <artifactId>core</artifactId>
-                <version>0.8-SNAPSHOT</version>
+                <version>0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>fr.norad.jaxrs.oauth2</groupId>

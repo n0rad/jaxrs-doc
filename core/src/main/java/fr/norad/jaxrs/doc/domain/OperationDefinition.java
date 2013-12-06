@@ -47,10 +47,15 @@ public class OperationDefinition {
     private SecuredInfo securedInfo;
 
     private List<ParameterDefinition> parameters;
-    private List<ErrorDefinition> errors;
+    private List<ErrorOperationDefinition> errors;
+
+    private Integer businessCode;
+    private String reason;
+
 
     private List<String> consumes;
     private List<String> produces;
+
 
     public OperationDefinition() {
     }
@@ -59,11 +64,16 @@ public class OperationDefinition {
         this.path = path;
     }
 
-    public List<ErrorDefinition> createdErrors() {
+    public ErrorOperationDefinition findErrorDefinition(Class<?> errorClass) {
         if (errors == null) {
-            errors = new ArrayList<>();
+            return null;
         }
-        return getErrors();
+        for (ErrorOperationDefinition definition : errors) {
+            if (errorClass.equals(definition.getErrorClass())) {
+                return definition;
+            }
+        }
+        return null;
     }
 
 }

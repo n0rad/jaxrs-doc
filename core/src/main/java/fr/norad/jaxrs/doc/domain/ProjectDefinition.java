@@ -31,6 +31,7 @@ public class ProjectDefinition {
     private String version;
     private List<ApiDefinition> apis = new ArrayList<>();
     private Map<String, ModelDefinition> models = new HashMap<>();
+    private Map<Class<? extends Exception>, ErrorDefinition> errors = new HashMap();
     private Map<Locale, LocalizationDefinition> localizations = new HashMap<Locale, LocalizationDefinition>() {
         {
             put(Locale.getDefault(), new LocalizationDefinition());

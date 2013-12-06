@@ -25,6 +25,7 @@ import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.core.lang.reflect.ReflectionUtils;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ErrorDefinition;
+import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
 
@@ -40,10 +41,11 @@ public class OperationJavaParser implements OperationParser {
 
         List<Class<?>> exceptions = ReflectionUtils.getExceptions(method);
         for (Class<?> exception : exceptions) {
+            Class<? extends Exception> e = (Class<? extends Exception>) exception;
             if (operation.getErrors() == null) {
-                operation.setErrors(new ArrayList<ErrorDefinition>());
+                operation.setErrors(new ArrayList<ErrorOperationDefinition>());
             }
-            operation.getErrors().add(new ErrorDefinition(exception));
+            operation.getErrors().add(new ErrorOperationDefinition(e));
         }
 
         fillReturnPart(operation, method);

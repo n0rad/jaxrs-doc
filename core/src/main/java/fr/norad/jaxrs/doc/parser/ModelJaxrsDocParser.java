@@ -60,7 +60,6 @@ public class ModelJaxrsDocParser implements ModelParser {
 
     @Override
     public List<PropertyAccessor> findProperties(Class<?> modelClass) {
-        // TODO Auto-generated method stub
         return null;
     }
 

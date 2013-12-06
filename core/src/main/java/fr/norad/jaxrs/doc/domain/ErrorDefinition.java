@@ -22,17 +22,18 @@ import lombok.Data;
 @Data
 public class ErrorDefinition {
 
-    private Class<?> errorClass;
-    private Integer httpCode;
-    private String reason;
+    private Class<? extends Exception> errorClass;
+    private Integer httpStatus;
+    private String type;
+    private String description;
     private Map<String, Object> extras;
 
     public ErrorDefinition() {
-
     }
 
-    public ErrorDefinition(Class<?> errorClass) {
-        this.errorClass = errorClass;
+    public ErrorDefinition(Class<? extends Exception> e) {
+        errorClass = e;
     }
+
 
 }

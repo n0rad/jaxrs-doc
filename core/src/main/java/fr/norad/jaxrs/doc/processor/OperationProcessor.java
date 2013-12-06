@@ -20,10 +20,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
 import fr.norad.jaxrs.doc.ParserHolder;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.domain.*;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
 import lombok.Getter;
 
@@ -44,6 +41,11 @@ public class OperationProcessor {
 
             factory.getModelProcessor().process(project, operation.getResponseClass());
             factory.getModelProcessor().process(project, operation.getResponseMapKeyClass());
+
+        }
+
+        for (ErrorOperationDefinition errorOperation : operation.getErrors()) {
+                factory.getErrorProcessor().process(project, errorOperation);
         }
 
         Class<?>[] parameterTypes = method.getParameterTypes();
