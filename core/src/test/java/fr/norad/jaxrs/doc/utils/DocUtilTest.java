@@ -18,7 +18,7 @@ package fr.norad.jaxrs.doc.utils;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.annotations.Description;
+import fr.norad.jaxrs.doc.api.Description;
 
 public class DocUtilTest {
     @Test

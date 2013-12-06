@@ -14,12 +14,15 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.parserapi;
+package fr.norad.jaxrs.doc.api;
 
-import fr.norad.jaxrs.doc.domain.ErrorDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface ErrorParser {
-
-    public void parse(ErrorDefinition error, Class<? extends Exception> exception);
+@Target({ ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Description {
+    String[] value();
 }

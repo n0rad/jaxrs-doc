@@ -20,8 +20,8 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import java.util.UUID;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.annotations.Description;
-import fr.norad.jaxrs.doc.annotations.Outdated;
+import fr.norad.jaxrs.doc.api.Description;
+import fr.norad.jaxrs.doc.api.Outdated;
 import fr.norad.jaxrs.doc.domain.PropertyDefinition;
 
 @SuppressWarnings("unused")

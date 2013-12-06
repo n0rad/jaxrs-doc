@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>fr.norad.jaxrs.doc</groupId>
-            <artifactId>jaxrs-doc-annotations</artifactId>
+            <artifactId>jaxrs-doc-api</artifactId>
         </dependency>
 
         <dependency>

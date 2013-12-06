@@ -18,6 +18,8 @@ package fr.norad.jaxrs.doc.swagger.parser;
 
 import static fr.norad.core.lang.StringUtils.notEmpty;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import com.wordnik.swagger.annotations.ApiError;
 import com.wordnik.swagger.annotations.ApiErrors;
@@ -25,6 +27,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ErrorDefinition;
+import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
 
@@ -69,11 +72,14 @@ public class SwaggerOperationParser implements OperationParser {
     }
 
     private void processError(OperationDefinition operation, ApiError errorSwagger) {
-        ErrorDefinition error = new ErrorDefinition();//TODO handle already existing error from throws
+        ErrorOperationDefinition error = new ErrorOperationDefinition();//TODO handle already existing error from throws
         error.setReason(errorSwagger.reason());
-        error.setHttpCode(errorSwagger.code());
+//        error.setHttpCode(errorSwagger.code());
 
-        operation.createdErrors().add(error);
+        if (operation.getErrors() == null) {
+            operation.setErrors(new ArrayList<ErrorOperationDefinition>());
+        }
+        operation.getErrors().add(error);
     }
 
 }

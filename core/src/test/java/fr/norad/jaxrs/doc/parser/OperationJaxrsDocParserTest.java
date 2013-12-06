@@ -16,11 +16,11 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
-import static fr.norad.jaxrs.doc.annotations.HttpStatus.OK;
+import static fr.norad.jaxrs.doc.api.HttpStatus.OK;
 import static org.fest.assertions.api.Assertions.assertThat;
 import javax.ws.rs.GET;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.annotations.*;
+import fr.norad.jaxrs.doc.api.*;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;

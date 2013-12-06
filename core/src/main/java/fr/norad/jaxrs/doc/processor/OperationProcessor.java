@@ -44,8 +44,10 @@ public class OperationProcessor {
 
         }
 
-        for (ErrorOperationDefinition errorOperation : operation.getErrors()) {
+        if (operation.getErrors() != null) {
+            for (ErrorOperationDefinition errorOperation : operation.getErrors()) {
                 factory.getErrorProcessor().process(project, errorOperation);
+            }
         }
 
         Class<?>[] parameterTypes = method.getParameterTypes();

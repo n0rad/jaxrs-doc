@@ -19,9 +19,9 @@ package fr.norad.jaxrs.doc.parser;
 import static org.fest.assertions.api.Assertions.assertThat;
 import javax.ws.rs.Path;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.annotations.Description;
-import fr.norad.jaxrs.doc.annotations.Outdated;
-import fr.norad.jaxrs.doc.annotations.Summary;
+import fr.norad.jaxrs.doc.api.Description;
+import fr.norad.jaxrs.doc.api.Outdated;
+import fr.norad.jaxrs.doc.api.Summary;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 
 public class ApiJaxrsDocParserTest {

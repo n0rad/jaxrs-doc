@@ -20,7 +20,7 @@
     </properties>
 
     <modules>
-        <module>annotations</module>
+        <module>api</module>
         <module>core</module>
         <module>swagger</module>
         <module>maven-plugin</module>
@@ -39,7 +39,7 @@
         <dependencies>
             <dependency>
                 <groupId>fr.norad.jaxrs.doc</groupId>
-                <artifactId>jaxrs-doc-annotations</artifactId>
+                <artifactId>jaxrs-doc-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

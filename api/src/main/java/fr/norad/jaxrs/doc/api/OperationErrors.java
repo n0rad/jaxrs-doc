@@ -14,25 +14,15 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.annotations;
+package fr.norad.jaxrs.doc.api;
 
-import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Documented
+@Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ java.lang.annotation.ElementType.CONSTRUCTOR, java.lang.annotation.ElementType.FIELD,
-        java.lang.annotation.ElementType.LOCAL_VARIABLE, java.lang.annotation.ElementType.METHOD,
-        java.lang.annotation.ElementType.PACKAGE, java.lang.annotation.ElementType.PARAMETER,
-        java.lang.annotation.ElementType.TYPE })
-public @interface Outdated {
-
-    String since() default "";
-
-    String cause();
-
-    String willBeRemovedOn() default "";
-
+public @interface OperationErrors {
+    OperationError[] value();
 }

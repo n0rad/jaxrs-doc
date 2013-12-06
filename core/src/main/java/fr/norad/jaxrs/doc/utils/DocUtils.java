@@ -16,7 +16,7 @@
  */
 package fr.norad.jaxrs.doc.utils;
 
-import fr.norad.jaxrs.doc.annotations.Description;
+import fr.norad.jaxrs.doc.api.Description;
 
 public class DocUtils {
 

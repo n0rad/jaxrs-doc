@@ -18,8 +18,8 @@ package fr.norad.jaxrs.doc.parser;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.annotations.Description;
-import fr.norad.jaxrs.doc.annotations.Outdated;
+import fr.norad.jaxrs.doc.api.Description;
+import fr.norad.jaxrs.doc.api.Outdated;
 import fr.norad.jaxrs.doc.domain.ModelDefinition;
 
 public class ModelJaxrsDocParserTest {
