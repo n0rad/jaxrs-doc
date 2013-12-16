@@ -19,7 +19,7 @@ package fr.norad.jaxrs.doc.parser;
 import static fr.norad.core.lang.StringUtils.notEmpty;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.api.Description;
-import fr.norad.jaxrs.doc.api.HttpStatus;
+import fr.norad.jaxrs.oauth2.HttpStatus;
 import fr.norad.jaxrs.doc.domain.ErrorDefinition;
 import fr.norad.jaxrs.doc.parserapi.ErrorParser;
 import fr.norad.jaxrs.doc.utils.DocUtils;
@@ -30,7 +30,7 @@ public class ErrorJaxrsDocParser implements ErrorParser {
     public void parse(ErrorDefinition error, Class<? extends Exception> e) {
         HttpStatus status = AnnotationUtils.findAnnotation(e, HttpStatus.class);
         if (status != null) {
-            error.setHttpStatus(status.value());
+            error.setHttpStatus(status.value().getStatusCode());
         }
 
         Description desc = AnnotationUtils.findAnnotation(e, Description.class);

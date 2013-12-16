@@ -16,14 +16,15 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
-import static fr.norad.jaxrs.doc.api.HttpStatus.FORBIDDEN_403;
 import static org.fest.assertions.api.Assertions.assertThat;
 import javax.ws.rs.GET;
+import javax.ws.rs.core.Response;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.api.*;
 import fr.norad.jaxrs.doc.domain.ApiDefinition;
 import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
+import fr.norad.jaxrs.oauth2.HttpStatus;
 
 public class OperationJaxrsDocParserTest {
 
@@ -33,7 +34,7 @@ public class OperationJaxrsDocParserTest {
 
     @Test
     public void should_override_from_class() throws Exception {
-        @HttpStatus(FORBIDDEN_403)
+        @HttpStatus(Response.Status.FORBIDDEN)
         class NotFoundException extends Exception {
         }
 
