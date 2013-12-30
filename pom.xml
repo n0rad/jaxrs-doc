@@ -3,7 +3,7 @@
 
     <groupId>fr.norad.jaxrs.doc</groupId>
     <artifactId>jaxrs-doc</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>better, faster, stronger swagger like</description>
 
