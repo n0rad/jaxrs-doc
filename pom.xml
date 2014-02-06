@@ -3,9 +3,9 @@
 
     <groupId>fr.norad.jaxrs.doc</groupId>
     <artifactId>jaxrs-doc</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>better, faster, stronger swagger like</description>
+    <description>better, faster, stronger swagger like dedicated to jaxrs</description>
 
     <parent>
         <groupId>fr.norad.parent</groupId>
@@ -31,7 +31,7 @@
         <connection>scm:git:git://github.com/n0rad/jaxrs-doc.git</connection>
         <developerConnection>scm:git:git@github.com:n0rad/jaxrs-doc.git</developerConnection>
         <url>https://github.com/n0rad/jaxrs-doc</url>
-        <tag>jaxrs-doc-0.2</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencyManagement>
@@ -87,7 +87,7 @@
             <dependency>
                 <groupId>fr.norad.jaxrs.oauth2</groupId>
                 <artifactId>jaxrs-oauth2-api</artifactId>
-                <version>0.5</version>
+                <version>0.6-SNAPSHOT</version>
             </dependency>
 
             <!-- VALIDATION -->

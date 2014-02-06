@@ -16,10 +16,19 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
+import static fr.norad.jaxrs.doc.parser.OperationOauth2ParserTest.SecuringSomething.TheScopes.SCOPE_A;
+import static fr.norad.jaxrs.oauth2.ScopeStrategy.ALL;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.fest.assertions.api.Assertions.assertThat;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.domain.OperationDefinition;
-import fr.norad.jaxrs.oauth2.SecuredWithScope;
+import fr.norad.jaxrs.oauth2.Scope;
+import fr.norad.jaxrs.oauth2.ScopeStrategy;
+import fr.norad.jaxrs.oauth2.Secured;
 
 public class OperationOauth2ParserTest {
     private OperationOauth2Parser operationParser = new OperationOauth2Parser();
@@ -39,7 +48,7 @@ public class OperationOauth2ParserTest {
     @Test
     public void should_fill_secured_for_annotated() throws Exception {
         class Test {
-            @SecuredWithScope("genre")
+            @SecuringSomething(SCOPE_A)
             public void getString() {
             }
         }
@@ -47,7 +56,28 @@ public class OperationOauth2ParserTest {
         operationParser.parse(null, operation, Test.class.getMethod("getString"));
 
         assertThat(operation.getSecuredInfo()).isNotNull();
-        assertThat(operation.getSecuredInfo().getScopes()).containsOnly("genre");
+        assertThat(operation.getSecuredInfo().getScopes()).containsOnly(SCOPE_A);
+    }
+
+    @Secured
+    @Target({ METHOD, TYPE })
+    @Retention(RUNTIME)
+    public @interface SecuringSomething {
+
+        TheScopes[] value();
+
+        ScopeStrategy strategy() default ALL;
+
+        public enum TheScopes implements Scope {
+            SCOPE_A,
+            SCOPE_B,
+            SCOPE_C;
+
+            @Override
+            public String scopeIdentifier() {
+                return this.name();
+            }
+        }
     }
 
 }
