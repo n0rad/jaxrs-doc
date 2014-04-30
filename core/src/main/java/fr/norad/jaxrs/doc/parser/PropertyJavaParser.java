@@ -19,20 +19,23 @@ package fr.norad.jaxrs.doc.parser;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.core.lang.reflect.ReflectionUtils;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
 
 public class PropertyJavaParser implements PropertyParser {
 
+    private Map<Class<?>, Object> emptyInstances = new HashMap<>();
+
     @Override
     public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, PropertyDefinition property,
-                      PropertyAccessor accessor) {
+                      PropertyAccessor accessor, Class<?> processingClass) {
         if (accessor.getField() != null) {
             processTypeFromField(property, accessor.getField());
         }
@@ -51,7 +54,37 @@ public class PropertyJavaParser implements PropertyParser {
             if (deprecated != null) {
                 property.setDeprecated(true);
             }
+            property.setDefaultValue(findDefaultValue(processingClass, accessor));
         }
+    }
+
+    private Object findDefaultValue(Class<?> processingClass, PropertyAccessor accessor) {
+        try {
+            Object defaultObject = emptyInstances.get(processingClass);
+            if (defaultObject == null) {
+                defaultObject = processingClass.newInstance();
+                emptyInstances.put(processingClass, defaultObject);
+            }
+            return findValue(accessor, defaultObject);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private Object findValue(PropertyAccessor accessor, Object model) {
+        Object value = null;
+        try {
+            value = accessor.getGetter().invoke(model);
+        } catch (Exception e) {
+            if (accessor.getField() != null) {
+                accessor.getField().setAccessible(true);
+                try {
+                    value = accessor.getField().get(model);
+                } catch (IllegalAccessException e1) {
+                }
+            }
+        }
+        return value;
     }
 
     private void processGetterSetter(PropertyDefinition property, Method method) {

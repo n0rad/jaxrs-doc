@@ -21,9 +21,9 @@ import java.util.Locale;
 import java.util.Map;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import fr.norad.core.lang.reflect.AnnotationUtils;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
-import fr.norad.jaxrs.doc.domain.ParameterType;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterType;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
 
 public class ParameterCxfParser implements ParameterParser {

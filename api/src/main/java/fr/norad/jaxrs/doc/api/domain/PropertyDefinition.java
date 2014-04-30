@@ -14,8 +14,9 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.domain;
+package fr.norad.jaxrs.doc.api.domain;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,6 +32,7 @@ public class PropertyDefinition {
     private String description;
     private Boolean validationCascaded;
     private List<ConstraintDefinition> constraints;
+    private Object defaultValue;
 
     private Boolean deprecated;
     private String deprecatedSince;
@@ -38,5 +40,12 @@ public class PropertyDefinition {
     private String deprecatedWillBeRemovedOn;
 
     private Map<String, Object> extras;
+
+    public Map<String, Object> createdExtras() {
+        if (extras == null) {
+            extras = new HashMap<>();
+        }
+        return extras;
+    }
 
 }

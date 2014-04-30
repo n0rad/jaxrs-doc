@@ -23,8 +23,8 @@ import java.util.Map;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.api.Description;
 import fr.norad.jaxrs.doc.api.Outdated;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
 import fr.norad.jaxrs.doc.utils.DocUtils;
 

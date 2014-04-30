@@ -18,7 +18,7 @@ package fr.norad.jaxrs.doc.parser;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
 
 public class ApiJavaParserTest {
 

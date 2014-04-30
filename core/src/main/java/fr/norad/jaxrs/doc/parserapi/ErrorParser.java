@@ -16,8 +16,8 @@
  */
 package fr.norad.jaxrs.doc.parserapi;
 
-import fr.norad.jaxrs.doc.domain.ErrorDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.ErrorDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 
 public interface ErrorParser {
 

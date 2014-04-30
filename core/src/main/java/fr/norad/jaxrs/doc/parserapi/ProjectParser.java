@@ -17,7 +17,7 @@
 package fr.norad.jaxrs.doc.parserapi;
 
 import java.util.List;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 
 public interface ProjectParser {
 

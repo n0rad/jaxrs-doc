@@ -16,7 +16,7 @@
  */
 package fr.norad.jaxrs.doc.processor;
 
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 
 public class ApiProcessorTest {
     ProjectDefinition project = new ProjectDefinition();

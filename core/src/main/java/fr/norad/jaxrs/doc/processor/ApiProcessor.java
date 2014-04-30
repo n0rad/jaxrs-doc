@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Set;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
 import fr.norad.jaxrs.doc.ParserHolder;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
 import lombok.Getter;
 

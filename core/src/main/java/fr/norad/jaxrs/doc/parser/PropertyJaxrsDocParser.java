@@ -24,8 +24,8 @@ import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.api.Description;
 import fr.norad.jaxrs.doc.api.Outdated;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
 import fr.norad.jaxrs.doc.utils.DocUtils;
 
@@ -33,7 +33,7 @@ public class PropertyJaxrsDocParser implements PropertyParser {
 
     @Override
     public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, PropertyDefinition property,
-                      PropertyAccessor accessor) {
+                      PropertyAccessor accessor, Class<?> processingClass) {
         if (accessor.getField() != null) {
             Outdated outdated = accessor.getField().getAnnotation(Outdated.class);
             if (outdated != null) {

@@ -22,8 +22,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.ModelDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 
 public class ModelJaxrsParser implements ModelParser {

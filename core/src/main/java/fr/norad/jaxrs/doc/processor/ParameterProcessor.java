@@ -19,9 +19,9 @@ package fr.norad.jaxrs.doc.processor;
 import java.lang.reflect.Method;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
 import fr.norad.jaxrs.doc.ParserHolder;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ParameterParser;
 import lombok.Getter;
 

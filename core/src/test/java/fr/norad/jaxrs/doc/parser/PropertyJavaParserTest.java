@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
 
 @SuppressWarnings("unused")
 public class PropertyJavaParserTest {
@@ -35,7 +35,7 @@ public class PropertyJavaParserTest {
             private Map<Integer, String> field;
         }
 
-        parser.parse(null, property, new PropertyAccessor("field", Test.class.getDeclaredField("field"), null, null));
+        parser.parse(null, property, new PropertyAccessor("field", Test.class.getDeclaredField("field"), null, null), null);
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(String.class);
         assertThat((Object) property.getMapKeyClass()).isEqualTo(Integer.class);
@@ -47,7 +47,7 @@ public class PropertyJavaParserTest {
             private UUID field;
         }
 
-        parser.parse(null, property, new PropertyAccessor("field", Test.class.getDeclaredField("field"), null, null));
+        parser.parse(null, property, new PropertyAccessor("field", Test.class.getDeclaredField("field"), null, null), null);
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(UUID.class);
     }
@@ -60,7 +60,7 @@ public class PropertyJavaParserTest {
             }
         }
 
-        parser.parse(null, property, new PropertyAccessor("field", null, Test.class.getMethod("getElement"), null));
+        parser.parse(null, property, new PropertyAccessor("field", null, Test.class.getMethod("getElement"), null), null);
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(UUID.class);
     }
@@ -73,7 +73,7 @@ public class PropertyJavaParserTest {
         }
 
         parser.parse(null, property,
-                new PropertyAccessor("field", null, null, Test.class.getMethod("setElement", UUID.class)));
+                new PropertyAccessor("field", null, null, Test.class.getMethod("setElement", UUID.class)), null);
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(UUID.class);
     }
@@ -86,7 +86,7 @@ public class PropertyJavaParserTest {
 
         }
 
-        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null));
+        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null), null);
 
         assertThat(property.getDeprecated()).isTrue();
     }
@@ -98,7 +98,7 @@ public class PropertyJavaParserTest {
 
         }
 
-        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null));
+        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null), null);
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(String.class);
         assertThat(property.getAsList()).isTrue();
@@ -112,9 +112,85 @@ public class PropertyJavaParserTest {
             }
         }
 
-        parser.parse(null, property, new PropertyAccessor("field", null, TheClass.class.getMethod("getElement"), null));
+        parser.parse(null, property, new PropertyAccessor("field", null, TheClass.class.getMethod("getElement"), null), null);
 
         assertThat((Object) property.getPropertyClass()).isEqualTo(UUID.class);
         assertThat(property.getAsList()).isTrue();
+    }
+
+    @Test
+    public void should_not_fail_if_cannot_construct_default_instance() throws Exception {
+
+        parser.parse(null, property, new PropertyAccessor("field", DefaultValueClass.class.getDeclaredField("genre"), null, null), null);
+
+        assertThat(property.getDefaultValue()).isNull();
+    }
+
+    @Test
+    public void should_fill_default_value() throws Exception {
+
+        parser.parse(null, property, new PropertyAccessor("genre", DefaultValueClass.class.getDeclaredField("genre"), null, null), DefaultValueClass.class);
+
+        assertThat(property.getDefaultValue()).isEqualTo("salut");
+    }
+
+    @Test
+    public void should_fill_default_value_from_superclass() throws Exception {
+
+        parser.parse(null, property, new PropertyAccessor("field", DefaultValueSuperClass.class.getDeclaredField("genre"),
+                null, null), DefaultValueHoverClass.class);
+
+        assertThat(property.getDefaultValue()).isEqualTo("salut");
+    }
+
+    @Test
+    public void should_find_default_value_setted() throws Exception {
+
+        parser.parse(null, property, new PropertyAccessor("field", DefaultValueSuperClass.class.getDeclaredField("ouda"),
+                null, null), DefaultValueHoverClass.class);
+
+        assertThat(property.getDefaultValue()).isEqualTo("plop");
+    }
+
+    @Test
+    public void should_find_default_value_from_getter() throws Exception {
+
+        parser.parse(null, property, new PropertyAccessor("field", DefaultValueSuperClass.class.getDeclaredField("genre"),
+                DefaultValueHoverClass2.class.getMethod("getGenre"), null), DefaultValueHoverClass2.class);
+
+        assertThat(property.getDefaultValue()).isEqualTo("genreOverride");
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+    static class DefaultValueClass {
+        private String genre = "salut";
+
+    }
+
+    public static class DefaultValueHoverClass extends DefaultValueSuperClass {
+        DefaultValueHoverClass() {
+            super("plop");
+        }
+    }
+
+    public static class DefaultValueHoverClass2 extends DefaultValueSuperClass {
+        DefaultValueHoverClass2() {
+            super("plop");
+        }
+
+        public String getGenre() {
+            return "genreOverride";
+        }
+    }
+
+    public static class DefaultValueSuperClass {
+
+        protected String genre = "salut";
+        private String ouda;
+
+        DefaultValueSuperClass(String ouda) {
+            this.ouda = ouda;
+        }
     }
 }

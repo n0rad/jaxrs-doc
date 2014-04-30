@@ -29,16 +29,16 @@ import javax.validation.metadata.MethodDescriptor;
 import javax.validation.metadata.PropertyDescriptor;
 import javax.validation.metadata.ReturnValueDescriptor;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.ConstraintDefinition;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.api.domain.ConstraintDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
 import fr.norad.jaxrs.doc.utils.ValidationUtils;
 
 public class PropertyBeanValidationParser implements PropertyParser {
     @Override
     public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, PropertyDefinition property,
-                      PropertyAccessor accessor) {
+                      PropertyAccessor accessor, Class<?> processingClass) {
         Set<ConstraintDescriptor> processedDescriptor = new HashSet<>();
         if (accessor.getField() != null) {
             processField(localeDefinitions, property, accessor.getField(), processedDescriptor);
@@ -55,7 +55,7 @@ public class PropertyBeanValidationParser implements PropertyParser {
                                Method method, Set<ConstraintDescriptor> processedDescriptor) {
         BeanDescriptor beanDescriptor = ValidationUtils.getBeanDescriptor(method.getDeclaringClass());
         MethodDescriptor methodDescriptor = beanDescriptor.getConstraintsForMethod(method.getName(),
-                                                                                   method.getParameterTypes());
+                method.getParameterTypes());
         if (methodDescriptor == null) {
             return;
         }

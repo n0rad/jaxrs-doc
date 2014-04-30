@@ -20,7 +20,7 @@ import static java.util.Arrays.asList;
 import static org.fest.assertions.api.Assertions.assertThat;
 import java.util.List;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 
 public class ProjectDiscoveryParserTest {
 

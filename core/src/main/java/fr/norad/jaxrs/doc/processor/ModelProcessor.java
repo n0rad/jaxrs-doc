@@ -16,26 +16,22 @@
  */
 package fr.norad.jaxrs.doc.processor;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
+import fr.norad.jaxrs.doc.ModelDocFactory;
 import fr.norad.jaxrs.doc.ParserHolder;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.ModelDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.api.domain.ModelDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
-import fr.norad.jaxrs.doc.parserapi.ProjectParser;
 import lombok.Getter;
 
 public class ModelProcessor {
-    private final JaxrsDocProcessorFactory factory;
+    private final ModelDocFactory factory;
     @Getter
     private ParserHolder<ModelParser> parsers;
 
-    public ModelProcessor(JaxrsDocProcessorFactory factory, ParserHolder<ModelParser> parsers) {
+    public ModelProcessor(ModelDocFactory factory, ParserHolder<ModelParser> parsers) {
         this.factory = factory;
         this.parsers = parsers;
     }
@@ -59,7 +55,7 @@ public class ModelProcessor {
             }
 
             for (PropertyAccessor propertyAccessor : propertyAccessors) {
-                PropertyDefinition property = factory.getPropertyProcessor().process(project, propertyAccessor);
+                PropertyDefinition property = factory.getPropertyProcessor().process(project, propertyAccessor, modelClass);
                 model.getProperties().put(propertyAccessor.getName(), property);
             }
         }

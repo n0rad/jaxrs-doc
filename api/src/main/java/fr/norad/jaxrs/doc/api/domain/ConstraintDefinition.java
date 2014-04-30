@@ -14,26 +14,16 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.domain;
+package fr.norad.jaxrs.doc.api.domain;
 
-
-import fr.norad.jaxrs.doc.api.OperationError;
+import java.util.Map;
+import java.util.Set;
 import lombok.Data;
 
 @Data
-public class ErrorOperationDefinition {
-    private Class<? extends Exception> errorClass;
-    private String reason;
-
-    public ErrorOperationDefinition() {
-    }
-
-    public ErrorOperationDefinition(Class<? extends Exception> e) {
-        errorClass = e;
-    }
-
-    public ErrorOperationDefinition(OperationError operationError) {
-        errorClass = operationError.errorClass();
-        reason = operationError.reason();
-    }
+public class ConstraintDefinition {
+    private String constraintClass;
+    private Map<String, Object> attributes;
+    private Boolean reportAsSingle;
+    private Set<ConstraintDefinition> composingConstraints;
 }

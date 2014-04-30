@@ -19,7 +19,7 @@ package fr.norad.jaxrs.doc.swagger.parser;
 import static org.fest.assertions.api.Assertions.assertThat;
 import org.junit.Test;
 import com.wordnik.swagger.annotations.ApiParam;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
 
 @SuppressWarnings("unused")
 public class SwaggerParameterParserTest {

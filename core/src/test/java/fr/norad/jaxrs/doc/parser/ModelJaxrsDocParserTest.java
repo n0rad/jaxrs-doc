@@ -20,7 +20,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.api.Description;
 import fr.norad.jaxrs.doc.api.Outdated;
-import fr.norad.jaxrs.doc.domain.ModelDefinition;
+import fr.norad.jaxrs.doc.api.domain.ModelDefinition;
 
 public class ModelJaxrsDocParserTest {
 

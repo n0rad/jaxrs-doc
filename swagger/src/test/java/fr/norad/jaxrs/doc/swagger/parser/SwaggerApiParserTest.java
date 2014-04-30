@@ -20,7 +20,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import org.junit.Test;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiClass;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
 
 public class SwaggerApiParserTest {
     ApiDefinition api = new ApiDefinition();

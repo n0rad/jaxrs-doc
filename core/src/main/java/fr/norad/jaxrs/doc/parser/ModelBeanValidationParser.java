@@ -24,9 +24,9 @@ import java.util.Set;
 import javax.validation.metadata.BeanDescriptor;
 import javax.validation.metadata.ConstraintDescriptor;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.ConstraintDefinition;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.ModelDefinition;
+import fr.norad.jaxrs.doc.api.domain.ConstraintDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 import fr.norad.jaxrs.doc.utils.ValidationUtils;
 

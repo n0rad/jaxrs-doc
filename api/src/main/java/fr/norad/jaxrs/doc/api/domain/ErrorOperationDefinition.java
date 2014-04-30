@@ -14,21 +14,26 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.domain;
+package fr.norad.jaxrs.doc.api.domain;
 
-public enum ParameterType {
-    PATH, //
-    QUERY, //
-    MATRIX, //
-    HEADER, //
-    COOKIE, //
-    FORM, //
-    BEAN, // TODO: process bean and remove it from here
-    MULTIPART,
 
-    REQUEST_BODY, //
-    CONTEXT, //
-    UNKNOWN //
+import fr.norad.jaxrs.doc.api.OperationError;
+import lombok.Data;
 
-    ;
+@Data
+public class ErrorOperationDefinition {
+    private Class<? extends Exception> errorClass;
+    private String reason;
+
+    public ErrorOperationDefinition() {
+    }
+
+    public ErrorOperationDefinition(Class<? extends Exception> e) {
+        errorClass = e;
+    }
+
+    public ErrorOperationDefinition(OperationError operationError) {
+        errorClass = operationError.errorClass();
+        reason = operationError.reason();
+    }
 }

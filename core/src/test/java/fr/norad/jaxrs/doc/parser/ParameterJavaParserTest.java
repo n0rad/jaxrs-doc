@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import javax.ws.rs.GET;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
 
 @SuppressWarnings("unused")
 public class ParameterJavaParserTest {

@@ -14,8 +14,9 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.domain;
+package fr.norad.jaxrs.doc.api.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,33 +24,21 @@ import lombok.Data;
 
 @Data
 @XmlRootElement
-public class ParameterDefinition {
+public class ApiDefinition {
 
-    private ParameterType type;
-    private Boolean encoded;
-    private String name;
-    private Class<?> paramClass;
-    private Boolean asList;
-    private Class<?> mapKeyClass;
-    private String defaultValue;
-    private String allowedValues; //TODO process enum
+    private String path;
+    private String summary;
     private String description;
-    private Map<String, Object> extras;
-    private Boolean mandatory;
+    private Class<?> apiClass;
+    private List<OperationDefinition> operations = new ArrayList<>();
 
     private Boolean deprecated;
     private String deprecatedSince;
     private String deprecatedCause;
-    private String deprecatedWillBeRemovedOn;
 
-    private List<ConstraintDefinition> constraints;
-    private Boolean validationCascaded;
+    private List<String> consumes;
+    private List<String> produces;
 
-    //    private String notes;
-    //    private Boolean required;
-    //    private String paramAccess;
-    //    private String internalDescription;
-    //    private String wrapperName;
-    //    private String dataType ;
+    private Map<String, Object> extras;
 
 }

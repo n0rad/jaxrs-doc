@@ -27,8 +27,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
 
 public class PropertyBeanValidationParserTest {
     private PropertyBeanValidationParser parser = new PropertyBeanValidationParser();
@@ -42,7 +42,7 @@ public class PropertyBeanValidationParserTest {
         }
         Field field = Test.class.getField("name");
 
-        parser.parse(localeDef, property, new PropertyAccessor("name", field, null, null));
+        parser.parse(localeDef, property, new PropertyAccessor("name", field, null, null), null);
 
         assertThat(property.getConstraints()).isNull();
     }
@@ -56,7 +56,7 @@ public class PropertyBeanValidationParserTest {
         }
         Method method = Test.class.getMethod("getName");
 
-        parser.parse(localeDef, property, new PropertyAccessor("name", null, method, null));
+        parser.parse(localeDef, property, new PropertyAccessor("name", null, method, null), null);
 
         assertThat(property.getConstraints()).isNull();
     }
@@ -69,7 +69,7 @@ public class PropertyBeanValidationParserTest {
         }
         Field field = Test.class.getField("name");
 
-        parser.parse(localeDef, property, new PropertyAccessor("name", field, null, null));
+        parser.parse(localeDef, property, new PropertyAccessor("name", field, null, null), null);
 
         assertThat(property.getConstraints()).hasSize(1);
         assertThat(property.getConstraints().get(0).getConstraintClass()).isEqualTo(NotNull.class.getName());
@@ -85,7 +85,7 @@ public class PropertyBeanValidationParserTest {
         }
         Method method = Test.class.getMethod("getName");
 
-        parser.parse(localeDef, property, new PropertyAccessor("name", null, method, null));
+        parser.parse(localeDef, property, new PropertyAccessor("name", null, method, null), null);
 
         assertThat(property.getConstraints()).hasSize(1);
         assertThat(property.getConstraints().get(0).getConstraintClass()).isEqualTo(NotNull.class.getName());
@@ -105,11 +105,11 @@ public class PropertyBeanValidationParserTest {
         Method method = Test.class.getMethod("getName");
         Field field = Test.class.getField("name");
 
-        parser.parse(localeDef, property, new PropertyAccessor("name", field, method, null));
+        parser.parse(localeDef, property, new PropertyAccessor("name", field, method, null), null);
 
         assertThat(property.getConstraints()).hasSize(2);
-        assertThat(property.getConstraints().get(0).getConstraintClass()).isEqualTo(Pattern.class.getName());
-        assertThat(property.getConstraints().get(1).getConstraintClass()).isEqualTo(NotNull.class.getName());
+        assertThat(property.getConstraints().get(1).getConstraintClass()).isEqualTo(Pattern.class.getName());
+        assertThat(property.getConstraints().get(0).getConstraintClass()).isEqualTo(NotNull.class.getName());
     }
 
     @Test
@@ -120,7 +120,7 @@ public class PropertyBeanValidationParserTest {
         }
         Field field = Test.class.getField("name");
 
-        parser.parse(localeDef, property, new PropertyAccessor("name", field, null, null));
+        parser.parse(localeDef, property, new PropertyAccessor("name", field, null, null), null);
 
         assertThat(property.getValidationCascaded()).isTrue();
     }
@@ -135,7 +135,7 @@ public class PropertyBeanValidationParserTest {
         }
         Method method = Test.class.getMethod("getName");
 
-        parser.parse(localeDef, property, new PropertyAccessor("name", null, method, null));
+        parser.parse(localeDef, property, new PropertyAccessor("name", null, method, null), null);
 
         assertThat(property.getValidationCascaded()).isTrue();
     }

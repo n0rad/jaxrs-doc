@@ -21,9 +21,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.Response;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.api.*;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
-import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.ErrorOperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
 import fr.norad.jaxrs.oauth2.HttpStatus;
 
 public class OperationJaxrsDocParserTest {

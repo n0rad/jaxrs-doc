@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
 import fr.norad.jaxrs.doc.ParserHolder;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ApiParser;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;

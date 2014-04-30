@@ -19,7 +19,7 @@ package fr.norad.jaxrs.doc.resource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 
 @Path("/doc")
 public abstract class GenericJaxrsDocService {

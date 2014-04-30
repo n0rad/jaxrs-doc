@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import javax.ws.rs.GET;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
 
 public class OperationJavaParserTest {
 

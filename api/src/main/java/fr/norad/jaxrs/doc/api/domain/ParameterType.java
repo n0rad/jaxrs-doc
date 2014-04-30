@@ -14,31 +14,21 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.domain;
+package fr.norad.jaxrs.doc.api.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.xml.bind.annotation.XmlRootElement;
-import lombok.Data;
+public enum ParameterType {
+    PATH, //
+    QUERY, //
+    MATRIX, //
+    HEADER, //
+    COOKIE, //
+    FORM, //
+    BEAN, // TODO: process bean and remove it from here
+    MULTIPART,
 
-@Data
-@XmlRootElement
-public class ApiDefinition {
+    REQUEST_BODY, //
+    CONTEXT, //
+    UNKNOWN //
 
-    private String path;
-    private String summary;
-    private String description;
-    private Class<?> apiClass;
-    private List<OperationDefinition> operations = new ArrayList<>();
-
-    private Boolean deprecated;
-    private String deprecatedSince;
-    private String deprecatedCause;
-
-    private List<String> consumes;
-    private List<String> produces;
-
-    private Map<String, Object> extras;
-
+    ;
 }

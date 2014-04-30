@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.api.*;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
-import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.ErrorOperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
 import fr.norad.jaxrs.doc.utils.DocUtils;
 

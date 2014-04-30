@@ -19,12 +19,12 @@ package fr.norad.jaxrs.doc.parserapi;
 import java.util.Locale;
 import java.util.Map;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
 
 public interface PropertyParser {
 
     void parse(Map<Locale, LocalizationDefinition> localeDefinitions, PropertyDefinition property,
-               PropertyAccessor accessor);
+               PropertyAccessor accessor, Class<?> processingClass);
 
 }

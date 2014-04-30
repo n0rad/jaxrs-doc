@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Map;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.core.lang.reflect.ReflectionUtils;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
-import fr.norad.jaxrs.doc.domain.ErrorDefinition;
-import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.ErrorDefinition;
+import fr.norad.jaxrs.doc.api.domain.ErrorOperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
 
 public class OperationJavaParser implements OperationParser {

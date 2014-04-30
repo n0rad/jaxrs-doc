@@ -20,7 +20,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
 import fr.norad.jaxrs.doc.ParserHolder;
-import fr.norad.jaxrs.doc.domain.*;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.ErrorOperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
 import lombok.Getter;
 

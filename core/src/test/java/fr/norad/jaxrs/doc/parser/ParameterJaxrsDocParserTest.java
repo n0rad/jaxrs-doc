@@ -22,7 +22,7 @@ import javax.ws.rs.GET;
 import org.junit.Test;
 import fr.norad.jaxrs.doc.api.Description;
 import fr.norad.jaxrs.doc.api.Outdated;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
 
 public class ParameterJaxrsDocParserTest {
 

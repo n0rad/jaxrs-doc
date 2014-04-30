@@ -26,7 +26,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
 
 public class ApiJaxrsParserTest {
 

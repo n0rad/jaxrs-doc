@@ -16,28 +16,28 @@
  */
 package fr.norad.jaxrs.doc.processor;
 
-import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
+import fr.norad.jaxrs.doc.ModelDocFactory;
 import fr.norad.jaxrs.doc.ParserHolder;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
 import fr.norad.jaxrs.doc.parserapi.PropertyParser;
 import lombok.Getter;
 
 public class PropertyProcessor {
-    private final JaxrsDocProcessorFactory factory;
+    private final ModelDocFactory factory;
     @Getter
     private ParserHolder<PropertyParser> parsers;
 
-    public PropertyProcessor(JaxrsDocProcessorFactory factory, ParserHolder<PropertyParser> parsers) {
+    public PropertyProcessor(ModelDocFactory factory, ParserHolder<PropertyParser> parsers) {
         this.factory = factory;
         this.parsers = parsers;
     }
 
-    public PropertyDefinition process(ProjectDefinition project, PropertyAccessor accessor) {
+    public PropertyDefinition process(ProjectDefinition project, PropertyAccessor accessor, Class<?> processingClass) {
         PropertyDefinition property = new PropertyDefinition();
         for (PropertyParser parser : parsers.get()) {
-            parser.parse(project.getLocalizations(), property, accessor);
+            parser.parse(project.getLocalizations(), property, accessor, processingClass);
             factory.getModelProcessor().process(project, property.getPropertyClass());
             factory.getModelProcessor().process(project, property.getMapKeyClass());
         }

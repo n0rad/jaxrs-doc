@@ -43,8 +43,8 @@ import com.fasterxml.jackson.databind.type.SimpleType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.ModelDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 
 @JsonIgnoreType
@@ -66,6 +66,9 @@ public class ModelJacksonParser implements ModelParser {
         BasicBeanDescription beanDesc = fakeSerializer.getDescription(modelClass);
         List<BeanPropertyDefinition> findProperties = beanDesc.findProperties();
         for (BeanPropertyDefinition beanPropertyDefinition : findProperties) {
+            if (modelClass.isEnum() && "declaringClass".equals(beanPropertyDefinition.getName())) {
+                continue;
+            }
             AnnotatedMethod getterJackson = beanPropertyDefinition.getGetter();
             AnnotatedMethod setterJackson = beanPropertyDefinition.getSetter();
             AnnotatedField fieldJackson = null;
@@ -81,7 +84,7 @@ public class ModelJacksonParser implements ModelParser {
             Field field = fieldJackson == null ? null : fieldJackson.getAnnotated();
             if (getter == null && setter == null && field == null) {
                 log.warning("Cannot find valid property element for : " + beanPropertyDefinition + " on " +
-                                    modelClass);
+                        modelClass);
                 continue;
             }
 

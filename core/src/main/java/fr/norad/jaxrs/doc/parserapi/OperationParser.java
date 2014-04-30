@@ -17,8 +17,8 @@
 package fr.norad.jaxrs.doc.parserapi;
 
 import java.lang.reflect.Method;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
 
 public interface OperationParser {
 

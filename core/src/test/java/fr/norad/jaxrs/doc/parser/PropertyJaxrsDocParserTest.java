@@ -22,7 +22,7 @@ import org.junit.Test;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.api.Description;
 import fr.norad.jaxrs.doc.api.Outdated;
-import fr.norad.jaxrs.doc.domain.PropertyDefinition;
+import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
 
 @SuppressWarnings("unused")
 public class PropertyJaxrsDocParserTest {
@@ -39,7 +39,7 @@ public class PropertyJaxrsDocParserTest {
         }
 
         parser.parse(null, property,
-                new PropertyAccessor("field", null, null, TheClass.class.getMethod("setField", UUID.class)));
+                new PropertyAccessor("field", null, null, TheClass.class.getMethod("setField", UUID.class)), null);
 
         assertThat(property.getDeprecated()).isTrue();
         assertThat(property.getDeprecatedCause()).isEqualTo("cause");
@@ -56,7 +56,7 @@ public class PropertyJaxrsDocParserTest {
             }
         }
 
-        parser.parse(null, property, new PropertyAccessor("field", null, TheClass.class.getMethod("getField"), null));
+        parser.parse(null, property, new PropertyAccessor("field", null, TheClass.class.getMethod("getField"), null), null);
 
         assertThat(property.getDeprecated()).isTrue();
         assertThat(property.getDeprecatedCause()).isEqualTo("cause");
@@ -70,7 +70,7 @@ public class PropertyJaxrsDocParserTest {
             private String genre;
         }
 
-        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null));
+        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("genre"), null, null), null);
 
         assertThat(property.getDeprecated()).isTrue();
         assertThat(property.getDeprecatedCause()).isEqualTo("cause");
@@ -86,7 +86,7 @@ public class PropertyJaxrsDocParserTest {
                 return null;
             }
         }
-        parser.parse(null, property, new PropertyAccessor("field", null, TheClass.class.getMethod("getField"), null));
+        parser.parse(null, property, new PropertyAccessor("field", null, TheClass.class.getMethod("getField"), null), null);
 
         assertThat(property.getDescription()).isEqualTo("desc");
     }
@@ -99,7 +99,7 @@ public class PropertyJaxrsDocParserTest {
             }
         }
         parser.parse(null, property,
-                new PropertyAccessor("field", null, null, TheClass.class.getMethod("setField", UUID.class)));
+                new PropertyAccessor("field", null, null, TheClass.class.getMethod("setField", UUID.class)), null);
 
         assertThat(property.getDescription()).isEqualTo("desc");
     }
@@ -110,7 +110,7 @@ public class PropertyJaxrsDocParserTest {
             @Description("desc")
             private UUID field;
         }
-        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("field"), null, null));
+        parser.parse(null, property, new PropertyAccessor("field", TheClass.class.getDeclaredField("field"), null, null), null);
 
         assertThat(property.getDescription()).isEqualTo("desc");
     }

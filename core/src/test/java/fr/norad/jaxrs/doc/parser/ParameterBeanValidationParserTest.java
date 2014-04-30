@@ -28,9 +28,9 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import org.hibernate.validator.constraints.NotBlank;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.domain.ConstraintDefinition;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.ConstraintDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
 
 public class ParameterBeanValidationParserTest {
     private ParameterDefinition parameter = new ParameterDefinition();

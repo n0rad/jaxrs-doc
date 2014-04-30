@@ -23,8 +23,8 @@ import javax.ws.rs.HttpMethod;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import fr.norad.core.lang.reflect.AnnotationUtils;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
 import fr.norad.jaxrs.doc.parserapi.OperationParser;
 
 public class OperationJaxrsParser implements OperationParser {

@@ -22,7 +22,7 @@ import org.junit.Test;
 import fr.norad.jaxrs.doc.api.Description;
 import fr.norad.jaxrs.doc.api.Outdated;
 import fr.norad.jaxrs.doc.api.Summary;
-import fr.norad.jaxrs.doc.domain.ApiDefinition;
+import fr.norad.jaxrs.doc.api.domain.ApiDefinition;
 
 public class ApiJaxrsDocParserTest {
     @Test

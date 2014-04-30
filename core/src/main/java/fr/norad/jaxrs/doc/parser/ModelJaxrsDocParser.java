@@ -24,8 +24,8 @@ import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.api.Description;
 import fr.norad.jaxrs.doc.api.Outdated;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.ModelDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 import fr.norad.jaxrs.doc.utils.DocUtils;
 

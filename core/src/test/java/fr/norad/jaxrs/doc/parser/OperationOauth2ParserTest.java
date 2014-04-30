@@ -19,7 +19,7 @@ package fr.norad.jaxrs.doc.parser;
 import static fr.norad.jaxrs.doc.parser.SecuringSomething.TheScopes.SCOPE_A;
 import static org.fest.assertions.api.Assertions.assertThat;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.domain.OperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.OperationDefinition;
 
 public class OperationOauth2ParserTest {
     private OperationOauth2Parser operationParser = new OperationOauth2Parser();

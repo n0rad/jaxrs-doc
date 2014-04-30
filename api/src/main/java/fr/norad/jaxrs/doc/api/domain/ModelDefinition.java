@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.doc.domain;
+package fr.norad.jaxrs.doc.api.domain;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +31,7 @@ public class ModelDefinition {
     private Map<String, PropertyDefinition> properties = new HashMap<>();
     private Map<String, Object> extras;
     private List<ConstraintDefinition> constraints;
+    private List<Object> allowedValues;
 
     private Boolean deprecated;
     private String deprecatedSince;

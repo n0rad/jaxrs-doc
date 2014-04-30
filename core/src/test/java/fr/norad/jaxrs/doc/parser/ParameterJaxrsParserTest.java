@@ -30,8 +30,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
-import fr.norad.jaxrs.doc.domain.ParameterType;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterType;
 
 @SuppressWarnings("unused")
 public class ParameterJaxrsParserTest {

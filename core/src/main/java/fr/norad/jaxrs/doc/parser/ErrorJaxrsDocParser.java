@@ -20,7 +20,7 @@ import static fr.norad.core.lang.StringUtils.notEmpty;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.api.Description;
 import fr.norad.jaxrs.oauth2.HttpStatus;
-import fr.norad.jaxrs.doc.domain.ErrorDefinition;
+import fr.norad.jaxrs.doc.api.domain.ErrorDefinition;
 import fr.norad.jaxrs.doc.parserapi.ErrorParser;
 import fr.norad.jaxrs.doc.utils.DocUtils;
 

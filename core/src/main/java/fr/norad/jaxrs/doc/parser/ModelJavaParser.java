@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.doc.PropertyAccessor;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
-import fr.norad.jaxrs.doc.domain.ModelDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
 
 public class ModelJavaParser implements ModelParser {
@@ -37,6 +37,10 @@ public class ModelJavaParser implements ModelParser {
     public void parse(Map<Locale, LocalizationDefinition> localeDefinitions, ModelDefinition model, Class<?> modelClass) {
         Deprecated deprecated = AnnotationUtils.findAnnotation(modelClass, Deprecated.class);
         model.setDeprecated(deprecated != null ? true : null);
+        if (modelClass.isEnum()) {
+            Object[] enumConstants = modelClass.getEnumConstants();
+            model.setAllowedValues(Arrays.asList(enumConstants));
+        }
     }
 
     @Override

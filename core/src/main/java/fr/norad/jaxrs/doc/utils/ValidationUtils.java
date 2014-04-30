@@ -32,8 +32,8 @@ import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 import javax.validation.metadata.BeanDescriptor;
 import javax.validation.metadata.ConstraintDescriptor;
-import fr.norad.jaxrs.doc.domain.ConstraintDefinition;
-import fr.norad.jaxrs.doc.domain.LocalizationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ConstraintDefinition;
+import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
 
 public class ValidationUtils {
     private static final Map<Class<?>, BeanDescriptor> cache = new ConcurrentHashMap<>();

@@ -20,9 +20,10 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.AccessMode;
 import java.util.UUID;
 import org.junit.Test;
-import fr.norad.jaxrs.doc.domain.ModelDefinition;
+import fr.norad.jaxrs.doc.api.domain.ModelDefinition;
 
 public class ModelJavaParserTest {
 
@@ -49,5 +50,12 @@ public class ModelJavaParserTest {
         parser.parse(null, model, Test.class);
 
         assertThat(model.getDeprecated()).isTrue();
+    }
+
+    @Test
+    public void should_fill_enum_values() throws Exception {
+        parser.parse(null, model, AccessMode.class);
+
+        assertThat(model.getAllowedValues()).containsExactly(AccessMode.READ, AccessMode.WRITE, AccessMode.EXECUTE);
     }
 }

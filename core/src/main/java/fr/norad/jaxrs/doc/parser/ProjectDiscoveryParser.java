@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Path;
 import org.reflections.Reflections;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ProjectParser;
 
 public class ProjectDiscoveryParser implements ProjectParser {

@@ -20,8 +20,8 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import java.lang.reflect.Method;
 import org.junit.Test;
 import com.sun.jersey.multipart.FormDataParam;
-import fr.norad.jaxrs.doc.domain.ParameterDefinition;
-import fr.norad.jaxrs.doc.domain.ParameterType;
+import fr.norad.jaxrs.doc.api.domain.ParameterDefinition;
+import fr.norad.jaxrs.doc.api.domain.ParameterType;
 
 @SuppressWarnings("unused")
 public class ParameterJerseyParserTest {

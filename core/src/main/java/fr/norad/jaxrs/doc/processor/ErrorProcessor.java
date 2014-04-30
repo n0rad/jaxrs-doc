@@ -18,9 +18,9 @@ package fr.norad.jaxrs.doc.processor;
 
 import fr.norad.jaxrs.doc.JaxrsDocProcessorFactory;
 import fr.norad.jaxrs.doc.ParserHolder;
-import fr.norad.jaxrs.doc.domain.ErrorDefinition;
-import fr.norad.jaxrs.doc.domain.ErrorOperationDefinition;
-import fr.norad.jaxrs.doc.domain.ProjectDefinition;
+import fr.norad.jaxrs.doc.api.domain.ErrorDefinition;
+import fr.norad.jaxrs.doc.api.domain.ErrorOperationDefinition;
+import fr.norad.jaxrs.doc.api.domain.ProjectDefinition;
 import fr.norad.jaxrs.doc.parserapi.ErrorParser;
 import lombok.Getter;
 
