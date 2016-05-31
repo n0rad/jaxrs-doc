@@ -5,7 +5,7 @@
     <parent>
         <groupId>fr.norad.jaxrs.doc</groupId>
         <artifactId>jaxrs-doc</artifactId>
-        <version>0.3</version>
+        <version>0.4-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
 
