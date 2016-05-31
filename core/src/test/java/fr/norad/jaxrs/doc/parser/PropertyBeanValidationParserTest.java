@@ -16,19 +16,24 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import org.junit.Test;
 import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.api.domain.PropertyDefinition;
+import org.junit.Test;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class PropertyBeanValidationParserTest {
     private PropertyBeanValidationParser parser = new PropertyBeanValidationParser();
@@ -108,8 +113,10 @@ public class PropertyBeanValidationParserTest {
         parser.parse(localeDef, property, new PropertyAccessor("name", field, method, null), null);
 
         assertThat(property.getConstraints()).hasSize(2);
-        assertThat(property.getConstraints().get(1).getConstraintClass()).isEqualTo(Pattern.class.getName());
-        assertThat(property.getConstraints().get(0).getConstraintClass()).isEqualTo(NotNull.class.getName());
+        List<String> classes = new ArrayList<>();
+        classes.add(property.getConstraints().get(1).getConstraintClass());
+        classes.add(property.getConstraints().get(0).getConstraintClass());
+        assertThat(classes.containsAll(Arrays.asList(Pattern.class.getName(), NotNull.class.getName())));
     }
 
     @Test
