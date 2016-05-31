@@ -3,7 +3,7 @@
 
     <groupId>fr.norad.jaxrs.doc</groupId>
     <artifactId>jaxrs-doc</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>better, faster, stronger swagger like dedicated to jaxrs</description>
 
@@ -33,6 +33,16 @@
         <url>https://github.com/n0rad/jaxrs-doc</url>
         <tag>HEAD</tag>
     </scm>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencyManagement>
         <dependencies>
