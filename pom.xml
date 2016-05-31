@@ -3,7 +3,7 @@
 
     <groupId>fr.norad.jaxrs.doc</groupId>
     <artifactId>jaxrs-doc</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
     <packaging>pom</packaging>
     <description>better, faster, stronger swagger like dedicated to jaxrs</description>
 
@@ -31,7 +31,7 @@
         <connection>scm:git:git://github.com/n0rad/jaxrs-doc.git</connection>
         <developerConnection>scm:git:git@github.com:n0rad/jaxrs-doc.git</developerConnection>
         <url>https://github.com/n0rad/jaxrs-doc</url>
-        <tag>HEAD</tag>
+        <tag>jaxrs-doc-0.3</tag>
     </scm>
 
     <build>
