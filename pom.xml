@@ -16,7 +16,7 @@
 
     <properties>
         <maven.version>3.1.0</maven.version>
-        <jackson.version>2.2.3</jackson.version>
+        <jackson.version>2.6.5</jackson.version>
     </properties>
 
     <modules>
@@ -25,7 +25,7 @@
         <module>swagger</module>
         <module>maven-plugin</module>
         <!-- <module>web-github</module> -->
-        <module>web-bootstrap</module>
+        <!--<module>web-bootstrap</module>-->
     </modules>
 
     <scm>

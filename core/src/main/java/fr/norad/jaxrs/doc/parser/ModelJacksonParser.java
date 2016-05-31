@@ -16,14 +16,6 @@
  */
 package fr.norad.jaxrs.doc.parser;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.logging.Logger;
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
@@ -46,6 +38,15 @@ import fr.norad.jaxrs.doc.PropertyAccessor;
 import fr.norad.jaxrs.doc.api.domain.LocalizationDefinition;
 import fr.norad.jaxrs.doc.api.domain.ModelDefinition;
 import fr.norad.jaxrs.doc.parserapi.ModelParser;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Logger;
 
 @JsonIgnoreType
 public class ModelJacksonParser implements ModelParser {
@@ -130,7 +131,7 @@ public class ModelJacksonParser implements ModelParser {
             BaseSettings baseSettings = new BaseSettings(basicClassIntrospector, annotationIntrospector,
                     VisibilityChecker.Std.defaultInstance(), null, TypeFactory.defaultInstance(), null, null, null,
                     null, null, null);
-            SerializationConfig config = new SerializationConfig(baseSettings, new StdSubtypeResolver(), null);
+            SerializationConfig config = new SerializationConfig(baseSettings, new StdSubtypeResolver(), null, null);
             BeanDescription beanDesc = config.introspect(origType);
             return (BasicBeanDescription) beanDesc;
         }
