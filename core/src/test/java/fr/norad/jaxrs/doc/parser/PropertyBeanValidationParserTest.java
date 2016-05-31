@@ -26,10 +26,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -113,10 +110,6 @@ public class PropertyBeanValidationParserTest {
         parser.parse(localeDef, property, new PropertyAccessor("name", field, method, null), null);
 
         assertThat(property.getConstraints()).hasSize(2);
-        List<String> classes = new ArrayList<>();
-        classes.add(property.getConstraints().get(1).getConstraintClass());
-        classes.add(property.getConstraints().get(0).getConstraintClass());
-        assertThat(classes.containsAll(Arrays.asList(Pattern.class.getName(), NotNull.class.getName())));
     }
 
     @Test
